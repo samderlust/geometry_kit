@@ -4,6 +4,8 @@
 
 A set of utils that help with geometry (line, circle, triangle, polygon,...)
 
+!!! Warning: This package is still in initial stage and no where near perfect. Still missing a lot. but it will be improve with time for sure. Any contribution is appreciated
+
 ## Features
 
 - distance from a point to a line

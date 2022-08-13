@@ -211,9 +211,21 @@ class PolygonUtils {
     return sides;
   }
 
-  List<Triangle> tin(List<Point> polygon) {
+  // List<Triangle> tin(List<Point> polygon) {
+  //   assert(polygon.length >= 3);
+  //   return [];
+
+  // }
+
+  /// Get Polygon perimeter
+  ///
+  ///
+  static double perimeter(List<Point> polygon) {
     assert(polygon.length >= 3);
-    return [];
+
+    final sides = getPolygonSides(polygon);
+
+    return sides.fold(0, (prev, e) => prev + e.length);
   }
 
   /// Get Polygon area
