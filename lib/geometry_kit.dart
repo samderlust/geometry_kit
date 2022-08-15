@@ -14,3 +14,4 @@ part './src/circle_utils.dart';
 part './src/line_utils.dart';
 part './src/polygon_utils.dart';
 part './src/triangle_utils.dart';
+part './src/angle_utils.dart';
