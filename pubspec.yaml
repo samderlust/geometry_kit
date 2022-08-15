@@ -1,7 +1,7 @@
 name: geometry_kit
-description: A tool kit to work with geometry in Dart and Flutter.
+description: A set of utils that help with geometry (line, circle, triangle, polygon,...)
 version: 0.1.0
-# homepage: https://www.example.com
+homepage: https://github.com/samderlust/geometry_kit
 
 environment:
   sdk: ">=2.17.6 <3.0.0"

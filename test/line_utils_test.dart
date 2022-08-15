@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:geometry_kit/geometry_kit.dart';
-import 'package:geometry_kit/src/models/line.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
@@ -64,6 +63,55 @@ void main() {
         LineUtils.pointToLineDistance(point, line),
         closeTo(1.941450686788302, .0001),
       );
+    });
+  });
+
+  group('Test angle of 2 lines', () {
+    test('angle of 2 lines 45 deg', () {
+      final line1 = Line(Point(0, 0), Point(2, 2));
+      final line2 = Line(Point(0, 0), Point(0, 2));
+
+      expect(LineUtils.angleOf2Lines(line1, line2),
+          closeTo(45 * pi / 180, .00001));
+    });
+    test('angle of 2 lines 45 deg with negative values', () {
+      final line1 = Line(Point(-1, -1), Point(2, 2));
+      final line2 = Line(Point(0, 0), Point(0, 2));
+
+      expect(LineUtils.angleOf2Lines(line1, line2),
+          closeTo(45 * pi / 180, .00001));
+    });
+
+    test('angle of 2 lines 90 deg', () {
+      final line1 = Line(Point(0, 0), Point(2, 0));
+      final line2 = Line(Point(0, 0), Point(0, 2));
+
+      expect(LineUtils.angleOf2Lines(line1, line2),
+          closeTo(90 * pi / 180, .00001));
+    });
+
+    test('angle of 2 lines 135 deg', () {
+      final line1 = Line(Point(0, -2), Point(-2, 0));
+      final line2 = Line(Point(0, 0), Point(0, 2));
+
+      expect(LineUtils.angleOf2Lines(line1, line2),
+          closeTo(135 * pi / 180, .00001));
+    });
+
+    test('angle of 2 lines 135 deg 2', () {
+      final line1 = Line(Point(-2, 0), Point(0, -2));
+      final line2 = Line(Point(0, 0), Point(0, 2));
+
+      expect(LineUtils.angleOf2Lines(line1, line2),
+          closeTo(135 * pi / 180, .00001));
+    });
+
+    test('angle of 2 lines 180 deg', () {
+      final line1 = Line(Point(0, 0), Point(0, -2));
+      final line2 = Line(Point(0, 0), Point(0, 2));
+
+      expect(LineUtils.angleOf2Lines(line1, line2),
+          closeTo(180 * pi / 180, .00001));
     });
   });
 }

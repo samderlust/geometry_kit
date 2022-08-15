@@ -211,10 +211,17 @@ class PolygonUtils {
     return sides;
   }
 
-  // List<Triangle> tin(List<Point> polygon) {
-  //   assert(polygon.length >= 3);
-  //   return [];
+  // static List<Triangle> triangulate(List<Point> polygon) {
+  //   assert(polygon.length >= 4);
+  //   Set<Triangle> triangles = {};
+  //   final basePoint = polygon.first;
 
+  //   for (var i = 1; i < polygon.length - 1; i++) {
+  //     var newTriangle = Triangle(basePoint, polygon[i], polygon[i + 1]);
+  //     triangles.add(newTriangle);
+  //   }
+
+  //   return triangles.toList();
   // }
 
   /// Get Polygon perimeter
@@ -228,9 +235,19 @@ class PolygonUtils {
     return sides.fold(0, (prev, e) => prev + e.length);
   }
 
+  // static double area2(List<Point> polygon) {
+  //   assert(polygon.length >= 3);
+  //   final triangles = triangulate(polygon);
+  //   double area = 0;
+  //   for (var t in triangles) {
+  //     area += TriangleUtils.area(t.values);
+  //   }
+  //   return area;
+  // }
+
   /// Get Polygon area
   ///
-  ///
+  /// This algorithm could be wrong when work with polygon that contains crossed lines
   static double area(List<Point> polygon) {
     assert(polygon.length >= 3);
 

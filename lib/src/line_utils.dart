@@ -89,6 +89,33 @@ class LineUtils {
     return ac + bc == ab;
   }
 
+  /// Get the angle between 2 lines
+  ///
+  /// result is in radian
+  static double angleOf2Lines(Line line1, line2) {
+    final a1 = _getAtan2(line1);
+    final a2 = _getAtan2(line2);
+
+    if (a1 != double.nan && a2 != double.nan) {
+      return a2 - a1;
+    }
+
+    return double.nan;
+  }
+
+  static double _getAtan2(Line line) {
+    // Get the point that closer to x-axis
+    Point<num> pa, pb;
+    if (line.p1.x > line.p2.x) {
+      pa = line.p1;
+      pb = line.p2;
+    } else {
+      pa = line.p2;
+      pb = line.p1;
+    }
+    return atan2(pa.y - pb.y, pa.x - pb.x);
+  }
+
   /// Calculate length of line segment
   static double lineLength(Line line) => line.p1.distanceTo(line.p2);
 

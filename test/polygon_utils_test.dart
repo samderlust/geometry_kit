@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:geometry_kit/geometry_kit.dart';
-import 'package:geometry_kit/src/models/line.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 

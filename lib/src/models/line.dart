@@ -9,7 +9,7 @@ class Line {
   Line(
     this.p1,
     this.p2,
-  );
+  ) : assert(p1 != p2);
 
   @override
   bool operator ==(Object other) {
