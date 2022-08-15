@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the perimeter method from the TriangleUtils class, for the Dart programming language.">
-  <title>perimeter method - TriangleUtils class - geometry_kit library - Dart API</title>
+  <meta name="description" content="API docs for the secOfArcToDegree method from the AngleUtils class, for the Dart programming language.">
+  <title>secOfArcToDegree method - AngleUtils class - geometry_kit library - Dart API</title>
 
 
   
@@ -31,10 +31,10 @@
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">geometry_kit</a></li>
     <li><a href="../../geometry_kit/geometry_kit-library.html">geometry_kit</a></li>
-    <li><a href="../../geometry_kit/TriangleUtils-class.html">TriangleUtils</a></li>
-    <li class="self-crumb">perimeter method</li>
+    <li><a href="../../geometry_kit/AngleUtils-class.html">AngleUtils</a></li>
+    <li class="self-crumb">secOfArcToDegree method</li>
   </ol>
-  <div class="self-name">perimeter</div>
+  <div class="self-name">secOfArcToDegree</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -45,15 +45,15 @@
 
   <div id="dartdoc-main-content" class="main-content">
       <div>
-<h1><span class="kind-method">perimeter</span> method 
+<h1><span class="kind-method">secOfArcToDegree</span> method 
     <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
 </h1></div>
 
     <section class="multi-line-signature">
       
 
-<span class="returntype"><a href="https://api.dart.dev/stable/2.17.6/dart-core/double-class.html">double</a></span>
-<span class="name ">perimeter</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="perimeter-param-triangle"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.17.6/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.17.6/dart-math/Point-class.html">Point</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.17.6/dart-core/num-class.html">num</a></span>&gt;</span></span>&gt;</span></span> <span class="parameter-name">triangle</span></span></li>
+<span class="returntype">dynamic</span>
+<span class="name ">secOfArcToDegree</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="secOfArcToDegree-param-sec"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.17.6/dart-core/double-class.html">double</a></span> <span class="parameter-name">sec</span></span></li>
 </ol>)
 
       
@@ -61,19 +61,14 @@
     </section>
     
 <section class="desc markdown">
-  <p>get perimeter of a triangle</p>
+  <p>Second of Arc to Degree</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">static double perimeter(List&lt;Point&gt; triangle) {
-  assert(triangle.length == 3);
-  final sides = PolygonUtils.getPolygonSides(triangle);
-
-  return sides.fold&lt;double&gt;(0.0, (prev, e) =&gt; prev + e.length);
-}</code></pre>
+  <pre class="language-dart"><code class="language-dart">static secOfArcToDegree(double sec) =&gt; sec &#47; 3600;</code></pre>
 </section>
 
 
@@ -89,38 +84,42 @@
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
   <li><a href="../../index.html">geometry_kit</a></li>
   <li><a href="../../geometry_kit/geometry_kit-library.html">geometry_kit</a></li>
-  <li><a href="../../geometry_kit/TriangleUtils-class.html">TriangleUtils</a></li>
-  <li class="self-crumb">perimeter method</li>
+  <li><a href="../../geometry_kit/AngleUtils-class.html">AngleUtils</a></li>
+  <li class="self-crumb">secOfArcToDegree method</li>
 </ol>
 
 
-    <h5>TriangleUtils class</h5>
+    <h5>AngleUtils class</h5>
     <ol>
 
-        <li class="section-title"><a href="../../geometry_kit/TriangleUtils-class.html#constructors">Constructors</a></li>
-          <li><a href="../../geometry_kit/TriangleUtils/TriangleUtils.html">TriangleUtils</a></li>
+        <li class="section-title"><a href="../../geometry_kit/AngleUtils-class.html#constructors">Constructors</a></li>
+          <li><a href="../../geometry_kit/AngleUtils/AngleUtils.html">AngleUtils</a></li>
 
 
     <li class="section-title inherited">
-      <a href="../../geometry_kit/TriangleUtils-class.html#instance-properties">Properties</a>
+      <a href="../../geometry_kit/AngleUtils-class.html#instance-properties">Properties</a>
     </li>
     <li class="inherited"><a href="https://api.dart.dev/stable/2.17.6/dart-core/Object/hashCode.html">hashCode</a></li>
     <li class="inherited"><a href="https://api.dart.dev/stable/2.17.6/dart-core/Object/runtimeType.html">runtimeType</a></li>
 
-    <li class="section-title inherited"><a href="../../geometry_kit/TriangleUtils-class.html#instance-methods">Methods</a></li>
+    <li class="section-title inherited"><a href="../../geometry_kit/AngleUtils-class.html#instance-methods">Methods</a></li>
     <li class="inherited"><a href="https://api.dart.dev/stable/2.17.6/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
     <li class="inherited"><a href="https://api.dart.dev/stable/2.17.6/dart-core/Object/toString.html">toString</a></li>
 
-    <li class="section-title inherited"><a href="../../geometry_kit/TriangleUtils-class.html#operators">Operators</a></li>
+    <li class="section-title inherited"><a href="../../geometry_kit/AngleUtils-class.html#operators">Operators</a></li>
     <li class="inherited"><a href="https://api.dart.dev/stable/2.17.6/dart-core/Object/operator_equals.html">operator ==</a></li>
 
 
 
-        <li class="section-title"><a href="../../geometry_kit/TriangleUtils-class.html#static-methods">Static methods</a></li>
-          <li><a href="../../geometry_kit/TriangleUtils/area.html">area</a></li>
-          <li><a href="../../geometry_kit/TriangleUtils/getBaseLine.html">getBaseLine</a></li>
-          <li><a href="../../geometry_kit/TriangleUtils/getHeight.html">getHeight</a></li>
-          <li><a href="../../geometry_kit/TriangleUtils/perimeter.html">perimeter</a></li>
+        <li class="section-title"><a href="../../geometry_kit/AngleUtils-class.html#static-methods">Static methods</a></li>
+          <li><a href="../../geometry_kit/AngleUtils/degreeToRadian.html">degreeToRadian</a></li>
+          <li><a href="../../geometry_kit/AngleUtils/gradianToDegree.html">gradianToDegree</a></li>
+          <li><a href="../../geometry_kit/AngleUtils/gradianToRadian.html">gradianToRadian</a></li>
+          <li><a href="../../geometry_kit/AngleUtils/minOfArcToDegree.html">minOfArcToDegree</a></li>
+          <li><a href="../../geometry_kit/AngleUtils/minOfArcToRadian.html">minOfArcToRadian</a></li>
+          <li><a href="../../geometry_kit/AngleUtils/radianToDegree.html">radianToDegree</a></li>
+          <li><a href="../../geometry_kit/AngleUtils/secOfArcToDegree.html">secOfArcToDegree</a></li>
+          <li><a href="../../geometry_kit/AngleUtils/secOfArcToRadian.html">secOfArcToRadian</a></li>
 
 </ol>
 
