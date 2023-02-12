@@ -18,42 +18,42 @@ void main() {
     ];
 
     test('point on the side', () {
-      final point = Point<num>(5, 2);
+      final point = Point(5, 2);
 
       expect(PolygonUtils.isInsidePolygon(point, polygon), true);
     });
     test('point on vertex', () {
-      final point = Point<num>(0, 2);
+      final point = Point(0, 2);
 
       expect(PolygonUtils.isInsidePolygon(point, polygon), true);
     });
 
     test('point in polygon', () {
-      final point = Point<num>(2, 2);
+      final point = Point(2.0, 2);
 
       expect(PolygonUtils.isInsidePolygon(point, polygon), true);
     });
 
     test('point out on the left', () {
-      final point = Point<num>(-0.2, 2);
+      final point = Point(-12, 2);
 
       expect(PolygonUtils.isInsidePolygon(point, polygon), false);
     });
 
     test('point out on the right', () {
-      final point = Point<num>(9, 2);
+      final point = Point(9, 2);
 
       expect(PolygonUtils.isInsidePolygon(point, polygon), false);
     });
 
     test('point out on the top', () {
-      final point = Point<num>(2, 6);
+      final point = Point(2, 6);
 
       expect(PolygonUtils.isInsidePolygon(point, polygon), false);
     });
 
     test('point out of the bottom', () {
-      final point = Point<num>(2, -1);
+      final point = Point(2, -1);
 
       expect(PolygonUtils.isInsidePolygon(point, polygon), false);
     });

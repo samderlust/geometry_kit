@@ -18,11 +18,12 @@ class PolygonUtils {
   /// Get the outer circle
   ///
   /// formed by the inner centroid of the polygon and its radius
-  static Circle getPolygonInnerCircle(List<Point> list) {
+  static Circle getPolygonInnerCircle<T extends num>(List<Point<T>> list) {
     assert(list.length >= 3);
     final centroid = getPolygonInnerCentroid(list);
 
-    final c = Point(list[1].x - list[0].x, list[1].y - list[0].y);
+    final c =
+        Point<T>((list[1].x - list[0].x) as T, (list[1].y - list[0].y) as T);
 
     final radius = centroid.distanceTo(c);
     return Circle(radius: radius, center: centroid);
@@ -32,10 +33,10 @@ class PolygonUtils {
   ///
   /// only used with centroid of inner circle.
   /// since centroid of outer circle always has same distance to all vertices
-  static Point getPolygonFurthestVertexFromCentroid(
-      List<Point> list, Point centroid) {
+  static Point<T> getPolygonFurthestVertexFromCentroid<T extends num>(
+      List<Point<T>> list, Point<T> centroid) {
     assert(list.length >= 3);
-    Point furthest = centroid;
+    Point<T> furthest = centroid;
 
     num distance = 0;
     for (var p in list) {
@@ -51,20 +52,23 @@ class PolygonUtils {
   /// Get the centroid of Outer circle
   ///
   /// this centroid is calculated from the distance to the vertices or the polygon.
-  static Point getPolygonOuterCircleCentroid(List<Point> list) {
+  static Point<T> getPolygonOuterCircleCentroid<T extends num>(
+      List<Point<T>> list) {
     assert(list.length >= 3);
 
     final n = list.length;
+    T a, b;
 
-    var center = list.reduce((c, n) => Point(c.x + n.x, c.y + n.y));
+    var center =
+        list.reduce((c, n) => Point((c.x + n.x) as T, (c.y + n.y) as T));
 
-    return Point(center.x / n, center.y / n);
+    return Point((center.x / n) as T, (center.y / n) as T);
   }
 
   /// Get the centroid of inner circle
   ///
   /// this centroid is calculated from the center of all sides of polygon
-  static Point getPolygonInnerCentroid(List<Point> list) {
+  static Point<T> getPolygonInnerCentroid<T extends num>(List<Point<T>> list) {
     assert(list.length >= 3);
 
     final n = list.length;
@@ -80,14 +84,16 @@ class PolygonUtils {
           (list[i].y * list[nextI].x + list[nextI].y + list[i].x);
     }
 
-    return Point(cx / n, cy / n);
+    return Point((cx / n) as T, (cy / n) as T);
   }
 
   /// Check if a point is inside the polygon
   ///
   ///
-  static bool isInsidePolygon(Point point, List<Point> polygon) {
+  static bool isInsidePolygon<T extends num>(
+      Point<T> point, List<Point<T>> polygon) {
     assert(polygon.length >= 3);
+
     if (polygon.any((p) => p == point)) return true;
 
     if (point.x < getMostLeftPoint(polygon).x) return false;
@@ -116,75 +122,45 @@ class PolygonUtils {
   /// Get the furthest right point of the polygon
   ///
   ///
-  static Point getMostRightPoint(List<Point> polygon) {
+  static Point<T> getMostRightPoint<T extends num>(List<Point<T>> polygon) {
     assert(polygon.length >= 3);
 
-    var mostRightPoint =
-        Point<num>(double.negativeInfinity, double.negativeInfinity);
-
-    for (var p in polygon) {
-      if (p.x > mostRightPoint.x) {
-        mostRightPoint = p;
-      }
-    }
-
-    return mostRightPoint;
+    return polygon.reduce((cur, next) => cur.x >= next.x ? cur : next);
   }
 
   /// Get the furthest left point of the polygon
   ///
   ///
-  static Point getMostLeftPoint(List<Point> polygon) {
+  static Point<T> getMostLeftPoint<T extends num>(List<Point<T>> polygon) {
     assert(polygon.length >= 3);
-    var mostLeftPoint = Point<num>(double.infinity, double.infinity);
 
-    for (var p in polygon) {
-      if (p.x < mostLeftPoint.x) {
-        mostLeftPoint = p;
-      }
-    }
-
-    return mostLeftPoint;
+    return polygon.reduce((cur, next) => cur.x <= next.x ? cur : next);
   }
 
   /// Get the furthest top point of the polygon
   ///
   ///
-  static Point getTopPoint(List<Point> polygon) {
+  static Point<T> getTopPoint<T extends num>(List<Point<T>> polygon) {
     assert(polygon.length >= 3);
-    var topPoint = Point<num>(double.negativeInfinity, double.negativeInfinity);
 
-    for (var p in polygon) {
-      if (p.y > topPoint.y) {
-        topPoint = p;
-      }
-    }
-
-    return topPoint;
+    return polygon.reduce((cur, next) => cur.y >= next.y ? cur : next);
   }
 
   /// Get the furthest bottom point of the polygon
   ///
   ///
-  static Point getBottomPoint(List<Point> polygon) {
+  static Point<T> getBottomPoint<T extends num>(List<Point<T>> polygon) {
     assert(polygon.length >= 3);
-    var bottomPoint = Point<num>(double.infinity, double.infinity);
 
-    for (var p in polygon) {
-      if (p.y < bottomPoint.y) {
-        bottomPoint = p;
-      }
-    }
-
-    return bottomPoint;
+    return polygon.reduce((cur, next) => cur.y <= next.y ? cur : next);
   }
 
   /// Get all the boundary of the polygon
   ///
-  static List<Point> getPolygonBound(List<Point> polygon) {
+  static List<Point<T>> getPolygonBound<T extends num>(List<Point<T>> polygon) {
     assert(polygon.length >= 3);
 
-    Set<Point> list = {};
+    Set<Point<T>> list = {};
 
     list.add(getMostLeftPoint(polygon));
     list.add(getTopPoint(polygon));
@@ -196,7 +172,7 @@ class PolygonUtils {
   /// Get all sides of the polygon
   ///
   ///
-  static List<Line> getPolygonSides(List<Point> polygon) {
+  static List<Line> getPolygonSides<T extends num>(List<Point> polygon) {
     assert(polygon.length >= 3);
 
     final n = polygon.length;
