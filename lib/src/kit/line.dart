@@ -1,9 +1,5 @@
-import 'dart:math' as m;
 import 'dart:math';
 
-import 'package:geometry_kit/src/models/line.dart';
-
-import '../interface/line_interface.dart';
 import 'point.dart';
 
 class Line {
@@ -22,7 +18,7 @@ class Line {
       pa = other.b;
       pb = other.a;
     }
-    return m.atan2(pa.y - pb.y, pa.x - pb.x);
+    return atan2(pa.y - pb.y, pa.x - pb.x);
   }
 
   /// Get the angle between this line and another line
@@ -38,8 +34,10 @@ class Line {
     return double.nan;
   }
 
-  /// get the distance from this line to a point
-  double distanceToAPoint(Point point) {
+  /// get the distance from a points to this line
+  ///
+  ///
+  double distanceFromAPoint(Point point) {
     final distance =
         ((b.x - a.x) * (a.y - point.y) - (a.x - point.x) * (b.y - a.y)).abs() /
             sqrt(pow((b.x - a.x), 2) + pow((b.y - a.y), 2));
@@ -69,7 +67,7 @@ class Line {
     }
   }
 
-  /// check if a point is belong to this line
+  /// Check if a point is belong to this line
   bool hasPoint(Point point) {
     final ac = point.distanceTo(a);
     final bc = point.distanceTo(b);
@@ -77,15 +75,28 @@ class Line {
     return ac + bc == ab;
   }
 
-  ///check if this line and other line intersect
+  /// Check if this line and other line intersect
   bool intersect(Line other) {
     final point = getIntersectPoint(other);
     return point != null;
   }
 
-  /// length of this line
+  /// Length of this line
   double get length => a.distanceTo(b);
 
-  /// the midpoint of the line
+  /// The midpoint of the line
   Point get midPoint => Point((a.x + b.x) / 2, (a.y + b.y) / 2);
+
+  /// Get list of points
+  List<Point> get points => [a, b];
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Line && other.a == a && other.b == b;
+  }
+
+  @override
+  int get hashCode => a.hashCode ^ b.hashCode;
 }
