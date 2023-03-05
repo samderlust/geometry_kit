@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the pointAtDistance method from the Point class, for the Dart programming language.">
+  <title>pointAtDistance method - Point class - geometry_kit library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">geometry_kit</a></li>
+    <li><a href="../../geometry_kit/geometry_kit-library.html">geometry_kit</a></li>
+    <li><a href="../../geometry_kit/Point-class.html">Point</a></li>
+    <li class="self-crumb">pointAtDistance method</li>
+  </ol>
+  <div class="self-name">pointAtDistance</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span class="material-symbols-outlined">
+        brightness_4
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">pointAtDistance</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="../../geometry_kit/Point-class.html">Point</a></span>
+<span class="name ">pointAtDistance</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="pointAtDistance-param-distance"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.19.2/dart-core/double-class.html">double</a></span> <span class="parameter-name">distance</span>, </span></li>
+<li><span class="parameter" id="pointAtDistance-param-angle">[<span class="type-annotation"><a href="https://api.dart.dev/stable/2.19.2/dart-core/double-class.html">double</a></span> <span class="parameter-name">angle</span> = <span class="default-value">0</span>]</span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Get the point at a distance to this point</p>
+<p>result of the other point is depended on the distance and the angle between them 2
+default angle is 0</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">Point pointAtDistance(double distance, [double angle = 0]) {
+  final x1 = x + distance * cos(angle);
+  final y1 = y + distance * sin(angle);
+  return Point(x1, y1);
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">geometry_kit</a></li>
+  <li><a href="../../geometry_kit/geometry_kit-library.html">geometry_kit</a></li>
+  <li><a href="../../geometry_kit/Point-class.html">Point</a></li>
+  <li class="self-crumb">pointAtDistance method</li>
+</ol>
+
+
+    <h5>Point class</h5>
+    <ol>
+
+        <li class="section-title"><a href="../../geometry_kit/Point-class.html#constructors">Constructors</a></li>
+          <li><a href="../../geometry_kit/Point/Point.html">Point</a></li>
+
+
+        <li class="section-title">
+          <a href="../../geometry_kit/Point-class.html#instance-properties">Properties</a>
+        </li>
+          <li><a href="../../geometry_kit/Point/hashCode.html">hashCode</a></li>
+          <li class="inherited"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/runtimeType.html">runtimeType</a></li>
+          <li><a href="../../geometry_kit/Point/x.html">x</a></li>
+          <li><a href="../../geometry_kit/Point/y.html">y</a></li>
+
+        <li class="section-title"><a href="../../geometry_kit/Point-class.html#instance-methods">Methods</a></li>
+          <li><a href="../../geometry_kit/Point/distanceTo.html">distanceTo</a></li>
+          <li class="inherited"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+          <li><a href="../../geometry_kit/Point/pointAtAngle.html">pointAtAngle</a></li>
+          <li><a href="../../geometry_kit/Point/pointAtDistance.html">pointAtDistance</a></li>
+          <li><a href="../../geometry_kit/Point/toString.html">toString</a></li>
+
+        <li class="section-title"><a href="../../geometry_kit/Point-class.html#operators">Operators</a></li>
+          <li><a href="../../geometry_kit/Point/operator_modulo.html">operator %</a></li>
+          <li><a href="../../geometry_kit/Point/operator_multiply.html">operator *</a></li>
+          <li><a href="../../geometry_kit/Point/operator_plus.html">operator +</a></li>
+          <li><a href="../../geometry_kit/Point/operator_minus.html">operator -</a></li>
+          <li><a href="../../geometry_kit/Point/operator_divide.html">operator /</a></li>
+          <li><a href="../../geometry_kit/Point/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    geometry_kit
+      1.0.0-dev
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

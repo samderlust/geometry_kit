@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="generator" content="made with love by dartdoc 5.1.0-dev">
+  <meta name="generator" content="made with love by dartdoc 6.1.5">
   <meta name="description" content="geometry_kit API docs, for the Dart programming language.">
   <title>geometry_kit - Dart API docs</title>
 
@@ -12,7 +12,7 @@
   
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
   
   <link rel="stylesheet" href="static-assets/github.css?v1">
   <link rel="stylesheet" href="static-assets/styles.css?v1">
@@ -22,13 +22,12 @@
 </head>
 
 
-<body data-base-href=""
-      data-using-base-href="false">
+<body data-base-href="" data-using-base-href="false" class="light-theme">
 
 <div id="overlay-under-drawer"></div>
 
 <header id="title">
-  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="https://github.com/samderlust/geometry_kit">geometry_kit package</a></li>
   </ol>
@@ -36,18 +35,24 @@
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span class="material-symbols-outlined">
+        brightness_4
+      </span>
+    </label>
+  </div>
 </header>
-
 <main>
-
 
   <div id="dartdoc-main-content" class="main-content">
       
 <section class="desc markdown">
-  <p><a href="https://www.buymeacoffee.com/samderlust"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="" buy="" me="" a="" coffee""=""></a></p>
+  <p><a href="https://www.buymeacoffee.com/samderlust"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="&quot;Buy Me A Coffee&quot;"></a></p>
 <h1 id="geometry-kit">Geometry Kit</h1>
 <p>A set of utils that help with geometry (line, circle, triangle, polygon,...)</p>
-<p>!!! Warning: This package is still in initial stage and no where near perfect. Still missing a lot. but it will be improve with time for sure. Any contribution is appreciated</p>
+<p>!!! Warning: Pre-release v1.0.0 contain breaking changes from previous version.</p>
 <h2 id="features">Features</h2>
 <ul>
 <li>distance from a point to a line</li>
@@ -71,12 +76,14 @@
   final line1 = Line(Point(0, 2), Point(2, 0));
   final line2 = Line(Point(0, -1), Point(3, 2));
 
-  final intersect = LineUtils.getSegmentIntersect(line1, line2);
+  final intersect = line1.intersect(line2);
 
   print(intersect); //Point(1.5, 0.5)
+}
+
 </code></pre>
-<pre class="language-dart"><code class="language-dart">//Polygon
-  final polygon = [
+<pre class="language-dart"><code class="language-dart">  //Polygon
+  final polygon = Polygon([
     Point(1, 0),
     Point(0, 2),
     Point(0, 3),
@@ -85,11 +92,15 @@
     Point(5, 3),
     Point(5, 1),
     Point(3, 0),
-  ];
+  ]);
 
-  final point1 = Point&lt;num&gt;(5, 2);
-  var isInside = PolygonUtils.isInsidePolygon(point1, polygon);
+  final point1 = Point(5, 2);
+  var isInside = polygon.contains(point1);
   print(isInside); // true
+
+  final point2 = Point(9, 2);
+  isInside = polygon.contains(point2);
+  print(isInside); //false
 </code></pre>
 <h2 id="appreciate-your-feedbacks-and-contributes">Appreciate Your Feedbacks and Contributes</h2>
 <p>I'm not a math guy, to be honest, I'm stupid at math your feedbacks and contributes will be much appreciated.</p>
@@ -104,7 +115,7 @@
   <span class="name"><a href="geometry_kit/geometry_kit-library.html">geometry_kit</a></span> 
 
 </dt>
-<dd>
+<dd>Geometry Kit
 </dd>
 
         </dl>
@@ -140,7 +151,7 @@
 <footer>
   <span class="no-break">
     geometry_kit
-      0.1.1
+      1.0.0-dev
   </span>
 
   
@@ -149,7 +160,7 @@
 
 
 <script src="static-assets/highlight.pack.js?v1"></script>
-<script src="static-assets/script.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
 
 
 

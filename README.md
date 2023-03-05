@@ -4,7 +4,7 @@
 
 A set of utils that help with geometry (line, circle, triangle, polygon,...)
 
-!!! Warning: This package is still in initial stage and no where near perfect. Still missing a lot. but it will be improve with time for sure. Any contribution is appreciated
+!!! Warning: Pre-release v1.0.0 contain breaking changes from previous version.
 
 ## Features
 
@@ -38,14 +38,16 @@ import 'package:fetching_state/fetching_state.dart';
   final line1 = Line(Point(0, 2), Point(2, 0));
   final line2 = Line(Point(0, -1), Point(3, 2));
 
-  final intersect = LineUtils.getSegmentIntersect(line1, line2);
+  final intersect = line1.intersect(line2);
 
   print(intersect); //Point(1.5, 0.5)
+}
+
 ```
 
 ```dart
-//Polygon
-  final polygon = [
+  //Polygon
+  final polygon = Polygon([
     Point(1, 0),
     Point(0, 2),
     Point(0, 3),
@@ -54,11 +56,15 @@ import 'package:fetching_state/fetching_state.dart';
     Point(5, 3),
     Point(5, 1),
     Point(3, 0),
-  ];
+  ]);
 
-  final point1 = Point<num>(5, 2);
-  var isInside = PolygonUtils.isInsidePolygon(point1, polygon);
+  final point1 = Point(5, 2);
+  var isInside = polygon.contains(point1);
   print(isInside); // true
+
+  final point2 = Point(9, 2);
+  isInside = polygon.contains(point2);
+  print(isInside); //false
 ```
 
 ## Appreciate Your Feedbacks and Contributes

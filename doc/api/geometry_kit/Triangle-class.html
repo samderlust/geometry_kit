@@ -11,7 +11,7 @@
   
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
   
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
@@ -21,13 +21,12 @@
 </head>
 
 
-<body data-base-href="../"
-      data-using-base-href="false">
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
 
 <div id="overlay-under-drawer"></div>
 
 <header id="title">
-  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">geometry_kit</a></li>
     <li><a href="../geometry_kit/geometry_kit-library.html">geometry_kit</a></li>
@@ -37,10 +36,16 @@
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span class="material-symbols-outlined">
+        brightness_4
+      </span>
+    </label>
+  </div>
 </header>
-
 <main>
-
 
   <div id="dartdoc-main-content" class="main-content">
       <div>
@@ -50,27 +55,8 @@
 </h1></div>
 
     
-<section class="desc markdown">
-  <p>Triangle</p>
-</section>
 
 
-    <section>
-      <dl class="dl-horizontal">
-        
-
-        
-        
-
-
-        <dt>Available Extensions</dt>
-        <dd><ul class="comma-separated clazz-relationships">
-          <li><a href="../geometry_kit/TriangleExtension.html">TriangleExtension</a></li>
-        </ul></dd>
-
-        
-      </dl>
-    </section>
 
     
   <section class="summary offset-anchor" id="constructors">
@@ -78,10 +64,11 @@
 
     <dl class="constructor-summary-list">
         <dt id="Triangle" class="callable">
-          <span class="name"><a href="../geometry_kit/Triangle/Triangle.html">Triangle</a></span><span class="signature">(<span class="parameter" id="-param-a"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.17.6/dart-math/Point-class.html">Point</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.17.6/dart-core/num-class.html">num</a></span>&gt;</span></span> <span class="parameter-name">a</span>, </span><span class="parameter" id="-param-b"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.17.6/dart-math/Point-class.html">Point</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.17.6/dart-core/num-class.html">num</a></span>&gt;</span></span> <span class="parameter-name">b</span>, </span><span class="parameter" id="-param-c"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.17.6/dart-math/Point-class.html">Point</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.17.6/dart-core/num-class.html">num</a></span>&gt;</span></span> <span class="parameter-name">c</span></span>)</span>
+          <span class="name"><a href="../geometry_kit/Triangle/Triangle.html">Triangle</a></span><span class="signature">(<span class="parameter" id="-param-a"><span class="type-annotation"><a href="../geometry_kit/Point-class.html">Point</a></span> <span class="parameter-name">a</span>, </span><span class="parameter" id="-param-b"><span class="type-annotation"><a href="../geometry_kit/Point-class.html">Point</a></span> <span class="parameter-name">b</span>, </span><span class="parameter" id="-param-c"><span class="type-annotation"><a href="../geometry_kit/Point-class.html">Point</a></span> <span class="parameter-name">c</span></span>)</span>
         </dt>
         <dd>
           
+            <div class="constructor-modifier features">const</div>
         </dd>
     </dl>
   </section>
@@ -92,56 +79,210 @@
       <dl class="properties">
         <dt id="a" class="property">
   <span class="name"><a href="../geometry_kit/Triangle/a.html">a</a></span>
-  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.17.6/dart-math/Point-class.html">Point</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.17.6/dart-core/num-class.html">num</a></span>&gt;</span></span> 
+  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span> 
 
 </dt>
 <dd>
   
-  <div class="features">final</div>
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="AB" class="property">
+  <span class="name"><a href="../geometry_kit/Triangle/AB.html">AB</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Line-class.html">Line</a></span> 
+
+</dt>
+<dd>
+  Line that goes from a to b;
+  <div class="features"><span class="feature">read-only</span></div>
+
+</dd>
+
+        <dt id="AC" class="property">
+  <span class="name"><a href="../geometry_kit/Triangle/AC.html">AC</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Line-class.html">Line</a></span> 
+
+</dt>
+<dd>
+  Line that goes from a to c;
+  <div class="features"><span class="feature">read-only</span></div>
+
+</dd>
+
+        <dt id="angles" class="property">
+  <span class="name"><a href="../geometry_kit/Triangle/angles.html">angles</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../geometry_kit/Rad.html">Rad</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">read-only</span></div>
+
+</dd>
+
+        <dt id="area" class="property">
+  <span class="name"><a href="../geometry_kit/Triangle/area.html">area</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">read-only</span></div>
 
 </dd>
 
         <dt id="b" class="property">
   <span class="name"><a href="../geometry_kit/Triangle/b.html">b</a></span>
-  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.17.6/dart-math/Point-class.html">Point</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.17.6/dart-core/num-class.html">num</a></span>&gt;</span></span> 
+  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span> 
 
 </dt>
 <dd>
   
-  <div class="features">final</div>
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="baseLine" class="property">
+  <span class="name"><a href="../geometry_kit/Triangle/baseLine.html">baseLine</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Line-class.html">Line</a></span> 
+
+</dt>
+<dd>
+  Check if this triangle is right
+  <div class="features"><span class="feature">read-only</span></div>
+
+</dd>
+
+        <dt id="BC" class="property">
+  <span class="name"><a href="../geometry_kit/Triangle/BC.html">BC</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Line-class.html">Line</a></span> 
+
+</dt>
+<dd>
+  Line that goes from b to c;
+  <div class="features"><span class="feature">read-only</span></div>
 
 </dd>
 
         <dt id="c" class="property">
   <span class="name"><a href="../geometry_kit/Triangle/c.html">c</a></span>
-  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.17.6/dart-math/Point-class.html">Point</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.17.6/dart-core/num-class.html">num</a></span>&gt;</span></span> 
+  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span> 
 
 </dt>
 <dd>
   
-  <div class="features">final</div>
+  <div class="features"><span class="feature">final</span></div>
 
 </dd>
 
-        <dt id="hashCode" class="property">
-  <span class="name"><a href="../geometry_kit/Triangle/hashCode.html">hashCode</a></span>
-  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.17.6/dart-core/int-class.html">int</a></span> 
+        <dt id="CA" class="property">
+  <span class="name"><a href="../geometry_kit/Triangle/CA.html">CA</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Line-class.html">Line</a></span> 
 
 </dt>
 <dd>
+  Line that goes from c to a;
+  <div class="features"><span class="feature">read-only</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd class="inherited">
   The hash code for this object.
-  <div class="features">read-only, override</div>
+  <div class="features"><span class="feature">read-only</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="height" class="property">
+  <span class="name"><a href="../geometry_kit/Triangle/height.html">height</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  Get height value of this triangle
+  <div class="features"><span class="feature">read-only</span></div>
+
+</dd>
+
+        <dt id="heightLine" class="property">
+  <span class="name"><a href="../geometry_kit/Triangle/heightLine.html">heightLine</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Line-class.html">Line</a></span> 
+
+</dt>
+<dd>
+  Get height Line
+  <div class="features"><span class="feature">read-only</span></div>
+
+</dd>
+
+        <dt id="orthocenter" class="property">
+  <span class="name"><a href="../geometry_kit/Triangle/orthocenter.html">orthocenter</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span> 
+
+</dt>
+<dd>
+  Get orthocenter of this triangle
+  <div class="features"><span class="feature">read-only</span></div>
+
+</dd>
+
+        <dt id="perimeter" class="property">
+  <span class="name"><a href="../geometry_kit/Triangle/perimeter.html">perimeter</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  
+  <div class="features"><span class="feature">read-only</span></div>
+
+</dd>
+
+        <dt id="posVertex" class="property">
+  <span class="name"><a href="../geometry_kit/Triangle/posVertex.html">posVertex</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span> 
+
+</dt>
+<dd>
+  Pos vertex
+  <div class="features"><span class="feature">read-only</span></div>
 
 </dd>
 
         <dt id="runtimeType" class="property inherited">
-  <span class="name"><a href="https://api.dart.dev/stable/2.17.6/dart-core/Object/runtimeType.html">runtimeType</a></span>
-  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.17.6/dart-core/Type-class.html">Type</a></span> 
+  <span class="name"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/Type-class.html">Type</a></span> 
 
 </dt>
 <dd class="inherited">
   A representation of the runtime type of the object.
-  <div class="features">read-only, inherited</div>
+  <div class="features"><span class="feature">read-only</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="sides" class="property">
+  <span class="name"><a href="../geometry_kit/Triangle/sides.html">sides</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../geometry_kit/Line-class.html">Line</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Get 3 sides of this triangle
+  <div class="features"><span class="feature">read-only</span></div>
+
+</dd>
+
+        <dt id="vertices" class="property">
+  <span class="name"><a href="../geometry_kit/Triangle/vertices.html">vertices</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../geometry_kit/Point-class.html">Point</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  Get list of 3 vertices of this triangle
+  <div class="features"><span class="feature">read-only</span></div>
 
 </dd>
 
@@ -155,7 +296,7 @@
     <h2>Methods</h2>
     <dl class="callables">
         <dt id="noSuchMethod" class="callable inherited">
-  <span class="name"><a href="https://api.dart.dev/stable/2.17.6/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.17.6/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+  <span class="name"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
     <span class="returntype parameter">&#8594; dynamic</span>
   </span>
   
@@ -163,20 +304,20 @@
 </dt>
 <dd class="inherited">
   Invoked when a non-existent method or property is accessed.
-  <div class="features">inherited</div>
+  <div class="features"><span class="feature">inherited</span></div>
 
 </dd>
 
         <dt id="toString" class="callable inherited">
-  <span class="name"><a href="https://api.dart.dev/stable/2.17.6/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.17.6/dart-core/String-class.html">String</a></span>
+  <span class="name"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/String-class.html">String</a></span>
   </span>
   
 
 </dt>
 <dd class="inherited">
   A string representation of this object.
-  <div class="features">inherited</div>
+  <div class="features"><span class="feature">inherited</span></div>
 
 </dd>
 
@@ -184,20 +325,20 @@
   </section>
     
   <section
-      class="summary offset-anchor"
+      class="summary offset-anchor inherited"
       id="operators">
     <h2>Operators</h2>
     <dl class="callables">
-        <dt id="operator ==" class="callable">
-  <span class="name"><a href="../geometry_kit/Triangle/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.17.6/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.17.6/dart-core/bool-class.html">bool</a></span>
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/bool-class.html">bool</a></span>
   </span>
   
 
 </dt>
-<dd>
+<dd class="inherited">
   The equality operator.
-  <div class="features">override</div>
+  <div class="features"><span class="feature">inherited</span></div>
 
 </dd>
 
@@ -226,26 +367,26 @@
 
     <h5>geometry_kit library</h5>
     <ol>
-  <li class="section-title"><a href="../geometry_kit/geometry_kit-library.html#classes">Classes</a></li>
-  <li><a href="../geometry_kit/AngleUtils-class.html">AngleUtils</a></li>
-  <li><a href="../geometry_kit/Circle-class.html">Circle</a></li>
-  <li><a href="../geometry_kit/CircleUtils-class.html">CircleUtils</a></li>
-  <li><a href="../geometry_kit/GeometryShape-class.html">GeometryShape</a></li>
-  <li><a href="../geometry_kit/Line-class.html">Line</a></li>
-  <li><a href="../geometry_kit/LineUtils-class.html">LineUtils</a></li>
-  <li><a href="../geometry_kit/PolygonUtils-class.html">PolygonUtils</a></li>
-  <li><a href="../geometry_kit/Triangle-class.html">Triangle</a></li>
-  <li><a href="../geometry_kit/TriangleUtils-class.html">TriangleUtils</a></li>
+      <li class="section-title"><a href="../geometry_kit/geometry_kit-library.html#classes">Classes</a></li>
+        <li><a href="../geometry_kit/AngleUtils-class.html">AngleUtils</a></li>
+        <li><a href="../geometry_kit/Circle-class.html">Circle</a></li>
+        <li><a href="../geometry_kit/Line-class.html">Line</a></li>
+        <li><a href="../geometry_kit/Point-class.html">Point</a></li>
+        <li><a href="../geometry_kit/Polygon-class.html">Polygon</a></li>
+        <li><a href="../geometry_kit/Triangle-class.html">Triangle</a></li>
 
-  <li class="section-title"><a href="../geometry_kit/geometry_kit-library.html#extensions">Extensions</a></li>
-  <li><a href="../geometry_kit/LineExtension.html">LineExtension</a></li>
-  <li><a href="../geometry_kit/TriangleExtension.html">TriangleExtension</a></li>
+      <li class="section-title"><a href="../geometry_kit/geometry_kit-library.html#extensions">Extensions</a></li>
+        <li><a href="../geometry_kit/DegX.html">DegX</a></li>
+        <li><a href="../geometry_kit/RadX.html">RadX</a></li>
 
 
 
 
 
 
+      <li class="section-title"><a href="../geometry_kit/geometry_kit-library.html#typedefs">Typedefs</a></li>
+        <li><a href="../geometry_kit/Deg.html">Deg</a></li>
+        <li><a href="../geometry_kit/Rad.html">Rad</a></li>
 
 </ol>
 
@@ -258,21 +399,35 @@
           <li><a href="../geometry_kit/Triangle/Triangle.html">Triangle</a></li>
 
 
-    <li class="section-title">
-      <a href="../geometry_kit/Triangle-class.html#instance-properties">Properties</a>
-    </li>
-    <li><a href="../geometry_kit/Triangle/a.html">a</a></li>
-    <li><a href="../geometry_kit/Triangle/b.html">b</a></li>
-    <li><a href="../geometry_kit/Triangle/c.html">c</a></li>
-    <li><a href="../geometry_kit/Triangle/hashCode.html">hashCode</a></li>
-    <li class="inherited"><a href="https://api.dart.dev/stable/2.17.6/dart-core/Object/runtimeType.html">runtimeType</a></li>
+        <li class="section-title">
+          <a href="../geometry_kit/Triangle-class.html#instance-properties">Properties</a>
+        </li>
+          <li><a href="../geometry_kit/Triangle/a.html">a</a></li>
+          <li><a href="../geometry_kit/Triangle/AB.html">AB</a></li>
+          <li><a href="../geometry_kit/Triangle/AC.html">AC</a></li>
+          <li><a href="../geometry_kit/Triangle/angles.html">angles</a></li>
+          <li><a href="../geometry_kit/Triangle/area.html">area</a></li>
+          <li><a href="../geometry_kit/Triangle/b.html">b</a></li>
+          <li><a href="../geometry_kit/Triangle/baseLine.html">baseLine</a></li>
+          <li><a href="../geometry_kit/Triangle/BC.html">BC</a></li>
+          <li><a href="../geometry_kit/Triangle/c.html">c</a></li>
+          <li><a href="../geometry_kit/Triangle/CA.html">CA</a></li>
+          <li class="inherited"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/hashCode.html">hashCode</a></li>
+          <li><a href="../geometry_kit/Triangle/height.html">height</a></li>
+          <li><a href="../geometry_kit/Triangle/heightLine.html">heightLine</a></li>
+          <li><a href="../geometry_kit/Triangle/orthocenter.html">orthocenter</a></li>
+          <li><a href="../geometry_kit/Triangle/perimeter.html">perimeter</a></li>
+          <li><a href="../geometry_kit/Triangle/posVertex.html">posVertex</a></li>
+          <li class="inherited"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/runtimeType.html">runtimeType</a></li>
+          <li><a href="../geometry_kit/Triangle/sides.html">sides</a></li>
+          <li><a href="../geometry_kit/Triangle/vertices.html">vertices</a></li>
 
-    <li class="section-title inherited"><a href="../geometry_kit/Triangle-class.html#instance-methods">Methods</a></li>
-    <li class="inherited"><a href="https://api.dart.dev/stable/2.17.6/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
-    <li class="inherited"><a href="https://api.dart.dev/stable/2.17.6/dart-core/Object/toString.html">toString</a></li>
+        <li class="section-title inherited"><a href="../geometry_kit/Triangle-class.html#instance-methods">Methods</a></li>
+          <li class="inherited"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+          <li class="inherited"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/toString.html">toString</a></li>
 
-    <li class="section-title"><a href="../geometry_kit/Triangle-class.html#operators">Operators</a></li>
-    <li><a href="../geometry_kit/Triangle/operator_equals.html">operator ==</a></li>
+        <li class="section-title inherited"><a href="../geometry_kit/Triangle-class.html#operators">Operators</a></li>
+          <li class="inherited"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/operator_equals.html">operator ==</a></li>
 
 
 
@@ -286,7 +441,7 @@
 <footer>
   <span class="no-break">
     geometry_kit
-      0.1.1
+      1.0.0-dev
   </span>
 
   
@@ -295,7 +450,7 @@
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
-<script src="../static-assets/script.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
 
 
 

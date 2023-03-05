@@ -77,7 +77,7 @@ class Polygon extends Shape {
 
   /// Check if a point is inside this polygon
   ///
-  /// return [false] when:
+  /// return `false` when:
   ///   - point is out side of the polygon
   ///   - point is on any sides or vertices
   bool contains(Point point) {

@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:geometry_kit/src/kit/units.dart';
 
-import 'line.dart';
-
 import '../interface/shape.dart';
+import 'line.dart';
 import 'point.dart';
 
 class Triangle extends Shape {

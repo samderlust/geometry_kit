@@ -1,3 +1,6 @@
+/// Geometry Kit
+///
+/// A set of utils that help with geometry (line, circle, triangle, polygon,...)
 library geometry_kit;
 
 export './src/kit/angle_utils.dart';
