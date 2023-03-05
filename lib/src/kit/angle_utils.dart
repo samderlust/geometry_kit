@@ -1,4 +1,4 @@
-part of '../geometry_kit.dart';
+import 'dart:math';
 
 /// Angle Utils
 ///

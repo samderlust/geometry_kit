@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'point.dart';
+import 'units.dart';
 
 class Line {
   final Point a;
@@ -21,10 +22,27 @@ class Line {
     return atan2(pa.y - pb.y, pa.x - pb.x);
   }
 
-  /// Get the angle between this line and another line
+  /// Get the inner angle between this line and another line
   ///
   /// result is in radian
-  double angleWith(Line other) {
+  Rad innerAngleWith(Line other) {
+    final angle = getAngleWith(other);
+    return min(angle, pi - angle);
+  }
+
+  /// Get the outer angle between this line and another line
+  ///
+  /// result is in radian
+  Rad outerAngleWith(Line other) {
+    final angle = innerAngleWith(other);
+    return pi - angle;
+  }
+
+  /// Get the  angle between this line and another line
+  ///
+  /// result is in radian
+  Rad getAngleWith(Line other) {
+    // return atan2(other.slope - slope, 1 + slope * other.slope);
     final a1 = _getAtan2(this);
     final a2 = _getAtan2(other);
 
@@ -90,6 +108,12 @@ class Line {
   /// Get list of points
   List<Point> get points => [a, b];
 
+  /// Get slope of this line
+  ///
+  /// The slope of a line is defined as the change in y coordinate
+  /// with respect to the change in x coordinate of that line.
+  double get slope => (b.y - a.y) / (b.x - a.x);
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
@@ -99,4 +123,7 @@ class Line {
 
   @override
   int get hashCode => a.hashCode ^ b.hashCode;
+
+  @override
+  String toString() => 'Line(a: $a, b: $b)';
 }

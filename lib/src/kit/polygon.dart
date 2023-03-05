@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '../interface/shape.dart';
 import 'circle.dart';
 import 'line.dart';
@@ -9,7 +11,8 @@ class Polygon extends Shape {
   /// a polygon must have more than 3 vertices to distinct itself from triangle
   final List<Point> vertices;
 
-  const Polygon(this.vertices) : assert(vertices.length > 3);
+  const Polygon(this.vertices) : assert(vertices.length > 2);
+
   @override
   double get area {
     double x = 0, y = 0;
@@ -104,7 +107,7 @@ class Polygon extends Shape {
   /// Get the centroid of Outer circle
   ///
   /// this centroid is calculated from the distance to the vertices or the polygon.
-  Point getPolygonOuterCircleCentroid() {
+  Point getCircumCentroid() {
     final n = vertices.length;
 
     var center = vertices.reduce((c, n) => Point((c.x + n.x), (c.y + n.y)));
@@ -115,9 +118,9 @@ class Polygon extends Shape {
   /// Get the outer circle
   ///
   /// formed by the outer centroid of the polygon and its radius
-  Circle getPolygonOuterCircle(List<Point> list) {
+  Circle getCircumCircle(List<Point> list) {
     assert(list.length >= 3);
-    final centroid = getPolygonOuterCircleCentroid();
+    final centroid = getCircumCentroid();
 
     final radius = centroid.distanceTo(list.first);
     return Circle(radius: radius, center: centroid);
@@ -126,7 +129,7 @@ class Polygon extends Shape {
   /// Get the centroid of inner circle
   ///
   /// this centroid is calculated from the center of all sides of polygon
-  Point getPolygonInnerCentroid() {
+  Point getInnerCentroid() {
     final n = vertices.length;
     var cx = 0.0;
     var cy = 0.0;
@@ -150,13 +153,23 @@ class Polygon extends Shape {
   /// Get the outer circle
   ///
   /// formed by the inner centroid of the polygon and its radius
-  Circle getPolygonInnerCircle() {
-    final centroid = getPolygonInnerCentroid();
+  Circle getInnerCircle() {
+    final centroid = getInnerCentroid();
 
-    final c =
-        Point((vertices[1].x - vertices[0].x), (vertices[1].y - vertices[0].y));
+    int n = vertices.length;
+    double radius = 0;
+    for (int i = 0; i < n; i++) {
+      int nextI = (i + 1) % n;
+      int nextI2 = (i + 2) % n;
 
-    final radius = centroid.distanceTo(c);
+      Point a = vertices[i];
+      Point b = vertices[nextI];
+      double d = a.distanceTo(b);
+      Point c = vertices[nextI2];
+      double s = (b - a) % (c - a) / 2;
+      Point p = (a + b) / 2;
+      radius = max(radius, centroid.distanceTo(p) * d / s / 3);
+    }
     return Circle(radius: radius, center: centroid);
   }
 
