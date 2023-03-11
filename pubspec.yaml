@@ -1,6 +1,6 @@
 name: geometry_kit
 description: A set of utils that help with geometry (line, circle, triangle, polygon,...)
-version: 0.1.1
+version: 1.0.0-dev
 homepage: https://github.com/samderlust/geometry_kit
 
 environment:

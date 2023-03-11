@@ -1,17 +1,12 @@
+/// Geometry Kit
+///
+/// A set of utils that help with geometry (line, circle, triangle, polygon,...)
 library geometry_kit;
 
-import 'dart:math';
-
-import 'src/models/circle.dart';
-import 'src/models/line.dart';
-
-export './src/models/circle.dart';
-export './src/models/geometry_shape.dart';
-export './src/models/line.dart';
-export './src/models/triangle.dart';
-
-part './src/circle_utils.dart';
-part './src/line_utils.dart';
-part './src/polygon_utils.dart';
-part './src/triangle_utils.dart';
-part './src/angle_utils.dart';
+export './src/kit/angle_utils.dart';
+export './src/kit/circle.dart';
+export './src/kit/line.dart';
+export './src/kit/point.dart';
+export './src/kit/polygon.dart';
+export './src/kit/triangle.dart';
+export './src/kit/units.dart';
