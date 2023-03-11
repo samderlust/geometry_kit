@@ -37,4 +37,19 @@ class Circle extends Shape {
 
   @override
   int get hashCode => radius.hashCode ^ center.hashCode;
+
+  @override
+  Circle rotate(double deg) {
+    return this;
+  }
+
+  @override
+  Circle scale(double value) {
+    return Circle(radius: radius, center: center);
+  }
+
+  @override
+  Circle translate({double x = 0, double y = 0}) {
+    return Circle(radius: radius, center: Point(center.x + x, center.y + y));
+  }
 }

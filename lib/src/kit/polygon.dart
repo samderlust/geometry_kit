@@ -184,4 +184,22 @@ class Polygon extends Shape {
     return vertices.fold<Point>(vertices.first,
         (v1, v2) => point.distanceTo(v1) < point.distanceTo(v2) ? v2 : v1);
   }
+
+  @override
+  Shape rotate(double deg) {
+    final rotatedVertices = vertices.map((v) => v.rotate(deg)).toList();
+    return Polygon(rotatedVertices);
+  }
+
+  @override
+  Shape scale(double value) {
+    final newVertices = vertices.map((p) => p.scale(value)).toList();
+    return Polygon(newVertices);
+  }
+
+  @override
+  Shape translate({double x = 0, double y = 0}) {
+    final newVertices = vertices.map((p) => p.translate(x, y)).toList();
+    return Polygon(newVertices);
+  }
 }

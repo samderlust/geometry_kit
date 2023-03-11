@@ -148,4 +148,31 @@ class Triangle extends Shape {
 
     return Point(x, y);
   }
+
+  @override
+  Triangle rotate(double deg) {
+    return Triangle(
+      a.rotate(deg),
+      b.rotate(deg),
+      c.rotate(deg),
+    );
+  }
+
+  @override
+  Triangle scale(double value) {
+    return Triangle(
+      a.scale(value),
+      b.scale(value),
+      c.scale(value),
+    );
+  }
+
+  @override
+  Triangle translate({double x = 0, double y = 0}) {
+    return Triangle(
+      a.translate(x, y),
+      b.translate(x, y),
+      c.translate(x, y),
+    );
+  }
 }

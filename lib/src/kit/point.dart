@@ -29,6 +29,30 @@ class Point {
     return Point(x, y);
   }
 
+  /// translate the point with [x] in horizontally and [y] vertically
+  Point translate(double x, double y) {
+    return Point(x + x, y + y);
+  }
+
+  /// move the point my scale factor
+  ///
+  /// to use in scaling shapes
+  Point scale(double factor) {
+    return Point(x * factor, y * factor);
+  }
+
+  /// rotate the point by [deg] degrees
+  ///
+  ///
+  Point rotate(double deg) {
+    final radians = deg * pi / 180.0; // Convert degrees to radians
+    final cosTheta = cos(radians);
+    final sinTheta = sin(radians);
+    final newX = x * cosTheta - y * sinTheta;
+    final newY = x * sinTheta + y * cosTheta;
+    return Point(newX, newY);
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

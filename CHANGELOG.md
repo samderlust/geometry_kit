@@ -1,3 +1,7 @@
+## 1.1.0-dev
+
+- add `translate`,`scale`, `rotate` to [Shape]
+
 ## 1.0.0-dev (breaking change)
 
 - rewrite package with new models
