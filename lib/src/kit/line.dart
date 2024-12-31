@@ -85,6 +85,10 @@ class Line {
     }
   }
 
+  double yIntercept() {
+    return a.y - slope * a.x;
+  }
+
   /// Check if a point is belong to this line
   bool hasPoint(Point point) {
     final ac = point.distanceTo(a);
