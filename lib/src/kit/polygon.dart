@@ -24,7 +24,7 @@ class Polygon extends Shape {
       y += vertices[i].y * vertices[nextI].x;
     }
 
-    return (x - y) / 2;
+    return ((x - y) / 2).abs();
   }
 
   @override

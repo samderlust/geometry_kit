@@ -11,7 +11,7 @@ class AngleUtils {
   static gradianToRadian(double grad) => grad * (pi / 200);
 
   /// Minute of Arc to Radian
-  static minOfArcToRadian(double min) => min * (pi * 60 * 180);
+  static minOfArcToRadian(double min) => min * pi / (180 * 60);
 
   /// Second of Arc to Radian
   static secOfArcToRadian(double sec) => sec * pi / (180 * 3600);

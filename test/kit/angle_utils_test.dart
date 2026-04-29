@@ -60,6 +60,13 @@ void main() {
       });
     });
 
+    group('minOfArcToRadian', () {
+      test('60 arc minutes = 1 degree in radians', () {
+        expect(AngleUtils.minOfArcToRadian(60),
+            closeTo(AngleUtils.degreeToRadian(1), epsilon));
+      });
+    });
+
     group('minOfArcToDegree', () {
       test('60 arc minutes = 1 degree', () {
         expect(AngleUtils.minOfArcToDegree(60), closeTo(1, epsilon));
