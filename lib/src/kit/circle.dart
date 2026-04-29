@@ -16,8 +16,8 @@ class Circle extends Shape {
   });
 
   /// Check if a given point is inside of this circle
-  bool hasPoint(point) {
-    return (center.distanceTo(point) > radius);
+  bool hasPoint(Point point) {
+    return (center.distanceTo(point) <= radius);
   }
 
   /// Get area of circle
@@ -45,7 +45,7 @@ class Circle extends Shape {
 
   @override
   Circle scale(double value) {
-    return Circle(radius: radius, center: center);
+    return Circle(radius: radius * value, center: center.scale(value));
   }
 
   @override

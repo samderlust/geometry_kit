@@ -33,7 +33,6 @@ class Triangle extends Shape {
       var nextI = (i + 1) % n;
       list.add(sides[i].innerAngleWith(sides[nextI]));
     }
-    print(list.map((e) => e.toDeg.abs()));
     return list;
   }
 

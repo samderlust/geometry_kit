@@ -133,21 +133,20 @@ class Polygon extends Shape {
     final n = vertices.length;
     var cx = 0.0;
     var cy = 0.0;
+    var signedArea = 0.0;
 
     for (var i = 0; i < n; i++) {
       final nextI = (i + 1) % n;
-      cx += (vertices[i].x + vertices[nextI].x) *
-          (vertices[i].x * vertices[nextI].y +
-              vertices[nextI].x +
-              vertices[i].y);
-
-      cy += (vertices[i].y + vertices[nextI].y) *
-          (vertices[i].y * vertices[nextI].x +
-              vertices[nextI].y +
-              vertices[i].x);
+      final cross = vertices[i].x * vertices[nextI].y -
+          vertices[nextI].x * vertices[i].y;
+      cx += (vertices[i].x + vertices[nextI].x) * cross;
+      cy += (vertices[i].y + vertices[nextI].y) * cross;
+      signedArea += cross;
     }
 
-    return Point((cx / n), (cy / n));
+    signedArea *= 0.5;
+    final factor = 1.0 / (6.0 * signedArea);
+    return Point(cx * factor, cy * factor);
   }
 
   /// Get the outer circle

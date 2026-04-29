@@ -31,7 +31,7 @@ class Point {
 
   /// translate the point with [x] in horizontally and [y] vertically
   Point translate(double x, double y) {
-    return Point(x + x, y + y);
+    return Point(this.x + x, this.y + y);
   }
 
   /// move the point my scale factor

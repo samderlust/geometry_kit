@@ -4,16 +4,14 @@
 
 A set of utils that help with geometry (line, circle, triangle, polygon,...)
 
-!!! Warning: Pre-release v1.0.0 contain breaking changes from previous version.
-
 ## Features
 
-- distance from a point to a line
-- check if to line segments intersect
-- find intersect point of 2 line segments
-- get area or perimeter of shapes,
-- calculate circumcircle or incircle of a polygon
-- check if a point is in side a polygon
+- **Point** — distance, translation, rotation, scaling, arithmetic operators (`+`, `-`, `*`, `/`)
+- **Line** — slope, intercepts, intersection detection, angle between lines, distance from a point
+- **Circle** — area, perimeter, point containment, scaling, translation
+- **Triangle** — area, perimeter, angles, height, baseline, orthocenter, rotation, scaling, translation
+- **Polygon** — area, perimeter, point containment (ray-casting), bounding box, circumcircle, incircle, centroid, closest/furthest vertex
+- **Angle utilities** — degree/radian/gradian/arc-minute/arc-second conversions
 
 ## Installing the library:
 
@@ -26,28 +24,27 @@ dependencies:
 
 Then import it wherever you want to use it:
 
-```
-import 'package:fetching_state/fetching_state.dart';
+```dart
+import 'package:geometry_kit/geometry_kit.dart';
 ```
 
 ## Usage
 
 ```dart
+// Line intersection
+final line1 = Line(Point(0, 2), Point(2, 0));
+final line2 = Line(Point(0, -1), Point(3, 2));
 
-  // Line
-  final line1 = Line(Point(0, 2), Point(2, 0));
-  final line2 = Line(Point(0, -1), Point(3, 2));
+final intersect = line1.intersect(line2);
+print(intersect); // true
 
-  final intersect = line1.intersect(line2);
-
-  print(intersect); //Point(1.5, 0.5)
-}
-
+final point = line1.getIntersectPoint(line2);
+print(point); // Point(x: 1.5, y: 0.5)
 ```
 
 ```dart
-  //Polygon
-  final polygon = Polygon([
+// Polygon containment
+final polygon = Polygon([
     Point(1, 0),
     Point(0, 2),
     Point(0, 3),

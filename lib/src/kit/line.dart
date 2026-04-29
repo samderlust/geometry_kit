@@ -75,10 +75,13 @@ class Line {
     final y3 = other.a.y;
     final y4 = other.b.y;
 
-    final t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) /
-        ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4));
+    final denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+    if (denom == 0) return null;
 
-    if (t >= 0 && t <= 1) {
+    final t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / denom;
+    final s = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / denom;
+
+    if (t >= 0 && t <= 1 && s >= 0 && s <= 1) {
       return Point(x1 + t * (x2 - x1), y1 + t * (y2 - y1));
     } else {
       return null;
@@ -122,7 +125,13 @@ class Line {
   ///
   /// The slope of a line is defined as the change in y coordinate
   /// with respect to the change in x coordinate of that line.
-  double get slope => (b.y - a.y) / (b.x - a.x);
+  double get slope {
+    final dx = b.x - a.x;
+    if (dx == 0) {
+      return (b.y - a.y) >= 0 ? double.infinity : double.negativeInfinity;
+    }
+    return (b.y - a.y) / dx;
+  }
 
   @override
   bool operator ==(Object other) {
