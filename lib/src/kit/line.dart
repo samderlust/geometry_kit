@@ -111,7 +111,7 @@ class Line {
     final ac = point.distanceTo(a);
     final bc = point.distanceTo(b);
     final ab = a.distanceTo(b);
-    return ac + bc == ab;
+    return (ac + bc - ab).abs() < 1e-10;
   }
 
   /// Check if this line and other line intersect

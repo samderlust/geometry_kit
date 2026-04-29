@@ -9,6 +9,6 @@ abstract class Shape {
   /// scale the shape by [value]
   Shape scale(double value);
 
-  /// rotate the shape with x degrees
+  /// Rotate the shape by [deg] degrees
   Shape rotate(double deg);
 }
