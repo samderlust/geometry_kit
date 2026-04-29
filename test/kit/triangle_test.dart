@@ -96,15 +96,32 @@ void main() {
 
     group('orthocenter', () {
       test('orthocenter of non-axis-aligned triangle', () {
-        // Known issue: current slope-based formula produces incorrect results
-        // (see docs/plan.md item #11). This test verifies it runs without
-        // crashing for triangles with no vertical/horizontal sides.
         final t = Triangle(Point(0, 0), Point(4, 1), Point(1, 3));
         final oc = t.orthocenter;
+        // Altitude from a perp to BC: BC=(3,2), slope=-3/2 => alt slope=3/2
+        // Altitude from b perp to CA: CA=(1,3), slope=-1/3 => alt slope=-1/3
+        // Solving: x=14/11, y=21/11
+        expect(oc.x, closeTo(14.0 / 11.0, epsilon));
+        expect(oc.y, closeTo(21.0 / 11.0, epsilon));
+      });
+
+      test('right triangle orthocenter at right-angle vertex', () {
+        // Right angle at origin — orthocenter should be at (0,0)
+        final t = Triangle(Point(0, 0), Point(5, 0), Point(0, 3));
+        final oc = t.orthocenter;
+        expect(oc.x, closeTo(0, epsilon));
+        expect(oc.y, closeTo(0, epsilon));
+      });
+
+      test('orthocenter with vertical side', () {
+        // Triangle with a vertical side — previously crashed
+        final t = Triangle(Point(0, 0), Point(0, 4), Point(3, 2));
+        final oc = t.orthocenter;
         expect(oc, isNotNull);
-      },
-          skip:
-              'orthocenter formula has known bug (plan item #11), skip value check');
+        // Verify: no crash and returns a valid point
+        expect(oc.x.isFinite, isTrue);
+        expect(oc.y.isFinite, isTrue);
+      });
     });
 
     group('rotate', () {

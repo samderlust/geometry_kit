@@ -89,6 +89,11 @@ void main() {
         final l = Line(Point(0, 3), Point(1, 5));
         expect(l.yIntercept, closeTo(3, epsilon));
       });
+
+      test('vertical line returns NaN', () {
+        final l = Line(Point(3, 0), Point(3, 5));
+        expect(l.yIntercept.isNaN, isTrue);
+      });
     });
 
     group('xIntercept', () {
@@ -100,6 +105,11 @@ void main() {
       test('line with positive x-intercept', () {
         final l = Line(Point(2, 0), Point(4, 2));
         expect(l.xIntercept, closeTo(2, epsilon));
+      });
+
+      test('horizontal line returns NaN', () {
+        final l = Line(Point(0, 5), Point(10, 5));
+        expect(l.xIntercept.isNaN, isTrue);
       });
     });
 

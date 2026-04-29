@@ -89,12 +89,20 @@ class Line {
   }
 
   /// Get the y-intercept of this line
+  ///
+  /// Returns `double.nan` for vertical lines (undefined y-intercept).
   double get yIntercept {
+    final dx = b.x - a.x;
+    if (dx == 0) return double.nan;
     return a.y - slope * a.x;
   }
 
   /// Get the x-intercept of this line
+  ///
+  /// Returns `double.nan` for horizontal lines (undefined x-intercept).
   double get xIntercept {
+    final dy = b.y - a.y;
+    if (dy == 0) return double.nan;
     return a.x - a.y / slope;
   }
 

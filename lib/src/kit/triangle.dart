@@ -134,18 +134,28 @@ class Triangle extends Shape {
 
   /// Get orthocenter of this triangle
   ///
-  /// The orthocenter of a triangle is the point where the altitudes of the triangle intersect
+  /// The orthocenter of a triangle is the point where the altitudes of the triangle intersect.
+  /// Uses a vector-based formula that avoids slope calculations and division-by-zero.
   Point get orthocenter {
-    double slopeAB = (b.y - a.y) / (b.x - a.x);
-    double slopeBC = (c.y - b.y) / (c.x - b.x);
+    // Vector differences from vertex a
+    final abx = b.x - a.x, aby = b.y - a.y;
+    final acx = c.x - a.x, acy = c.y - a.y;
 
-    double x = (slopeAB * slopeBC * (a.y - c.y) +
-            slopeBC * (a.x + b.x) -
-            slopeAB * (b.x + c.x)) /
-        (2 * (slopeBC - slopeAB));
-    double y = -1 * (x - (a.x + b.x) / 2) / slopeAB + (a.y + b.y) / 2;
+    final abSq = abx * abx + aby * aby;
+    final acSq = acx * acx + acy * acy;
 
-    return Point(x, y);
+    final d = 2.0 * (abx * acy - aby * acx);
+
+    // Circumcenter relative to a
+    final ux = (acy * abSq - aby * acSq) / d;
+    final uy = (abx * acSq - acx * abSq) / d;
+
+    // Orthocenter = a + b + c - 2 * circumcenter
+    // circumcenter = a + (ux, uy)
+    final ox = a.x + b.x + c.x - 2 * (a.x + ux);
+    final oy = a.y + b.y + c.y - 2 * (a.y + uy);
+
+    return Point(ox, oy);
   }
 
   @override
