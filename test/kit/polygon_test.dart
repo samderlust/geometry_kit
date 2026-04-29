@@ -28,11 +28,11 @@ void main() {
 
     group('area', () {
       test('square area', () {
-        expect(square.area.abs(), closeTo(16.0, epsilon));
+        expect(square.area, closeTo(16.0, epsilon));
       });
 
       test('complex polygon area', () {
-        expect(complex.area.abs(), closeTo(19.0, epsilon));
+        expect(complex.area, closeTo(19.0, epsilon));
       });
     });
 
@@ -170,7 +170,7 @@ void main() {
 
       test('translate preserves area', () {
         final moved = square.translate(x: 5, y: 5) as Polygon;
-        expect(moved.area.abs(), closeTo(square.area.abs(), epsilon));
+        expect(moved.area.abs(), closeTo(square.area, epsilon));
       });
     });
 
@@ -190,7 +190,7 @@ void main() {
 
       test('scale quadruples area', () {
         final scaled = square.scale(2) as Polygon;
-        expect(scaled.area.abs(), closeTo(square.area.abs() * 4, epsilon));
+        expect(scaled.area.abs(), closeTo(square.area * 4, epsilon));
       });
     });
 
