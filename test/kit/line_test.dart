@@ -229,6 +229,53 @@ void main() {
       });
     });
 
+    group('translate', () {
+      test('translate moves both endpoints', () {
+        final l = Line(Point(1, 2), Point(3, 4));
+        final moved = l.translate(x: 5, y: 10);
+        expect(moved.a, Point(6, 12));
+        expect(moved.b, Point(8, 14));
+      });
+
+      test('translate preserves length', () {
+        final l = Line(Point(0, 0), Point(3, 4));
+        final moved = l.translate(x: 10, y: 20);
+        expect(moved.length, closeTo(l.length, epsilon));
+      });
+    });
+
+    group('scale', () {
+      test('scale by 2', () {
+        final l = Line(Point(1, 2), Point(3, 4));
+        final scaled = l.scale(2);
+        expect(scaled.a, Point(2, 4));
+        expect(scaled.b, Point(6, 8));
+      });
+
+      test('scale doubles length', () {
+        final l = Line(Point(0, 0), Point(3, 4));
+        final scaled = l.scale(2);
+        expect(scaled.length, closeTo(l.length * 2, epsilon));
+      });
+    });
+
+    group('rotate', () {
+      test('rotate 90 degrees', () {
+        final l = Line(Point(1, 0), Point(2, 0));
+        final rotated = l.rotate(90);
+        expect(rotated.a.x, closeTo(0, epsilon));
+        expect(rotated.a.y, closeTo(1, epsilon));
+        expect(rotated.b.x, closeTo(0, epsilon));
+        expect(rotated.b.y, closeTo(2, epsilon));
+      });
+
+      test('rotate preserves length', () {
+        final l = Line(Point(0, 0), Point(3, 4));
+        final rotated = l.rotate(45);
+        expect(rotated.length, closeTo(l.length, epsilon));
+      });
+    });
+
     test('toString', () {
       final l = Line(Point(1, 2), Point(3, 4));
       expect(l.toString(), 'Line(a: Point(x: 1.0, y: 2.0), b: Point(x: 3.0, y: 4.0))');

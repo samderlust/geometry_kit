@@ -141,6 +141,21 @@ class Line {
     return (b.y - a.y) / dx;
   }
 
+  /// Translate the line by [x] horizontally and [y] vertically
+  Line translate({double x = 0, double y = 0}) {
+    return Line(a.translate(x, y), b.translate(x, y));
+  }
+
+  /// Scale the line by [factor]
+  Line scale(double factor) {
+    return Line(a.scale(factor), b.scale(factor));
+  }
+
+  /// Rotate the line by [deg] degrees
+  Line rotate(double deg) {
+    return Line(a.rotate(deg), b.rotate(deg));
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

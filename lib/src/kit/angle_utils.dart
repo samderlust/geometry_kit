@@ -2,29 +2,39 @@ import 'dart:math';
 
 /// Angle Utils
 ///
-/// angle units convert
+/// Deprecated: Use the extension methods in `units.dart` instead
+/// (e.g., `90.0.toRad`, `pi.toDeg`).
+@Deprecated('Use Rad/Deg extensions from units.dart instead')
 class AngleUtils {
   /// Degree to Radian
+  @Deprecated('Use deg.toRad instead')
   static degreeToRadian(double deg) => deg * (pi / 180);
 
   /// Gradian to Radian
+  @Deprecated('Use gradianToRadian from units.dart instead')
   static gradianToRadian(double grad) => grad * (pi / 200);
 
   /// Minute of Arc to Radian
+  @Deprecated('Use units.dart extensions instead')
   static minOfArcToRadian(double min) => min * pi / (180 * 60);
 
   /// Second of Arc to Radian
+  @Deprecated('Use units.dart extensions instead')
   static secOfArcToRadian(double sec) => sec * pi / (180 * 3600);
 
-  /// radian to Degree
+  /// Radian to Degree
+  @Deprecated('Use rad.toDeg instead')
   static radianToDegree(double rad) => rad * (180 / pi);
 
-  /// gradian to Degree
+  /// Gradian to Degree
+  @Deprecated('Use units.dart extensions instead')
   static gradianToDegree(double grad) => grad * (180 / 200);
 
   /// Minute of Arc to Degree
+  @Deprecated('Use units.dart extensions instead')
   static minOfArcToDegree(double min) => min / 60;
 
   /// Second of Arc to Degree
+  @Deprecated('Use units.dart extensions instead')
   static secOfArcToDegree(double sec) => sec / 3600;
 }

@@ -185,19 +185,19 @@ class Polygon extends Shape {
   }
 
   @override
-  Shape rotate(double deg) {
+  Polygon rotate(double deg) {
     final rotatedVertices = vertices.map((v) => v.rotate(deg)).toList();
     return Polygon(rotatedVertices);
   }
 
   @override
-  Shape scale(double value) {
+  Polygon scale(double value) {
     final newVertices = vertices.map((p) => p.scale(value)).toList();
     return Polygon(newVertices);
   }
 
   @override
-  Shape translate({double x = 0, double y = 0}) {
+  Polygon translate({double x = 0, double y = 0}) {
     final newVertices = vertices.map((p) => p.translate(x, y)).toList();
     return Polygon(newVertices);
   }

@@ -161,7 +161,7 @@ void main() {
 
     group('translate', () {
       test('translate moves all vertices', () {
-        final moved = square.translate(x: 10, y: 20) as Polygon;
+        final moved = square.translate(x: 10, y: 20);
         expect(moved.vertices[0], Point(10, 20));
         expect(moved.vertices[1], Point(14, 20));
         expect(moved.vertices[2], Point(14, 24));
@@ -169,14 +169,14 @@ void main() {
       });
 
       test('translate preserves area', () {
-        final moved = square.translate(x: 5, y: 5) as Polygon;
+        final moved = square.translate(x: 5, y: 5);
         expect(moved.area.abs(), closeTo(square.area, epsilon));
       });
     });
 
     group('scale', () {
       test('scale by 2', () {
-        final scaled = square.scale(2) as Polygon;
+        final scaled = square.scale(2);
         expect(scaled.vertices[0], Point(0, 0));
         expect(scaled.vertices[1], Point(8, 0));
         expect(scaled.vertices[2], Point(8, 8));
@@ -184,19 +184,19 @@ void main() {
       });
 
       test('scale doubles perimeter', () {
-        final scaled = square.scale(2) as Polygon;
+        final scaled = square.scale(2);
         expect(scaled.perimeter, closeTo(square.perimeter * 2, epsilon));
       });
 
       test('scale quadruples area', () {
-        final scaled = square.scale(2) as Polygon;
+        final scaled = square.scale(2);
         expect(scaled.area.abs(), closeTo(square.area * 4, epsilon));
       });
     });
 
     group('rotate', () {
       test('rotate 360 returns approximately same polygon', () {
-        final rotated = square.rotate(360) as Polygon;
+        final rotated = square.rotate(360);
         for (int i = 0; i < square.vertices.length; i++) {
           expect(rotated.vertices[i].x,
               closeTo(square.vertices[i].x, epsilon));
