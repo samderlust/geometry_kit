@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  geometry_kit:
+    path: ../
 
 dev_dependencies:
   flutter_test:
