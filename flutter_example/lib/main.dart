@@ -41,7 +41,7 @@ class DemoList extends StatelessWidget {
       appBar: AppBar(title: const Text('geometry_kit demos')),
       body: ListView.separated(
         itemCount: demos.length,
-        separatorBuilder: (_, __) => const Divider(height: 1),
+        separatorBuilder: (_, _) => const Divider(height: 1),
         itemBuilder: (context, i) {
           final (title, subtitle, page) = demos[i];
           return ListTile(

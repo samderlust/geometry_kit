@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:geometry_kit/src/kit/units.dart';
 
 import '../interface/shape.dart';
@@ -11,13 +13,13 @@ class Triangle extends Shape {
 
   const Triangle(this.a, this.b, this.c) : assert(a != b && b != c && a != c);
 
-  // factory Triangle.equilateral(
-  //     {required Point center, required double radius}) {
-  //   Point a = center.pointAtAngle(radius, 0);
-  //   Point b = center.pointAtAngle(radius, pi / 3);
-  //   Point c = center.pointAtAngle(radius, 2 * pi / 3);
-  //   return Triangle(a, b, c);
-  // }
+  factory Triangle.equilateral(
+      {required Point center, required double radius}) {
+    Point a = center.pointAtAngle(radius, 0);
+    Point b = center.pointAtAngle(radius, 2 * pi / 3);
+    Point c = center.pointAtAngle(radius, 4 * pi / 3);
+    return Triangle(a, b, c);
+  }
 
   @override
   double get area =>
@@ -36,49 +38,54 @@ class Triangle extends Shape {
     return list;
   }
 
+  static const double _epsilon = 1e-10;
+
   /// Check if this triangle is right
   ///
   /// triangle is right when there is an angle equals to 90 degrees
-  // bool get isRightTriangle {
-  //   return angles.any((a) => a.abs().compareTo(90.0.toRad).abs() < 0.0000001);
-  // }
+  bool get isRightTriangle {
+    final rightAngle = (pi / 2);
+    return angles.any((a) => (a - rightAngle).abs() < _epsilon);
+  }
 
   /// Check is this triangle is equilateral
   ///
   /// true if 3 sides have the same length
-  // bool get isEquilateral {
-  //   print(sides.map((e) => e.length));
-  //   print(vertices);
-  //   // return sides.map((e) => e.length).toSet().length == 1;\
-  //   return AB.length == AC.length && AC.length == BC.length;
-  // }
+  bool get isEquilateral {
+    return (AB.length - BC.length).abs() < _epsilon &&
+        (BC.length - CA.length).abs() < _epsilon;
+  }
 
   /// Check is this triangle is Isosceles
   ///
-  /// true if 2 sides have the same length
-  // bool get isIsosceles {
-  //   return sides.map((e) => e.length).toSet().length == 2;
-  // }
+  /// true if at least 2 sides have the same length
+  bool get isIsosceles {
+    return (AB.length - BC.length).abs() < _epsilon ||
+        (BC.length - CA.length).abs() < _epsilon ||
+        (AB.length - CA.length).abs() < _epsilon;
+  }
 
   /// Check is this triangle is Acute
   ///
   /// true if this has 3 angles < 90 degrees
-  // bool get isAcute {
-  //   return angles.every((a) => a.abs().compareTo(90.0.toRad).abs() < 0.0000001);
-  // }
+  bool get isAcute {
+    final rightAngle = (pi / 2);
+    return angles.every((a) => a < rightAngle - _epsilon);
+  }
 
   /// Check is this triangle is Obtuse
   ///
-  /// true if this has one angles that is > 90 degrees
-  // bool get isObtuse {
-  //   return angles.any((a) => a.abs() > (90.0.toRad));
-  // }
+  /// true if this has one angle that is > 90 degrees
+  bool get isObtuse {
+    final rightAngle = (pi / 2);
+    return angles.any((a) => a > rightAngle + _epsilon);
+  }
 
-  // /// Get hypotenuse
-  // ///
-  // /// the longest line of this triangle
-  // Line get hypotenuse =>
-  //     sides.reduce((cur, next) => cur.length > next.length ? cur : next);
+  /// Get hypotenuse
+  ///
+  /// the longest line of this triangle
+  Line get hypotenuse =>
+      sides.reduce((cur, next) => cur.length > next.length ? cur : next);
 
   /// Get baseLine of this triangle
   Line get baseLine {
@@ -121,10 +128,6 @@ class Triangle extends Shape {
 
   /// Line that goes from a to c;
   Line get AC => Line(a, c);
-
-  // Line aToBC(){
-  //   final intersect = BC.intersect(other)
-  // }
 
   /// Pos vertex
   ///

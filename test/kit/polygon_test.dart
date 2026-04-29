@@ -141,13 +141,69 @@ void main() {
       });
     });
 
-    group('getClosetVertex', () {
+    group('centroid', () {
+      test('square centroid at center', () {
+        final c = square.centroid;
+        expect(c.x, closeTo(2, epsilon));
+        expect(c.y, closeTo(2, epsilon));
+      });
+    });
+
+    group('isConvex', () {
+      test('square is convex', () {
+        expect(square.isConvex, isTrue);
+      });
+
+      test('concave polygon is not convex', () {
+        // L-shaped polygon
+        final concave = Polygon([
+          Point(0, 0),
+          Point(4, 0),
+          Point(4, 2),
+          Point(2, 2),
+          Point(2, 4),
+          Point(0, 4),
+        ]);
+        expect(concave.isConvex, isFalse);
+      });
+
+      test('regular hexagon is convex', () {
+        final hex = Polygon.regular(sides: 6, radius: 5, center: Point(0, 0));
+        expect(hex.isConvex, isTrue);
+      });
+    });
+
+    group('isClockwise', () {
+      test('CW square', () {
+        // (0,0)->(4,0)->(4,4)->(0,4) is CCW in standard math coords
+        expect(square.isClockwise, isFalse);
+      });
+
+      test('reversed square is CW', () {
+        final cw = Polygon([
+          Point(0, 0),
+          Point(0, 4),
+          Point(4, 4),
+          Point(4, 0),
+        ]);
+        expect(cw.isClockwise, isTrue);
+      });
+    });
+
+    group('getClosestVertex', () {
       test('closest to origin', () {
-        expect(square.getClosetVertex(Point(0, 0)), Point(0, 0));
+        expect(square.getClosestVertex(Point(0, 0)), Point(0, 0));
       });
 
       test('closest to (5,5)', () {
-        expect(square.getClosetVertex(Point(5, 5)), Point(4, 4));
+        expect(square.getClosestVertex(Point(5, 5)), Point(4, 4));
+      });
+    });
+
+    group('getClosetVertex (deprecated)', () {
+      test('still works', () {
+        // ignore: deprecated_member_use_from_same_package
+        expect(square.getClosetVertex(Point(0, 0)), Point(0, 0));
       });
     });
 

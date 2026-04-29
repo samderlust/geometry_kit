@@ -191,11 +191,56 @@ class Polygon extends Shape {
     return Circle(radius: radius, center: centroid);
   }
 
-  /// Get closet vertex to the point
-  Point getClosetVertex(Point point) {
+  /// Centroid of this polygon (alias for [getInnerCentroid])
+  Point get centroid => getInnerCentroid();
+
+  /// Whether this polygon is convex
+  ///
+  /// All cross products of consecutive edges have same sign.
+  bool get isConvex {
+    final n = vertices.length;
+    if (n < 3) return false;
+
+    bool? positive;
+    for (int i = 0; i < n; i++) {
+      final a = vertices[i];
+      final b = vertices[(i + 1) % n];
+      final c = vertices[(i + 2) % n];
+      final cross = (b.x - a.x) * (c.y - b.y) - (b.y - a.y) * (c.x - b.x);
+      if (cross != 0) {
+        if (positive == null) {
+          positive = cross > 0;
+        } else if ((cross > 0) != positive) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  /// Whether vertices are in clockwise winding order
+  ///
+  /// Based on signed area: negative = clockwise, positive = counter-clockwise.
+  bool get isClockwise {
+    double sum = 0;
+    final n = vertices.length;
+    for (var i = 0; i < n; i++) {
+      final nextI = (i + 1) % n;
+      sum += vertices[i].x * vertices[nextI].y -
+          vertices[nextI].x * vertices[i].y;
+    }
+    return sum < 0;
+  }
+
+  /// Get closest vertex to the point
+  Point getClosestVertex(Point point) {
     return vertices.fold<Point>(vertices.first,
         (v1, v2) => point.distanceTo(v1) > point.distanceTo(v2) ? v2 : v1);
   }
+
+  /// Get closet vertex to the point
+  @Deprecated('Use getClosestVertex instead')
+  Point getClosetVertex(Point point) => getClosestVertex(point);
 
   /// Get furthest vertex to the point
   Point getFurthestVertex(Point point) {
