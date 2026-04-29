@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:geometry_kit/src/kit/point.dart';
 import 'package:geometry_kit/src/kit/polygon.dart';
 import 'package:test/test.dart';
@@ -203,6 +205,50 @@ void main() {
           expect(rotated.vertices[i].y,
               closeTo(square.vertices[i].y, epsilon));
         }
+      });
+    });
+
+    group('Polygon.regular', () {
+      test('triangle has 3 vertices', () {
+        final tri = Polygon.regular(sides: 3, radius: 5, center: Point(0, 0));
+        expect(tri.vertices, hasLength(3));
+      });
+
+      test('hexagon has 6 vertices', () {
+        final hex = Polygon.regular(sides: 6, radius: 5, center: Point(0, 0));
+        expect(hex.vertices, hasLength(6));
+      });
+
+      test('all vertices at equal distance from center', () {
+        final hex = Polygon.regular(sides: 6, radius: 5, center: Point(0, 0));
+        for (final v in hex.vertices) {
+          expect(v.distanceTo(Point(0, 0)), closeTo(5, epsilon));
+        }
+      });
+
+      test('square has equal sides', () {
+        final sq = Polygon.regular(sides: 4, radius: 5, center: Point(0, 0));
+        final edges = sq.edges;
+        final firstLen = edges.first.length;
+        for (final e in edges) {
+          expect(e.length, closeTo(firstLen, epsilon));
+        }
+      });
+
+      test('regular polygon centered at non-origin', () {
+        final center = Point(10, 20);
+        final hex = Polygon.regular(sides: 6, radius: 3, center: center);
+        for (final v in hex.vertices) {
+          expect(v.distanceTo(center), closeTo(3, epsilon));
+        }
+      });
+
+      test('area of regular hexagon', () {
+        // Area of regular hexagon = (3*sqrt(3)/2) * s^2
+        // s = side length = radius for regular hexagon
+        final hex = Polygon.regular(sides: 6, radius: 5, center: Point(0, 0));
+        final expectedArea = 3 * sqrt(3) / 2 * 25;
+        expect(hex.area, closeTo(expectedArea, 0.1));
       });
     });
   });

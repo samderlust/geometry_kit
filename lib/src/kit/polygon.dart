@@ -13,6 +13,25 @@ class Polygon extends Shape {
 
   const Polygon(this.vertices) : assert(vertices.length > 2);
 
+  /// Create a regular polygon with [sides] sides, inscribed in a circle
+  /// of [radius] centered at [center].
+  factory Polygon.regular({
+    required int sides,
+    required double radius,
+    required Point center,
+  }) {
+    assert(sides >= 3);
+    final verts = <Point>[];
+    for (var i = 0; i < sides; i++) {
+      final angle = 2 * pi * i / sides - pi / 2;
+      verts.add(Point(
+        center.x + radius * cos(angle),
+        center.y + radius * sin(angle),
+      ));
+    }
+    return Polygon(verts);
+  }
+
   @override
   double get area {
     double x = 0, y = 0;

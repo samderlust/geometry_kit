@@ -7,11 +7,15 @@ A set of utils that help with geometry (line, circle, triangle, polygon,...)
 ## Features
 
 - **Point** — distance, translation, rotation, scaling, arithmetic operators (`+`, `-`, `*`, `/`)
-- **Line** — slope, intercepts, intersection detection, angle between lines, distance from a point
+- **Line** — slope, intercepts, intersection detection, angle between lines, distance from a point, transforms
+- **Ray** — origin + direction, point along ray, intersection with Line and Circle
+- **Arc** — center/radius/angles, arc length, sector area, start/end/mid points, parametric sampling
 - **Circle** — area, perimeter, point containment, scaling, translation
+- **Ellipse** — dual radii, area, perimeter (Ramanujan), containment, eccentricity, foci
+- **Rectangle** — area, perimeter, containment, overlap detection, diagonal, corners, AABB constructors
 - **Triangle** — area, perimeter, angles, height, baseline, orthocenter, rotation, scaling, translation
-- **Polygon** — area, perimeter, point containment (ray-casting), bounding box, circumcircle, incircle, centroid, closest/furthest vertex
-- **Angle utilities** — degree/radian/gradian/arc-minute/arc-second conversions
+- **Polygon** — area, perimeter, point containment (ray-casting), bounding box, circumcircle, incircle, centroid, regular polygon factory
+- **Angle utilities** — `Rad`/`Deg` extensions (`.toRad`, `.toDeg`), degree/radian/gradian conversions
 
 ## Installing the library:
 
@@ -62,6 +66,51 @@ final polygon = Polygon([
   final point2 = Point(9, 2);
   isInside = polygon.contains(point2);
   print(isInside); //false
+```
+
+```dart
+// Rectangle
+final rect = Rectangle(x: 0, y: 0, width: 10, height: 5);
+print(rect.area); // 50.0
+print(rect.contains(Point(3, 2))); // true
+print(rect.diagonal); // ~11.18
+
+// Or use convenience constructors
+final square = Rectangle.square(x: 0, y: 0, size: 4);
+final centered = Rectangle.fromCenter(center: Point(5, 5), width: 10, height: 6);
+```
+
+```dart
+// Ellipse
+final ellipse = Ellipse(center: Point(0, 0), radiusX: 5, radiusY: 3);
+print(ellipse.area); // ~47.12
+print(ellipse.contains(Point(2, 1))); // true
+print(ellipse.foci); // two focal points
+```
+
+```dart
+// Ray — raycasting
+final ray = Ray(Point(0, 0), Point(1, 0)); // rightward ray
+final wall = Line(Point(5, -3), Point(5, 3));
+final hit = ray.intersectsLine(wall);
+print(hit); // Point(x: 5.0, y: 0.0)
+```
+
+```dart
+// Arc
+final arc = Arc.fromDegrees(
+  center: Point(0, 0), radius: 10, startDeg: 0, endDeg: 90,
+);
+print(arc.length); // quarter circumference
+print(arc.startPoint); // Point(x: 10.0, y: 0.0)
+print(arc.sectorArea); // area of pie slice
+```
+
+```dart
+// Regular Polygon
+final hexagon = Polygon.regular(sides: 6, radius: 5, center: Point(0, 0));
+print(hexagon.vertices.length); // 6
+print(hexagon.area); // ~64.95
 ```
 
 ## Appreciate Your Feedbacks and Contributes

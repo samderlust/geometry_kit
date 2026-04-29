@@ -5,9 +5,13 @@ library geometry_kit;
 
 export './src/interface/shape.dart';
 export './src/kit/angle_utils.dart';
+export './src/kit/arc.dart';
 export './src/kit/circle.dart';
+export './src/kit/ellipse.dart';
 export './src/kit/line.dart';
 export './src/kit/point.dart';
 export './src/kit/polygon.dart';
+export './src/kit/ray.dart';
+export './src/kit/rectangle.dart';
 export './src/kit/triangle.dart';
 export './src/kit/units.dart';
