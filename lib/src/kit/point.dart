@@ -53,6 +53,33 @@ class Point {
     return Point(newX, newY);
   }
 
+  /// Angle from this point to [other] in radians
+  ///
+  /// Returns `atan2(dy, dx)`, range (-pi, pi].
+  double angleTo(Point other) {
+    return atan2(other.y - y, other.x - x);
+  }
+
+  /// Dot product with [other]
+  double dot(Point other) => x * other.x + y * other.y;
+
+  /// Distance from origin (vector magnitude)
+  double get magnitude => sqrt(x * x + y * y);
+
+  /// Unit vector (magnitude 1) in same direction
+  ///
+  /// Returns `Point(0, 0)` if magnitude is zero.
+  Point get normalized {
+    final m = magnitude;
+    if (m == 0) return Point(0, 0);
+    return Point(x / m, y / m);
+  }
+
+  /// Midpoint between this point and [other]
+  Point midPointTo(Point other) {
+    return Point((x + other.x) / 2, (y + other.y) / 2);
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

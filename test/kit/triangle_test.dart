@@ -180,6 +180,80 @@ void main() {
       });
     });
 
+    group('isRightTriangle', () {
+      test('right triangle returns true', () {
+        expect(right.isRightTriangle, isTrue);
+      });
+
+      test('equilateral triangle returns false', () {
+        expect(equi.isRightTriangle, isFalse);
+      });
+    });
+
+    group('isEquilateral', () {
+      test('equilateral triangle returns true', () {
+        expect(equi.isEquilateral, isTrue);
+      });
+
+      test('right triangle returns false', () {
+        expect(right.isEquilateral, isFalse);
+      });
+
+      test('factory equilateral returns true', () {
+        final t = Triangle.equilateral(center: Point(0, 0), radius: 5);
+        expect(t.isEquilateral, isTrue);
+      });
+    });
+
+    group('isIsosceles', () {
+      test('equilateral is also isosceles', () {
+        expect(equi.isIsosceles, isTrue);
+      });
+
+      test('isosceles triangle returns true', () {
+        final iso = Triangle(Point(0, 0), Point(4, 0), Point(2, 3));
+        expect(iso.isIsosceles, isTrue);
+      });
+
+      test('scalene triangle returns false', () {
+        final scalene = Triangle(Point(0, 0), Point(3, 0), Point(1, 2));
+        expect(scalene.isIsosceles, isFalse);
+      });
+    });
+
+    group('isAcute', () {
+      test('equilateral triangle is acute', () {
+        expect(equi.isAcute, isTrue);
+      });
+
+      test('right triangle is not acute', () {
+        expect(right.isAcute, isFalse);
+      });
+    });
+
+    group('isObtuse', () {
+      test('obtuse triangle returns true', () {
+        final obtuse = Triangle(Point(0, 0), Point(5, 0), Point(4, 1));
+        expect(obtuse.isObtuse, isTrue);
+      });
+
+      test('right triangle is not obtuse', () {
+        expect(right.isObtuse, isFalse);
+      });
+
+      test('equilateral is not obtuse', () {
+        expect(equi.isObtuse, isFalse);
+      });
+    });
+
+    group('hypotenuse', () {
+      test('returns longest side', () {
+        final hyp = right.hypotenuse;
+        // Longest side of 3-4-5 right triangle is 5
+        expect(hyp.length, closeTo(5.0, epsilon));
+      });
+    });
+
     group('angles', () {
       test('angles list has 3 elements', () {
         expect(right.angles, hasLength(3));

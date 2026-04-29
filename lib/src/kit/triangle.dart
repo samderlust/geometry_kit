@@ -29,16 +29,19 @@ class Triangle extends Shape {
   double get perimeter => sides.fold<double>(0.0, (prev, e) => prev + e.length);
 
   List<Rad> get angles {
-    final list = <Rad>[];
-    final n = sides.length;
-    for (int i = 0; i < n; i++) {
-      var nextI = (i + 1) % n;
-      list.add(sides[i].innerAngleWith(sides[nextI]));
-    }
-    return list;
+    return [_angleAt(a, b, c), _angleAt(b, c, a), _angleAt(c, a, b)];
   }
 
-  static const double _epsilon = 1e-10;
+  /// Angle at vertex [vertex] formed by edges to [p1] and [p2]
+  static Rad _angleAt(Point vertex, Point p1, Point p2) {
+    final v1x = p1.x - vertex.x, v1y = p1.y - vertex.y;
+    final v2x = p2.x - vertex.x, v2y = p2.y - vertex.y;
+    final dot = v1x * v2x + v1y * v2y;
+    final cross = v1x * v2y - v1y * v2x;
+    return atan2(cross.abs(), dot);
+  }
+
+  static const double _epsilon = 1e-4;
 
   /// Check if this triangle is right
   ///

@@ -177,6 +177,88 @@ void main() {
       });
     });
 
+    group('angleTo', () {
+      test('angle to point right is 0', () {
+        final p = Point(0, 0);
+        expect(p.angleTo(Point(5, 0)), closeTo(0, epsilon));
+      });
+
+      test('angle to point up is pi/2', () {
+        final p = Point(0, 0);
+        expect(p.angleTo(Point(0, 5)), closeTo(pi / 2, epsilon));
+      });
+
+      test('angle to point left is pi', () {
+        final p = Point(0, 0);
+        expect(p.angleTo(Point(-5, 0)), closeTo(pi, epsilon));
+      });
+
+      test('angle to point down is -pi/2', () {
+        final p = Point(0, 0);
+        expect(p.angleTo(Point(0, -5)), closeTo(-pi / 2, epsilon));
+      });
+    });
+
+    group('dot', () {
+      test('perpendicular vectors dot to 0', () {
+        expect(Point(1, 0).dot(Point(0, 1)), 0);
+      });
+
+      test('parallel vectors', () {
+        expect(Point(3, 4).dot(Point(3, 4)), 25);
+      });
+
+      test('opposite vectors', () {
+        expect(Point(1, 0).dot(Point(-1, 0)), -1);
+      });
+    });
+
+    group('magnitude', () {
+      test('3-4-5 vector', () {
+        expect(Point(3, 4).magnitude, closeTo(5, epsilon));
+      });
+
+      test('origin is 0', () {
+        expect(Point(0, 0).magnitude, 0);
+      });
+
+      test('unit along x', () {
+        expect(Point(1, 0).magnitude, 1);
+      });
+    });
+
+    group('normalized', () {
+      test('3-4-5 normalized', () {
+        final n = Point(3, 4).normalized;
+        expect(n.x, closeTo(0.6, epsilon));
+        expect(n.y, closeTo(0.8, epsilon));
+        expect(n.magnitude, closeTo(1, epsilon));
+      });
+
+      test('zero vector returns zero', () {
+        expect(Point(0, 0).normalized, Point(0, 0));
+      });
+
+      test('already unit stays unit', () {
+        final n = Point(1, 0).normalized;
+        expect(n, Point(1, 0));
+      });
+    });
+
+    group('midPointTo', () {
+      test('midpoint of (0,0) and (10,10)', () {
+        expect(Point(0, 0).midPointTo(Point(10, 10)), Point(5, 5));
+      });
+
+      test('midpoint with negative', () {
+        expect(Point(-2, -2).midPointTo(Point(2, 2)), Point(0, 0));
+      });
+
+      test('midpoint to self', () {
+        expect(Point(3, 4).midPointTo(Point(3, 4)), Point(3, 4));
+      });
+    });
+
     group('equality', () {
       test('same coordinates are equal', () {
         expect(Point(1, 2) == Point(1, 2), isTrue);
