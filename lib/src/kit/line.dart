@@ -85,8 +85,14 @@ class Line {
     }
   }
 
-  double yIntercept() {
+  /// Get the y-intercept of this line
+  double get yIntercept {
     return a.y - slope * a.x;
+  }
+
+  /// Get the x-intercept of this line
+  double get xIntercept {
+    return a.x - a.y / slope;
   }
 
   /// Check if a point is belong to this line

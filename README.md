@@ -69,6 +69,6 @@ import 'package:fetching_state/fetching_state.dart';
 
 ## Appreciate Your Feedbacks and Contributes
 
-I'm not a math guy, to be honest, I'm stupid at math your feedbacks and contributes will be much appreciated.
+I'm not a math guy, to be honest, I'm stupid at math, your feedbacks and contributes will be much appreciated.
 
 If you find anything need to be improve or want to request a feature. Please go ahead and create an issue in the [Github](https://github.com/samderlust/geometry_kit) repo

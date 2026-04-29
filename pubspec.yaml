@@ -4,7 +4,7 @@ version: 1.0.0-dev
 homepage: https://github.com/samderlust/geometry_kit
 
 environment:
-  sdk: ">=2.17.6 <3.0.0"
+  sdk: ">=3.2.4 <4.0.0"
 
 # dependencies:
 #   path: ^1.8.0
