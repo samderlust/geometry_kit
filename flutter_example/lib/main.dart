@@ -10,6 +10,13 @@ import 'demos/rectangle_demo.dart';
 import 'demos/ellipse_demo.dart';
 import 'demos/line_tools_demo.dart';
 import 'demos/polygon_info_demo.dart';
+import 'demos/bezier_demo.dart';
+import 'demos/capsule_demo.dart';
+import 'demos/polyline_demo.dart';
+import 'demos/quadrilateral_demo.dart';
+import 'demos/ring_demo.dart';
+import 'demos/spline_demo.dart';
+import 'demos/triangle_demo.dart';
 
 void main() {
   runApp(const MainApp());
@@ -47,6 +54,13 @@ class DemoList extends StatelessWidget {
       ('Ellipse', 'Foci, eccentricity, pointAt trace, contains', const EllipseDemo()),
       ('Line Tools', 'Lerp, extend, projectPoint, parallel/perp', const LineToolsDemo()),
       ('Polygon Info', 'Convex, winding, centroid, closest vertex, bbox', const PolygonInfoDemo()),
+      ('Triangle', 'Classification, circumcircle, incircle, centroid', const TriangleDemo()),
+      ('Bezier Curves', 'Quadratic & cubic, split, bounding box', const BezierDemo()),
+      ('Capsule', 'Stadium shape, contains, endCaps, bounding box', const CapsuleDemo()),
+      ('Polyline', 'Simplify (RDP), pointAt, segments, bbox', const PolylineDemo()),
+      ('Quadrilateral', 'Classification: parallelogram, rhombus, kite...', const QuadrilateralDemo()),
+      ('Ring / Annulus', 'Contains, width, inner/outer circumference', const RingDemo()),
+      ('Spline', 'Catmull-Rom, tangent, sample, control points', const SplineDemo()),
     ];
 
     return Scaffold(
