@@ -1,5 +1,4 @@
-abstract class Shape {
-  const Shape();
+abstract interface class Shape {
   double get area;
   double get perimeter;
 

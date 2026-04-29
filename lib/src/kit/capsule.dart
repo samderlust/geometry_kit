@@ -10,7 +10,7 @@ import 'rectangle.dart';
 ///
 /// Defined by a center [Line] (the medial axis) and a [radius].
 /// The total length is the line length plus the diameter (two semicircle caps).
-class Capsule extends Shape {
+class Capsule implements Shape {
   /// The medial axis of the capsule
   final Line medialAxis;
 

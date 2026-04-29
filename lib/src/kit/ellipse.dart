@@ -7,7 +7,7 @@ import 'point.dart';
 ///
 /// [radiusX] is the semi-major or semi-minor axis along the x-axis,
 /// [radiusY] is along the y-axis.
-class Ellipse extends Shape {
+class Ellipse implements Shape {
   /// Center point of the ellipse
   final Point center;
 

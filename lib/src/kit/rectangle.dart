@@ -10,7 +10,7 @@ import 'polygon.dart';
 ///
 /// The rectangle is defined by [x], [y] (bottom-left corner),
 /// [width], and [height].
-class Rectangle extends Shape {
+class Rectangle implements Shape {
   /// X coordinate of the bottom-left corner
   final double x;
 

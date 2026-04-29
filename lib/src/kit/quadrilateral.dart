@@ -8,7 +8,7 @@ import 'point.dart';
 ///
 /// Provides classification checks for common quadrilateral types:
 /// parallelogram, rhombus, trapezoid, kite, and rectangle.
-class Quadrilateral extends Shape {
+class Quadrilateral implements Shape {
   final Point a;
   final Point b;
   final Point c;

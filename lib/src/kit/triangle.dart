@@ -7,7 +7,7 @@ import 'circle.dart';
 import 'line.dart';
 import 'point.dart';
 
-class Triangle extends Shape {
+class Triangle implements Shape {
   final Point a;
   final Point b;
   final Point c;

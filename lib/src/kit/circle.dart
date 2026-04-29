@@ -7,7 +7,7 @@ import 'point.dart';
 /// Circle
 ///
 ///
-class Circle extends Shape {
+class Circle implements Shape {
   final double radius;
   final Point center;
 

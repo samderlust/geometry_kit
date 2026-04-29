@@ -5,7 +5,7 @@ import 'circle.dart';
 import 'line.dart';
 import 'point.dart';
 
-class Polygon extends Shape {
+class Polygon implements Shape {
   /// List of vertices of polygon
   ///
   /// a polygon must have more than 3 vertices to distinct itself from triangle
