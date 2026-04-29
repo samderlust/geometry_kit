@@ -276,6 +276,142 @@ void main() {
       });
     });
 
+    group('isVertical / isHorizontal', () {
+      test('vertical line', () {
+        final l = Line(Point(3, 0), Point(3, 10));
+        expect(l.isVertical, isTrue);
+        expect(l.isHorizontal, isFalse);
+      });
+
+      test('horizontal line', () {
+        final l = Line(Point(0, 5), Point(10, 5));
+        expect(l.isHorizontal, isTrue);
+        expect(l.isVertical, isFalse);
+      });
+
+      test('diagonal is neither', () {
+        final l = Line(Point(0, 0), Point(3, 4));
+        expect(l.isVertical, isFalse);
+        expect(l.isHorizontal, isFalse);
+      });
+    });
+
+    group('isParallelTo', () {
+      test('parallel horizontal lines', () {
+        final l1 = Line(Point(0, 0), Point(5, 0));
+        final l2 = Line(Point(0, 3), Point(5, 3));
+        expect(l1.isParallelTo(l2), isTrue);
+      });
+
+      test('parallel vertical lines', () {
+        final l1 = Line(Point(2, 0), Point(2, 5));
+        final l2 = Line(Point(7, 0), Point(7, 5));
+        expect(l1.isParallelTo(l2), isTrue);
+      });
+
+      test('non-parallel lines', () {
+        final l1 = Line(Point(0, 0), Point(5, 0));
+        final l2 = Line(Point(0, 0), Point(3, 4));
+        expect(l1.isParallelTo(l2), isFalse);
+      });
+    });
+
+    group('isPerpendicularTo', () {
+      test('perpendicular axis lines', () {
+        final l1 = Line(Point(0, 0), Point(5, 0));
+        final l2 = Line(Point(0, 0), Point(0, 5));
+        expect(l1.isPerpendicularTo(l2), isTrue);
+      });
+
+      test('perpendicular diagonal lines', () {
+        final l1 = Line(Point(0, 0), Point(1, 1));
+        final l2 = Line(Point(0, 0), Point(1, -1));
+        expect(l1.isPerpendicularTo(l2), isTrue);
+      });
+
+      test('non-perpendicular', () {
+        final l1 = Line(Point(0, 0), Point(5, 0));
+        final l2 = Line(Point(0, 0), Point(3, 4));
+        expect(l1.isPerpendicularTo(l2), isFalse);
+      });
+    });
+
+    group('projectPoint', () {
+      test('project onto horizontal line', () {
+        final l = Line(Point(0, 0), Point(10, 0));
+        final p = l.projectPoint(Point(5, 7));
+        expect(p.x, closeTo(5, epsilon));
+        expect(p.y, closeTo(0, epsilon));
+      });
+
+      test('project clamps to endpoint a', () {
+        final l = Line(Point(0, 0), Point(10, 0));
+        final p = l.projectPoint(Point(-5, 3));
+        expect(p, Point(0, 0));
+      });
+
+      test('project clamps to endpoint b', () {
+        final l = Line(Point(0, 0), Point(10, 0));
+        final p = l.projectPoint(Point(15, 3));
+        expect(p.x, closeTo(10, epsilon));
+        expect(p.y, closeTo(0, epsilon));
+      });
+
+      test('project point already on line', () {
+        final l = Line(Point(0, 0), Point(10, 0));
+        final p = l.projectPoint(Point(5, 0));
+        expect(p.x, closeTo(5, epsilon));
+        expect(p.y, closeTo(0, epsilon));
+      });
+    });
+
+    group('lerp', () {
+      test('t=0 returns a', () {
+        final l = Line(Point(0, 0), Point(10, 20));
+        expect(l.lerp(0), Point(0, 0));
+      });
+
+      test('t=1 returns b', () {
+        final l = Line(Point(0, 0), Point(10, 20));
+        expect(l.lerp(1), Point(10, 20));
+      });
+
+      test('t=0.5 returns midPoint', () {
+        final l = Line(Point(0, 0), Point(10, 20));
+        expect(l.lerp(0.5), l.midPoint);
+      });
+
+      test('t=0.25', () {
+        final l = Line(Point(0, 0), Point(8, 4));
+        final p = l.lerp(0.25);
+        expect(p.x, closeTo(2, epsilon));
+        expect(p.y, closeTo(1, epsilon));
+      });
+    });
+
+    group('extend', () {
+      test('extend horizontal line', () {
+        final l = Line(Point(2, 0), Point(8, 0));
+        final ext = l.extend(3);
+        expect(ext.a.x, closeTo(-1, epsilon));
+        expect(ext.b.x, closeTo(11, epsilon));
+        expect(ext.a.y, closeTo(0, epsilon));
+        expect(ext.b.y, closeTo(0, epsilon));
+      });
+
+      test('extend increases length', () {
+        final l = Line(Point(0, 0), Point(6, 0));
+        final ext = l.extend(2);
+        expect(ext.length, closeTo(l.length + 4, epsilon));
+      });
+
+      test('extend zero-length line returns same', () {
+        final l = Line(Point(3, 3), Point(3, 3));
+        final ext = l.extend(5);
+        expect(ext, l);
+      });
+    });
+
     test('toString', () {
       final l = Line(Point(1, 2), Point(3, 4));
       expect(l.toString(), 'Line(a: Point(x: 1.0, y: 2.0), b: Point(x: 3.0, y: 4.0))');

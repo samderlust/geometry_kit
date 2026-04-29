@@ -141,6 +141,69 @@ class Line {
     return (b.y - a.y) / dx;
   }
 
+  /// Whether this line segment is vertical (same x for both endpoints)
+  bool get isVertical => a.x == b.x;
+
+  /// Whether this line segment is horizontal (same y for both endpoints)
+  bool get isHorizontal => a.y == b.y;
+
+  /// Check if this line is parallel to [other]
+  ///
+  /// Two lines are parallel if they have the same slope,
+  /// or both are vertical.
+  bool isParallelTo(Line other) {
+    final dx1 = b.x - a.x;
+    final dy1 = b.y - a.y;
+    final dx2 = other.b.x - other.a.x;
+    final dy2 = other.b.y - other.a.y;
+    // Cross product == 0 means parallel
+    return (dx1 * dy2 - dy1 * dx2).abs() < 1e-10;
+  }
+
+  /// Check if this line is perpendicular to [other]
+  ///
+  /// Two lines are perpendicular if their dot product is zero.
+  bool isPerpendicularTo(Line other) {
+    final dx1 = b.x - a.x;
+    final dy1 = b.y - a.y;
+    final dx2 = other.b.x - other.a.x;
+    final dy2 = other.b.y - other.a.y;
+    return (dx1 * dx2 + dy1 * dy2).abs() < 1e-10;
+  }
+
+  /// Get closest point on this line segment to [point]
+  ///
+  /// Returns the perpendicular projection clamped to the segment.
+  Point projectPoint(Point point) {
+    final dx = b.x - a.x;
+    final dy = b.y - a.y;
+    final lenSq = dx * dx + dy * dy;
+    if (lenSq == 0) return a;
+
+    var t = ((point.x - a.x) * dx + (point.y - a.y) * dy) / lenSq;
+    t = t.clamp(0.0, 1.0);
+    return Point(a.x + t * dx, a.y + t * dy);
+  }
+
+  /// Get point at parameter [t] along segment
+  ///
+  /// [t] = 0 returns [a], [t] = 1 returns [b], [t] = 0.5 returns [midPoint].
+  Point lerp(double t) {
+    return Point(a.x + t * (b.x - a.x), a.y + t * (b.y - a.y));
+  }
+
+  /// Return new line extended by [amount] from both ends
+  Line extend(double amount) {
+    final len = length;
+    if (len == 0) return this;
+    final dx = (b.x - a.x) / len;
+    final dy = (b.y - a.y) / len;
+    return Line(
+      Point(a.x - dx * amount, a.y - dy * amount),
+      Point(b.x + dx * amount, b.y + dy * amount),
+    );
+  }
+
   /// Translate the line by [x] horizontally and [y] vertically
   Line translate({double x = 0, double y = 0}) {
     return Line(a.translate(x, y), b.translate(x, y));
