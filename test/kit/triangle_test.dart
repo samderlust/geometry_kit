@@ -254,15 +254,131 @@ void main() {
       });
     });
 
+    group('isScalene', () {
+      test('scalene triangle returns true', () {
+        final scalene = Triangle(Point(0, 0), Point(3, 0), Point(1, 2));
+        expect(scalene.isScalene, isTrue);
+      });
+
+      test('equilateral is not scalene', () {
+        expect(equi.isScalene, isFalse);
+      });
+
+      test('isosceles is not scalene', () {
+        final iso = Triangle(Point(0, 0), Point(4, 0), Point(2, 3));
+        expect(iso.isScalene, isFalse);
+      });
+    });
+
+    group('centroid', () {
+      test('right triangle centroid', () {
+        // (0+3+0)/3 = 1, (0+0+4)/3 = 4/3
+        expect(right.centroid.x, closeTo(1.0, epsilon));
+        expect(right.centroid.y, closeTo(4.0 / 3.0, epsilon));
+      });
+
+      test('equilateral centroid is at center', () {
+        final t = Triangle.equilateral(center: Point(5, 5), radius: 3);
+        expect(t.centroid.x, closeTo(5.0, epsilon));
+        expect(t.centroid.y, closeTo(5.0, epsilon));
+      });
+    });
+
+    group('circumcenter', () {
+      test('right triangle circumcenter at hypotenuse midpoint', () {
+        // For right triangle (0,0),(3,0),(0,4), circumcenter = (1.5, 2)
+        final cc = right.circumcenter;
+        expect(cc.x, closeTo(1.5, epsilon));
+        expect(cc.y, closeTo(2.0, epsilon));
+      });
+
+      test('circumcenter equidistant from all vertices', () {
+        final t = Triangle(Point(0, 0), Point(4, 1), Point(1, 3));
+        final cc = t.circumcenter;
+        final da = cc.distanceTo(t.a);
+        final db = cc.distanceTo(t.b);
+        final dc = cc.distanceTo(t.c);
+        expect(da, closeTo(db, epsilon));
+        expect(db, closeTo(dc, epsilon));
+      });
+    });
+
+    group('incenter', () {
+      test('right triangle incenter', () {
+        // incenter = (la*ax + lb*bx + lc*cx) / perimeter
+        // sides: AB=3, BC=5, CA=4; opposite: a->BC=5, b->CA=4, c->AB=3
+        // x = (5*0 + 4*3 + 3*0)/12 = 1, y = (5*0 + 4*0 + 3*4)/12 = 1
+        final ic = right.incenter;
+        expect(ic.x, closeTo(1.0, epsilon));
+        expect(ic.y, closeTo(1.0, epsilon));
+      });
+
+      test('equilateral incenter matches centroid', () {
+        final t = Triangle.equilateral(center: Point(0, 0), radius: 4);
+        final ic = t.incenter;
+        final ct = t.centroid;
+        expect(ic.x, closeTo(ct.x, epsilon));
+        expect(ic.y, closeTo(ct.y, epsilon));
+      });
+    });
+
+    group('contains', () {
+      test('centroid is inside', () {
+        expect(right.contains(right.centroid), isTrue);
+      });
+
+      test('vertex is on boundary (inside)', () {
+        expect(right.contains(right.a), isTrue);
+      });
+
+      test('point outside', () {
+        expect(right.contains(Point(10, 10)), isFalse);
+      });
+
+      test('point on edge', () {
+        // midpoint of AB is (1.5, 0)
+        expect(right.contains(Point(1.5, 0)), isTrue);
+      });
+    });
+
+    group('circumscribedCircle', () {
+      test('passes through all vertices', () {
+        final cc = right.circumscribedCircle;
+        final ra = cc.center.distanceTo(right.a);
+        final rb = cc.center.distanceTo(right.b);
+        final rc = cc.center.distanceTo(right.c);
+        expect(ra, closeTo(cc.radius, epsilon));
+        expect(rb, closeTo(cc.radius, epsilon));
+        expect(rc, closeTo(cc.radius, epsilon));
+      });
+
+      test('right triangle circumradius is half hypotenuse', () {
+        final cc = right.circumscribedCircle;
+        expect(cc.radius, closeTo(2.5, epsilon));
+      });
+    });
+
+    group('inscribedCircle', () {
+      test('right triangle inradius', () {
+        // r = area / s = 6 / 6 = 1
+        final ic = right.inscribedCircle;
+        expect(ic.radius, closeTo(1.0, epsilon));
+      });
+
+      test('incircle center matches incenter', () {
+        final ic = right.inscribedCircle;
+        final incenter = right.incenter;
+        expect(ic.center.x, closeTo(incenter.x, epsilon));
+        expect(ic.center.y, closeTo(incenter.y, epsilon));
+      });
+    });
+
     group('angles', () {
       test('angles list has 3 elements', () {
         expect(right.angles, hasLength(3));
       });
 
       test('no debug print output (regression)', () {
-        // This test ensures the debug print was removed
-        // If print were still there, it would output to console
-        // but we mainly verify angles returns without error
         final angles = right.angles;
         expect(angles, isNotEmpty);
       });

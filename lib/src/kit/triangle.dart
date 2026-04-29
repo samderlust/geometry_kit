@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:geometry_kit/src/kit/units.dart';
 
 import '../interface/shape.dart';
+import 'circle.dart';
 import 'line.dart';
 import 'point.dart';
 
@@ -90,6 +91,89 @@ class Triangle extends Shape {
   Line get hypotenuse =>
       sides.reduce((cur, next) => cur.length > next.length ? cur : next);
 
+  /// Check if this triangle is scalene
+  ///
+  /// true if all 3 sides have different lengths
+  bool get isScalene {
+    return (AB.length - BC.length).abs() >= _epsilon &&
+        (BC.length - CA.length).abs() >= _epsilon &&
+        (AB.length - CA.length).abs() >= _epsilon;
+  }
+
+  /// Get centroid of this triangle
+  ///
+  /// The intersection of medians: ((ax+bx+cx)/3, (ay+by+cy)/3)
+  Point get centroid =>
+      Point((a.x + b.x + c.x) / 3, (a.y + b.y + c.y) / 3);
+
+  /// Get circumcenter of this triangle
+  ///
+  /// The point equidistant from all three vertices.
+  Point get circumcenter {
+    final abx = b.x - a.x, aby = b.y - a.y;
+    final acx = c.x - a.x, acy = c.y - a.y;
+
+    final abSq = abx * abx + aby * aby;
+    final acSq = acx * acx + acy * acy;
+
+    final d = 2.0 * (abx * acy - aby * acx);
+
+    final ux = (acy * abSq - aby * acSq) / d;
+    final uy = (abx * acSq - acx * abSq) / d;
+
+    return Point(a.x + ux, a.y + uy);
+  }
+
+  /// Get incenter of this triangle
+  ///
+  /// The intersection of angle bisectors, weighted by opposite side lengths.
+  Point get incenter {
+    final la = BC.length; // side opposite vertex a
+    final lb = CA.length; // side opposite vertex b
+    final lc = AB.length; // side opposite vertex c
+    final p = la + lb + lc;
+    return Point(
+      (la * a.x + lb * b.x + lc * c.x) / p,
+      (la * a.y + lb * b.y + lc * c.y) / p,
+    );
+  }
+
+  /// Check if a point is inside this triangle
+  ///
+  /// Uses barycentric coordinate method.
+  bool contains(Point p) {
+    final d1 = _sign(p, a, b);
+    final d2 = _sign(p, b, c);
+    final d3 = _sign(p, c, a);
+
+    final hasNeg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+    final hasPos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+
+    return !(hasNeg && hasPos);
+  }
+
+  static double _sign(Point p1, Point p2, Point p3) {
+    return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+  }
+
+  /// Get the circumscribed circle (circumcircle)
+  ///
+  /// The circle passing through all three vertices.
+  Circle get circumscribedCircle {
+    final cc = circumcenter;
+    final r = sqrt(pow(cc.x - a.x, 2) + pow(cc.y - a.y, 2));
+    return Circle(center: cc, radius: r);
+  }
+
+  /// Get the inscribed circle (incircle)
+  ///
+  /// The largest circle fitting inside the triangle.
+  Circle get inscribedCircle {
+    final ic = incenter;
+    final r = 2 * area.abs() / perimeter;
+    return Circle(center: ic, radius: r);
+  }
+
   /// Get baseLine of this triangle
   Line get baseLine {
     Point start, end;
@@ -141,27 +225,13 @@ class Triangle extends Shape {
   /// Get orthocenter of this triangle
   ///
   /// The orthocenter of a triangle is the point where the altitudes of the triangle intersect.
-  /// Uses a vector-based formula that avoids slope calculations and division-by-zero.
+  /// Uses the relation: orthocenter = a + b + c - 2 * circumcenter.
   Point get orthocenter {
-    // Vector differences from vertex a
-    final abx = b.x - a.x, aby = b.y - a.y;
-    final acx = c.x - a.x, acy = c.y - a.y;
-
-    final abSq = abx * abx + aby * aby;
-    final acSq = acx * acx + acy * acy;
-
-    final d = 2.0 * (abx * acy - aby * acx);
-
-    // Circumcenter relative to a
-    final ux = (acy * abSq - aby * acSq) / d;
-    final uy = (abx * acSq - acx * abSq) / d;
-
-    // Orthocenter = a + b + c - 2 * circumcenter
-    // circumcenter = a + (ux, uy)
-    final ox = a.x + b.x + c.x - 2 * (a.x + ux);
-    final oy = a.y + b.y + c.y - 2 * (a.y + uy);
-
-    return Point(ox, oy);
+    final cc = circumcenter;
+    return Point(
+      a.x + b.x + c.x - 2 * cc.x,
+      a.y + b.y + c.y - 2 * cc.y,
+    );
   }
 
   @override
