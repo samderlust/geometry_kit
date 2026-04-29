@@ -123,6 +123,28 @@ class Polygon extends Shape {
     return intersects % 2 != 0;
   }
 
+  /// Check if a line segment intersects this polygon
+  ///
+  /// Returns `true` if line crosses any edge or has an endpoint inside.
+  bool intersectsLine(Line line) {
+    if (contains(line.a) || contains(line.b)) return true;
+    return edges.any((edge) => edge.intersect(line));
+  }
+
+  /// Check if a circle intersects this polygon
+  ///
+  /// Returns `true` if circle overlaps polygon boundary or interior.
+  bool intersectsCircle(Circle circle) {
+    // Center inside polygon
+    if (contains(circle.center)) return true;
+    // Any edge close enough to center
+    for (final edge in edges) {
+      final closest = edge.projectPoint(circle.center);
+      if (circle.center.distanceTo(closest) <= circle.radius) return true;
+    }
+    return false;
+  }
+
   /// Get the centroid of Outer circle
   ///
   /// this centroid is calculated from the distance to the vertices or the polygon.

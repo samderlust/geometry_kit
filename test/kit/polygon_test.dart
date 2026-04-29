@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:geometry_kit/src/kit/circle.dart';
+import 'package:geometry_kit/src/kit/line.dart';
 import 'package:geometry_kit/src/kit/point.dart';
 import 'package:geometry_kit/src/kit/polygon.dart';
 import 'package:test/test.dart';
@@ -122,6 +124,40 @@ void main() {
 
       test('complex polygon outside point', () {
         expect(complex.contains(Point(9, 2)), isFalse);
+      });
+    });
+
+    group('intersectsLine', () {
+      test('line crossing square', () {
+        final line = Line(Point(-1, 2), Point(5, 2));
+        expect(square.intersectsLine(line), isTrue);
+      });
+
+      test('line inside square', () {
+        final line = Line(Point(1, 1), Point(3, 3));
+        expect(square.intersectsLine(line), isTrue);
+      });
+
+      test('line outside square', () {
+        final line = Line(Point(10, 10), Point(15, 15));
+        expect(square.intersectsLine(line), isFalse);
+      });
+    });
+
+    group('intersectsCircle', () {
+      test('circle overlapping square', () {
+        final c = Circle(radius: 2, center: Point(5, 2));
+        expect(square.intersectsCircle(c), isTrue);
+      });
+
+      test('circle inside square', () {
+        final c = Circle(radius: 1, center: Point(2, 2));
+        expect(square.intersectsCircle(c), isTrue);
+      });
+
+      test('circle far outside', () {
+        final c = Circle(radius: 1, center: Point(20, 20));
+        expect(square.intersectsCircle(c), isFalse);
       });
     });
 

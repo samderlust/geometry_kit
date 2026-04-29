@@ -18,6 +18,7 @@ export './src/kit/quadrilateral.dart';
 export './src/kit/ray.dart';
 export './src/kit/rectangle.dart';
 export './src/kit/ring.dart';
+export './src/kit/segment.dart';
 export './src/kit/spline.dart';
 export './src/kit/triangle.dart';
 export './src/kit/units.dart';

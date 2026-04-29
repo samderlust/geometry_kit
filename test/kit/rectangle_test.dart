@@ -1,3 +1,5 @@
+import 'package:geometry_kit/src/kit/circle.dart';
+import 'package:geometry_kit/src/kit/line.dart';
 import 'package:geometry_kit/src/kit/point.dart';
 import 'package:geometry_kit/src/kit/rectangle.dart';
 import 'package:test/test.dart';
@@ -126,6 +128,40 @@ void main() {
       test('touching edges do not overlap', () {
         final other = Rectangle(x: 4, y: 0, width: 2, height: 2);
         expect(rect.overlaps(other), isFalse);
+      });
+    });
+
+    group('intersectsLine', () {
+      test('line crossing rect', () {
+        final line = Line(Point(-1, 1.5), Point(5, 1.5));
+        expect(rect.intersectsLine(line), isTrue);
+      });
+
+      test('line inside rect', () {
+        final line = Line(Point(1, 1), Point(3, 2));
+        expect(rect.intersectsLine(line), isTrue);
+      });
+
+      test('line outside rect', () {
+        final line = Line(Point(5, 5), Point(10, 10));
+        expect(rect.intersectsLine(line), isFalse);
+      });
+    });
+
+    group('intersectsCircle', () {
+      test('circle overlapping rect', () {
+        final c = Circle(radius: 2, center: Point(5, 1.5));
+        expect(rect.intersectsCircle(c), isTrue);
+      });
+
+      test('circle inside rect', () {
+        final c = Circle(radius: 0.5, center: Point(2, 1.5));
+        expect(rect.intersectsCircle(c), isTrue);
+      });
+
+      test('circle far away', () {
+        final c = Circle(radius: 1, center: Point(20, 20));
+        expect(rect.intersectsCircle(c), isFalse);
       });
     });
 

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import '../interface/shape.dart';
+import 'circle.dart';
 import 'line.dart';
 import 'point.dart';
 import 'polygon.dart';
@@ -107,6 +108,23 @@ class Rectangle extends Shape {
         x + width > other.x &&
         y < other.y + other.height &&
         y + height > other.y;
+  }
+
+  /// Check if a line segment intersects this rectangle
+  bool intersectsLine(Line line) {
+    // If either endpoint inside, intersects
+    if (contains(line.a) || contains(line.b)) return true;
+    // Check against all 4 edges
+    return edges.any((edge) => edge.intersect(line));
+  }
+
+  /// Check if a circle intersects this rectangle
+  bool intersectsCircle(Circle circle) {
+    // Clamp circle center to nearest point on rect
+    final cx = circle.center.x.clamp(x, x + width);
+    final cy = circle.center.y.clamp(y, y + height);
+    final nearest = Point(cx, cy);
+    return circle.center.distanceTo(nearest) <= circle.radius;
   }
 
   /// Convert this rectangle to a [Polygon]
