@@ -1,11 +1,28 @@
 import 'dart:math';
 
+/// An immutable 2D point (or vector) with x and y coordinates.
+///
+/// Supports arithmetic operators for vector math:
+/// - `+` / `-` for addition and subtraction
+/// - `*` / `/` for scalar multiplication and division
+/// - `%` for cross product
+///
+/// ```dart
+/// final p = Point(3, 4);
+/// print(p.magnitude); // 5.0
+/// print(p.normalized); // Point(0.6, 0.8)
+/// ```
 class Point {
+  /// X coordinate.
   final double x;
+
+  /// Y coordinate.
   final double y;
 
+  /// Creates a point at ([x], [y]).
   const Point(this.x, this.y);
 
+  /// Euclidean distance from this point to [other].
   double distanceTo(Point other) {
     var dx = x - other.x;
     var dy = y - other.y;
@@ -90,10 +107,19 @@ class Point {
   @override
   int get hashCode => x.hashCode ^ y.hashCode;
 
+  /// Subtract [other] from this point (vector subtraction).
   Point operator -(Point other) => Point(x - other.x, y - other.y);
+
+  /// Add [other] to this point (vector addition).
   Point operator +(Point other) => Point(x + other.x, y + other.y);
+
+  /// Multiply this point by [scalar] (scalar multiplication).
   Point operator *(double scalar) => Point(x * scalar, y * scalar);
+
+  /// Divide this point by [scalar] (scalar division).
   Point operator /(double scalar) => Point(x / scalar, y / scalar);
+
+  /// Cross product of this point and [other] (2D pseudo cross product).
   double operator %(Point other) => x * other.y - y * other.x;
 
   @override

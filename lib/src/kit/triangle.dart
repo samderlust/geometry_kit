@@ -7,13 +7,35 @@ import 'circle.dart';
 import 'line.dart';
 import 'point.dart';
 
+/// A triangle defined by three vertices [a], [b], and [c].
+///
+/// Implements [Shape] and provides classification checks (right, equilateral,
+/// isosceles, scalene, acute, obtuse), special points (centroid, circumcenter,
+/// incenter, orthocenter), and inscribed/circumscribed circle computation.
+///
+/// ```dart
+/// final t = Triangle(Point(0, 0), Point(4, 0), Point(2, 3));
+/// print(t.area);        // 6.0
+/// print(t.isAcute);     // true
+/// print(t.centroid);    // Point(2, 1)
+/// ```
 class Triangle implements Shape {
+  /// First vertex.
   final Point a;
+
+  /// Second vertex.
   final Point b;
+
+  /// Third vertex.
   final Point c;
 
+  /// Creates a triangle from three vertices.
+  ///
+  /// All three points must be distinct.
   const Triangle(this.a, this.b, this.c) : assert(a != b && b != c && a != c);
 
+  /// Creates an equilateral triangle inscribed in a circle with given
+  /// [center] and [radius].
   factory Triangle.equilateral(
       {required Point center, required double radius}) {
     Point a = center.pointAtAngle(radius, 0);
@@ -29,6 +51,7 @@ class Triangle implements Shape {
   @override
   double get perimeter => sides.fold<double>(0.0, (prev, e) => prev + e.length);
 
+  /// Interior angles at vertices [a], [b], [c] in radians.
   List<Rad> get angles {
     return [_angleAt(a, b, c), _angleAt(b, c, a), _angleAt(c, a, b)];
   }
@@ -234,6 +257,7 @@ class Triangle implements Shape {
     );
   }
 
+  /// Rotate all vertices by [deg] degrees around the origin.
   @override
   Triangle rotate(double deg) {
     return Triangle(
@@ -243,6 +267,7 @@ class Triangle implements Shape {
     );
   }
 
+  /// Scale all vertices by [value].
   @override
   Triangle scale(double value) {
     return Triangle(
@@ -252,6 +277,7 @@ class Triangle implements Shape {
     );
   }
 
+  /// Translate all vertices by [x] horizontally and [y] vertically.
   @override
   Triangle translate({double x = 0, double y = 0}) {
     return Triangle(

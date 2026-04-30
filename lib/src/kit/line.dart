@@ -3,10 +3,24 @@ import 'dart:math';
 import 'point.dart';
 import 'units.dart';
 
+/// A line segment defined by two endpoints [a] and [b].
+///
+/// Provides geometric operations including slope, intercepts,
+/// intersection detection, distance calculations, and projections.
+///
+/// ```dart
+/// final line = Line(Point(0, 0), Point(4, 3));
+/// print(line.length);   // 5.0
+/// print(line.midPoint);  // Point(2, 1.5)
+/// ```
 class Line {
+  /// First endpoint.
   final Point a;
+
+  /// Second endpoint.
   final Point b;
 
+  /// Creates a line segment from point [a] to point [b].
   const Line(this.a, this.b);
 
   double _getAtan2(Line other) {

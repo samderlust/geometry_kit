@@ -9,13 +9,21 @@ import 'point.dart';
 /// Provides classification checks for common quadrilateral types:
 /// parallelogram, rhombus, trapezoid, kite, and rectangle.
 class Quadrilateral implements Shape {
+  /// Vertex A.
   final Point a;
+
+  /// Vertex B.
   final Point b;
+
+  /// Vertex C.
   final Point c;
+
+  /// Vertex D.
   final Point d;
 
   static const double _epsilon = 1e-4;
 
+  /// Creates a quadrilateral from four vertices in order.
   const Quadrilateral(this.a, this.b, this.c, this.d);
 
   /// The four vertices in order
@@ -42,6 +50,7 @@ class Quadrilateral implements Shape {
   /// Diagonal from b to d
   Line get diagonalBD => Line(b, d);
 
+  /// Area of this quadrilateral using the shoelace formula.
   @override
   double get area {
     // Shoelace formula
@@ -52,6 +61,7 @@ class Quadrilateral implements Shape {
     return sum.abs() / 2;
   }
 
+  /// Perimeter of this quadrilateral (sum of all four side lengths).
   @override
   double get perimeter =>
       AB.length + BC.length + CD.length + DA.length;
@@ -152,6 +162,7 @@ class Quadrilateral implements Shape {
     return !(hasNeg && hasPos);
   }
 
+  /// Rotate all vertices by [deg] degrees around the origin.
   @override
   Quadrilateral rotate(double deg) {
     return Quadrilateral(
@@ -162,6 +173,7 @@ class Quadrilateral implements Shape {
     );
   }
 
+  /// Scale all vertices by [value].
   @override
   Quadrilateral scale(double value) {
     return Quadrilateral(
@@ -172,6 +184,7 @@ class Quadrilateral implements Shape {
     );
   }
 
+  /// Translate all vertices by [x] horizontally and [y] vertically.
   @override
   Quadrilateral translate({double x = 0, double y = 0}) {
     return Quadrilateral(

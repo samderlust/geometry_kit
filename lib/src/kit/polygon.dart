@@ -5,12 +5,24 @@ import 'circle.dart';
 import 'line.dart';
 import 'point.dart';
 
+/// A polygon defined by an ordered list of vertices.
+///
+/// Implements [Shape] with area (shoelace formula) and perimeter.
+/// Supports containment checks (ray-casting), convexity detection,
+/// intersection with lines and circles, and centroid computation.
+///
+/// ```dart
+/// final hex = Polygon.regular(sides: 6, radius: 10, center: Point(0, 0));
+/// print(hex.isConvex);  // true
+/// print(hex.contains(Point(0, 0))); // true
+/// ```
 class Polygon implements Shape {
-  /// List of vertices of polygon
+  /// Ordered list of vertices.
   ///
-  /// a polygon must have more than 3 vertices to distinct itself from triangle
+  /// Must have at least 3 vertices.
   final List<Point> vertices;
 
+  /// Creates a polygon from an ordered list of [vertices].
   const Polygon(this.vertices) : assert(vertices.length > 2);
 
   /// Create a regular polygon with [sides] sides, inscribed in a circle
@@ -32,6 +44,9 @@ class Polygon implements Shape {
     return Polygon(verts);
   }
 
+  /// Area of this polygon using the shoelace formula.
+  ///
+  /// Always returns a positive value.
   @override
   double get area {
     double x = 0, y = 0;
@@ -46,6 +61,7 @@ class Polygon implements Shape {
     return ((x - y) / 2).abs();
   }
 
+  /// Perimeter of this polygon (sum of all edge lengths).
   @override
   double get perimeter => edges.fold(0, (prev, e) => prev + e.length);
 
@@ -270,18 +286,21 @@ class Polygon implements Shape {
         (v1, v2) => point.distanceTo(v1) < point.distanceTo(v2) ? v2 : v1);
   }
 
+  /// Rotate all vertices by [deg] degrees around the origin.
   @override
   Polygon rotate(double deg) {
     final rotatedVertices = vertices.map((v) => v.rotate(deg)).toList();
     return Polygon(rotatedVertices);
   }
 
+  /// Scale all vertices by [value].
   @override
   Polygon scale(double value) {
     final newVertices = vertices.map((p) => p.scale(value)).toList();
     return Polygon(newVertices);
   }
 
+  /// Translate all vertices by [x] horizontally and [y] vertically.
   @override
   Polygon translate({double x = 0, double y = 0}) {
     final newVertices = vertices.map((p) => p.translate(x, y)).toList();

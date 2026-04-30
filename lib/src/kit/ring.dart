@@ -16,6 +16,10 @@ class Ring {
   /// Outer radius (boundary)
   final double outerRadius;
 
+  /// Creates a ring with given [center], [innerRadius], and [outerRadius].
+  ///
+  /// [outerRadius] must be greater than [innerRadius], and [innerRadius]
+  /// must be non-negative.
   const Ring({
     required this.center,
     required this.innerRadius,

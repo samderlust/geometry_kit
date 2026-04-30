@@ -4,13 +4,25 @@ import '../interface/shape.dart';
 import 'line.dart';
 import 'point.dart';
 
-/// Circle
+/// A circle defined by a [center] point and a [radius].
 ///
+/// Implements [Shape] with area (pi*r^2) and perimeter (2*pi*r).
+/// Supports containment checks, intersection with lines and other circles,
+/// and tangent line computation.
 ///
+/// ```dart
+/// final c = Circle(center: Point(0, 0), radius: 5);
+/// print(c.area);       // ~78.54
+/// print(c.contains(Point(1, 1))); // true
+/// ```
 class Circle implements Shape {
+  /// Radius of this circle.
   final double radius;
+
+  /// Center point of this circle.
   final Point center;
 
+  /// Creates a circle with given [radius] and [center].
   const Circle({
     required this.radius,
     required this.center,
@@ -145,16 +157,21 @@ class Circle implements Shape {
   @override
   int get hashCode => radius.hashCode ^ center.hashCode;
 
+  /// Rotate the circle by [deg] degrees.
+  ///
+  /// Since a circle is symmetric, rotation returns the same circle.
   @override
   Circle rotate(double deg) {
     return this;
   }
 
+  /// Scale the circle by [value], scaling both radius and center.
   @override
   Circle scale(double value) {
     return Circle(radius: radius * value, center: center.scale(value));
   }
 
+  /// Translate the circle by [x] horizontally and [y] vertically.
   @override
   Circle translate({double x = 0, double y = 0}) {
     return Circle(radius: radius, center: Point(center.x + x, center.y + y));
