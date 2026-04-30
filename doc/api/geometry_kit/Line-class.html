@@ -11,162 +11,225 @@
   
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
   
   <link rel="stylesheet" href="../static-assets/github.css?v1">
   <link rel="stylesheet" href="../static-assets/styles.css?v1">
   <link rel="icon" href="../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">geometry_kit</a></li>
-    <li><a href="../geometry_kit/geometry_kit-library.html">geometry_kit</a></li>
+    <li><a href="../geometry_kit/">geometry_kit.dart</a></li>
     <li class="self-crumb">Line class</li>
   </ol>
   <div class="self-name">Line</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span class="material-symbols-outlined">
-        brightness_4
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
-
-  <div id="dartdoc-main-content" class="main-content">
-      <div>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="geometry_kit&#47;geometry_kit-library-sidebar.html"
+    data-below-sidebar="geometry_kit&#47;Line-class-sidebar.html">
+    <div>
 <h1><span class="kind-class">Line</span> class 
-    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
  
 </h1></div>
 
     
+<section class="desc markdown">
+  <p>A line segment defined by two endpoints <a href="../geometry_kit/Line/a.html">a</a> and <a href="../geometry_kit/Line/b.html">b</a>.</p>
+<p>Provides geometric operations including slope, intercepts,
+intersection detection, distance calculations, and projections.</p>
+<pre class="language-dart"><code class="language-dart">final line = Line(Point(0, 0), Point(4, 3));
+print(line.length);   // 5.0
+print(line.midPoint);  // Point(2, 1.5)
+</code></pre>
+</section>
 
 
 
     
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
-
     <dl class="constructor-summary-list">
-        <dt id="Line" class="callable">
+        <dt id="Line.new" class="callable">
           <span class="name"><a href="../geometry_kit/Line/Line.html">Line</a></span><span class="signature">(<span class="parameter" id="-param-a"><span class="type-annotation"><a href="../geometry_kit/Point-class.html">Point</a></span> <span class="parameter-name">a</span>, </span><span class="parameter" id="-param-b"><span class="type-annotation"><a href="../geometry_kit/Point-class.html">Point</a></span> <span class="parameter-name">b</span></span>)</span>
         </dt>
         <dd>
-          
+          Creates a line segment from point <code>a</code> to point <code>b</code>.
             <div class="constructor-modifier features">const</div>
         </dd>
     </dl>
   </section>
-
-    <section class="summary offset-anchor" id="instance-properties">
-      <h2>Properties</h2>
-
-      <dl class="properties">
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
         <dt id="a" class="property">
   <span class="name"><a href="../geometry_kit/Line/a.html">a</a></span>
-  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span> 
+  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span>
+  
 
 </dt>
 <dd>
-  
+  First endpoint.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
 
         <dt id="b" class="property">
   <span class="name"><a href="../geometry_kit/Line/b.html">b</a></span>
-  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span> 
+  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span>
+  
 
 </dt>
 <dd>
-  
+  Second endpoint.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
 
         <dt id="hashCode" class="property">
   <span class="name"><a href="../geometry_kit/Line/hashCode.html">hashCode</a></span>
-  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/int-class.html">int</a></span> 
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/int-class.html">int</a></span>
+  
 
 </dt>
 <dd>
   The hash code for this object.
-  <div class="features"><span class="feature">read-only</span><span class="feature">override</span></div>
+  <div class="features"><span class="feature">no setter</span><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="isHorizontal" class="property">
+  <span class="name"><a href="../geometry_kit/Line/isHorizontal.html">isHorizontal</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  Whether this line segment is horizontal (same y for both endpoints)
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="isVertical" class="property">
+  <span class="name"><a href="../geometry_kit/Line/isVertical.html">isVertical</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  Whether this line segment is vertical (same x for both endpoints)
+  <div class="features"><span class="feature">no setter</span></div>
 
 </dd>
 
         <dt id="length" class="property">
   <span class="name"><a href="../geometry_kit/Line/length.html">length</a></span>
-  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/double-class.html">double</a></span> 
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span>
+  
 
 </dt>
 <dd>
   Length of this line
-  <div class="features"><span class="feature">read-only</span></div>
+  <div class="features"><span class="feature">no setter</span></div>
 
 </dd>
 
         <dt id="midPoint" class="property">
   <span class="name"><a href="../geometry_kit/Line/midPoint.html">midPoint</a></span>
-  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span> 
+  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span>
+  
 
 </dt>
 <dd>
   The midpoint of the line
-  <div class="features"><span class="feature">read-only</span></div>
+  <div class="features"><span class="feature">no setter</span></div>
 
 </dd>
 
         <dt id="points" class="property">
   <span class="name"><a href="../geometry_kit/Line/points.html">points</a></span>
-  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../geometry_kit/Point-class.html">Point</a></span>&gt;</span></span> 
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../geometry_kit/Point-class.html">Point</a></span>&gt;</span></span>
+  
 
 </dt>
 <dd>
   Get list of points
-  <div class="features"><span class="feature">read-only</span></div>
+  <div class="features"><span class="feature">no setter</span></div>
 
 </dd>
 
         <dt id="runtimeType" class="property inherited">
-  <span class="name"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/runtimeType.html">runtimeType</a></span>
-  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/Type-class.html">Type</a></span> 
+  <span class="name"><a href="https://api.dart.dev/stable/3.11.3/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/Type-class.html">Type</a></span>
+  
 
 </dt>
 <dd class="inherited">
   A representation of the runtime type of the object.
-  <div class="features"><span class="feature">read-only</span><span class="feature">inherited</span></div>
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
 
 </dd>
 
         <dt id="slope" class="property">
   <span class="name"><a href="../geometry_kit/Line/slope.html">slope</a></span>
-  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/double-class.html">double</a></span> 
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span>
+  
 
 </dt>
 <dd>
   Get slope of this line
-  <div class="features"><span class="feature">read-only</span></div>
+  <div class="features"><span class="feature">no setter</span></div>
 
 </dd>
 
-      </dl>
-    </section>
+        <dt id="xIntercept" class="property">
+  <span class="name"><a href="../geometry_kit/Line/xIntercept.html">xIntercept</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Get the x-intercept of this line
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="yIntercept" class="property">
+  <span class="name"><a href="../geometry_kit/Line/yIntercept.html">yIntercept</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Get the y-intercept of this line
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+    </dl>
+  </section>
 
     
   <section
@@ -176,13 +239,26 @@
     <dl class="callables">
         <dt id="distanceFromAPoint" class="callable">
   <span class="name"><a href="../geometry_kit/Line/distanceFromAPoint.html">distanceFromAPoint</a></span><span class="signature">(<wbr><span class="parameter" id="distanceFromAPoint-param-point"><span class="type-annotation"><a href="../geometry_kit/Point-class.html">Point</a></span> <span class="parameter-name">point</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/double-class.html">double</a></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span>
   </span>
   
 
 </dt>
 <dd>
   get the distance from a points to this line
+  
+
+</dd>
+
+        <dt id="extend" class="callable">
+  <span class="name"><a href="../geometry_kit/Line/extend.html">extend</a></span><span class="signature">(<wbr><span class="parameter" id="extend-param-amount"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">amount</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit/Line-class.html">Line</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Return new line extended by <code>amount</code> from both ends
   
 
 </dd>
@@ -215,7 +291,7 @@
 
         <dt id="hasPoint" class="callable">
   <span class="name"><a href="../geometry_kit/Line/hasPoint.html">hasPoint</a></span><span class="signature">(<wbr><span class="parameter" id="hasPoint-param-point"><span class="type-annotation"><a href="../geometry_kit/Point-class.html">Point</a></span> <span class="parameter-name">point</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/bool-class.html">bool</a></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/bool-class.html">bool</a></span>
   </span>
   
 
@@ -241,7 +317,7 @@
 
         <dt id="intersect" class="callable">
   <span class="name"><a href="../geometry_kit/Line/intersect.html">intersect</a></span><span class="signature">(<wbr><span class="parameter" id="intersect-param-other"><span class="type-annotation"><a href="../geometry_kit/Line-class.html">Line</a></span> <span class="parameter-name">other</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/bool-class.html">bool</a></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/bool-class.html">bool</a></span>
   </span>
   
 
@@ -252,15 +328,54 @@
 
 </dd>
 
+        <dt id="isParallelTo" class="callable">
+  <span class="name"><a href="../geometry_kit/Line/isParallelTo.html">isParallelTo</a></span><span class="signature">(<wbr><span class="parameter" id="isParallelTo-param-other"><span class="type-annotation"><a href="../geometry_kit/Line-class.html">Line</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Check if this line is parallel to <code>other</code>
+  
+
+</dd>
+
+        <dt id="isPerpendicularTo" class="callable">
+  <span class="name"><a href="../geometry_kit/Line/isPerpendicularTo.html">isPerpendicularTo</a></span><span class="signature">(<wbr><span class="parameter" id="isPerpendicularTo-param-other"><span class="type-annotation"><a href="../geometry_kit/Line-class.html">Line</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Check if this line is perpendicular to <code>other</code>
+  
+
+</dd>
+
+        <dt id="lerp" class="callable">
+  <span class="name"><a href="../geometry_kit/Line/lerp.html">lerp</a></span><span class="signature">(<wbr><span class="parameter" id="lerp-param-t"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">t</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Get point at parameter <code>t</code> along segment
+  
+
+</dd>
+
         <dt id="noSuchMethod" class="callable inherited">
-  <span class="name"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+  <span class="name"><a href="https://api.dart.dev/stable/3.11.3/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
     <span class="returntype parameter">&#8594; dynamic</span>
   </span>
   
 
 </dt>
 <dd class="inherited">
-  Invoked when a non-existent method or property is accessed.
+  Invoked when a nonexistent method or property is accessed.
   <div class="features"><span class="feature">inherited</span></div>
 
 </dd>
@@ -278,9 +393,48 @@
 
 </dd>
 
+        <dt id="projectPoint" class="callable">
+  <span class="name"><a href="../geometry_kit/Line/projectPoint.html">projectPoint</a></span><span class="signature">(<wbr><span class="parameter" id="projectPoint-param-point"><span class="type-annotation"><a href="../geometry_kit/Point-class.html">Point</a></span> <span class="parameter-name">point</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Get closest point on this line segment to <code>point</code>
+  
+
+</dd>
+
+        <dt id="rotate" class="callable">
+  <span class="name"><a href="../geometry_kit/Line/rotate.html">rotate</a></span><span class="signature">(<wbr><span class="parameter" id="rotate-param-deg"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">deg</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit/Line-class.html">Line</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Rotate the line by <code>deg</code> degrees
+  
+
+</dd>
+
+        <dt id="scale" class="callable">
+  <span class="name"><a href="../geometry_kit/Line/scale.html">scale</a></span><span class="signature">(<wbr><span class="parameter" id="scale-param-factor"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">factor</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit/Line-class.html">Line</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Scale the line by <code>factor</code>
+  
+
+</dd>
+
         <dt id="toString" class="callable">
   <span class="name"><a href="../geometry_kit/Line/toString.html">toString</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/String-class.html">String</a></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/String-class.html">String</a></span>
   </span>
   
 
@@ -288,6 +442,19 @@
 <dd>
   A string representation of this object.
   <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="translate" class="callable">
+  <span class="name"><a href="../geometry_kit/Line/translate.html">translate</a></span><span class="signature">(<wbr>{<span class="parameter" id="translate-param-x"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">x</span> = <span class="default-value">0</span>, </span><span class="parameter" id="translate-param-y"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">y</span> = <span class="default-value">0</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit/Line-class.html">Line</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Translate the line by <code>x</code> horizontally and <code>y</code> vertically
+  
 
 </dd>
 
@@ -300,8 +467,8 @@
     <h2>Operators</h2>
     <dl class="callables">
         <dt id="operator ==" class="callable">
-  <span class="name"><a href="../geometry_kit/Line/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.19.2/dart-core/bool-class.html">bool</a></span>
+  <span class="name"><a href="../geometry_kit/Line/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/bool-class.html">bool</a></span>
   </span>
   
 
@@ -318,109 +485,38 @@
     
     
 
-
   </div> <!-- /.main-content -->
-
   <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
-    <header id="header-search-sidebar" class="hidden-l">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
   <form class="search-sidebar" role="search">
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
-  <li><a href="../index.html">geometry_kit</a></li>
-  <li><a href="../geometry_kit/geometry_kit-library.html">geometry_kit</a></li>
-  <li class="self-crumb">Line class</li>
+    <li><a href="../index.html">geometry_kit</a></li>
+    <li><a href="../geometry_kit/">geometry_kit</a></li>
+    <li class="self-crumb">Line class</li>
 </ol>
-
 
     <h5>geometry_kit library</h5>
-    <ol>
-      <li class="section-title"><a href="../geometry_kit/geometry_kit-library.html#classes">Classes</a></li>
-        <li><a href="../geometry_kit/AngleUtils-class.html">AngleUtils</a></li>
-        <li><a href="../geometry_kit/Circle-class.html">Circle</a></li>
-        <li><a href="../geometry_kit/Line-class.html">Line</a></li>
-        <li><a href="../geometry_kit/Point-class.html">Point</a></li>
-        <li><a href="../geometry_kit/Polygon-class.html">Polygon</a></li>
-        <li><a href="../geometry_kit/Triangle-class.html">Triangle</a></li>
-
-      <li class="section-title"><a href="../geometry_kit/geometry_kit-library.html#extensions">Extensions</a></li>
-        <li><a href="../geometry_kit/DegX.html">DegX</a></li>
-        <li><a href="../geometry_kit/RadX.html">RadX</a></li>
-
-
-
-
-
-
-      <li class="section-title"><a href="../geometry_kit/geometry_kit-library.html#typedefs">Typedefs</a></li>
-        <li><a href="../geometry_kit/Deg.html">Deg</a></li>
-        <li><a href="../geometry_kit/Rad.html">Rad</a></li>
-
-</ol>
-
+    <div id="dartdoc-sidebar-left-content"></div>
   </div>
-
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
-    <ol>
-
-        <li class="section-title"><a href="../geometry_kit/Line-class.html#constructors">Constructors</a></li>
-          <li><a href="../geometry_kit/Line/Line.html">Line</a></li>
-
-
-        <li class="section-title">
-          <a href="../geometry_kit/Line-class.html#instance-properties">Properties</a>
-        </li>
-          <li><a href="../geometry_kit/Line/a.html">a</a></li>
-          <li><a href="../geometry_kit/Line/b.html">b</a></li>
-          <li><a href="../geometry_kit/Line/hashCode.html">hashCode</a></li>
-          <li><a href="../geometry_kit/Line/length.html">length</a></li>
-          <li><a href="../geometry_kit/Line/midPoint.html">midPoint</a></li>
-          <li><a href="../geometry_kit/Line/points.html">points</a></li>
-          <li class="inherited"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/runtimeType.html">runtimeType</a></li>
-          <li><a href="../geometry_kit/Line/slope.html">slope</a></li>
-
-        <li class="section-title"><a href="../geometry_kit/Line-class.html#instance-methods">Methods</a></li>
-          <li><a href="../geometry_kit/Line/distanceFromAPoint.html">distanceFromAPoint</a></li>
-          <li><a href="../geometry_kit/Line/getAngleWith.html">getAngleWith</a></li>
-          <li><a href="../geometry_kit/Line/getIntersectPoint.html">getIntersectPoint</a></li>
-          <li><a href="../geometry_kit/Line/hasPoint.html">hasPoint</a></li>
-          <li><a href="../geometry_kit/Line/innerAngleWith.html">innerAngleWith</a></li>
-          <li><a href="../geometry_kit/Line/intersect.html">intersect</a></li>
-          <li class="inherited"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
-          <li><a href="../geometry_kit/Line/outerAngleWith.html">outerAngleWith</a></li>
-          <li><a href="../geometry_kit/Line/toString.html">toString</a></li>
-
-        <li class="section-title"><a href="../geometry_kit/Line-class.html#operators">Operators</a></li>
-          <li><a href="../geometry_kit/Line/operator_equals.html">operator ==</a></li>
-
-
-
-
-</ol>
-
   </div><!--/.sidebar-offcanvas-->
-
 </main>
-
 <footer>
   <span class="no-break">
     geometry_kit
-      1.0.0-dev
+      1.2.0
   </span>
-
   
 </footer>
-
 
 
 <script src="../static-assets/highlight.pack.js?v1"></script>
 <script src="../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

@@ -11,25 +11,21 @@
   
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
   
   <link rel="stylesheet" href="../../static-assets/github.css?v1">
   <link rel="stylesheet" href="../../static-assets/styles.css?v1">
   <link rel="icon" href="../../static-assets/favicon.png?v1">
-
   
 </head>
 
-
 <body data-base-href="../../" data-using-base-href="false" class="light-theme">
-
 <div id="overlay-under-drawer"></div>
-
 <header id="title">
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">geometry_kit</a></li>
-    <li><a href="../../geometry_kit/geometry_kit-library.html">geometry_kit</a></li>
+    <li><a href="../../geometry_kit/">geometry_kit.dart</a></li>
     <li><a href="../../geometry_kit/Line-class.html">Line</a></li>
     <li class="self-crumb">hashCode property</li>
   </ol>
@@ -37,54 +33,57 @@
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
-  <div class="toggle" id="theme-button">
-    <label for="theme">
-      <input type="checkbox" id="theme" value="light-theme">
-      <span class="material-symbols-outlined">
-        brightness_4
-      </span>
-    </label>
-  </div>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
 </header>
 <main>
-
-  <div id="dartdoc-main-content" class="main-content">
-      <div>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="geometry_kit&#47;Line-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
 <h1><span class="kind-property">hashCode</span> property 
-    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
 </h1></div>
 
+    
 
+    
         
-<section id="getter">
-
-<section class="multi-line-signature">
-  
+  <section id="getter">
+    <section class="multi-line-signature">
+      
   <div>
     <ol class="annotation-list">
-        <li>@<a href="https://api.dart.dev/stable/2.19.2/dart-core/override-constant.html">override</a></li>
+        <li>@<a href="https://api.dart.dev/stable/3.11.3/dart-core/override-constant.html">override</a></li>
     </ol>
   </div>
-  <span class="returntype"><a href="https://api.dart.dev/stable/2.19.2/dart-core/int-class.html">int</a></span>
-  <span class="name ">hashCode</span>
-  <div class="features"><span class="feature">override</span></div>
+      <span class="returntype"><a href="https://api.dart.dev/stable/3.11.3/dart-core/int-class.html">int</a></span>
+      get
+      <span class="name ">hashCode</span>
+      <div class="features"><span class="feature">override</span></div>
 
-</section>
-
-
+    </section>
+    
 <section class="desc markdown">
   <p>The hash code for this object.</p>
 <p>A hash code is a single integer which represents the state of the object
 that affects <a href="../../geometry_kit/Line/operator_equals.html">operator ==</a> comparisons.</p>
 <p>All objects have hash codes.
-The default hash code implemented by <a href="https://api.dart.dev/stable/2.19.2/dart-core/Object-class.html">Object</a>
+The default hash code implemented by <a href="https://api.dart.dev/stable/3.11.3/dart-core/Object-class.html">Object</a>
 represents only the identity of the object,
 the same way as the default <a href="../../geometry_kit/Line/operator_equals.html">operator ==</a> implementation only considers objects
-equal if they are identical (see <a href="https://api.dart.dev/stable/2.19.2/dart-core/identityHashCode.html">identityHashCode</a>).</p>
+equal if they are identical (see <a href="https://api.dart.dev/stable/3.11.3/dart-core/identityHashCode.html">identityHashCode</a>).</p>
 <p>If <a href="../../geometry_kit/Line/operator_equals.html">operator ==</a> is overridden to use the object state instead,
 the hash code must also be changed to represent that state,
 otherwise the object cannot be used in hash based data structures
-like the default <a href="https://api.dart.dev/stable/2.19.2/dart-core/Set-class.html">Set</a> and <a href="https://api.dart.dev/stable/2.19.2/dart-core/Map-class.html">Map</a> implementations.</p>
+like the default <a href="https://api.dart.dev/stable/3.11.3/dart-core/Set-class.html">Set</a> and <a href="https://api.dart.dev/stable/3.11.3/dart-core/Map-class.html">Map</a> implementations.</p>
 <p>Hash codes must be the same for objects that are equal to each other
 according to <a href="../../geometry_kit/Line/operator_equals.html">operator ==</a>.
 The hash code of an object should only change if the object changes
@@ -96,100 +95,54 @@ and there are no distribution guarantees.</p>
 It is even technically allowed that all instances have the same hash code,
 but if clashes happen too often,
 it may reduce the efficiency of hash-based data structures
-like <a href="https://api.dart.dev/stable/2.19.2/dart-collection/HashSet-class.html">HashSet</a> or <a href="https://api.dart.dev/stable/2.19.2/dart-collection/HashMap-class.html">HashMap</a>.</p>
+like <a href="https://api.dart.dev/stable/3.11.3/dart-collection/HashSet-class.html">HashSet</a> or <a href="https://api.dart.dev/stable/3.11.3/dart-collection/HashMap-class.html">HashMap</a>.</p>
 <p>If a subclass overrides <a href="../../geometry_kit/Line/hashCode.html">hashCode</a>, it should override the
 <a href="../../geometry_kit/Line/operator_equals.html">operator ==</a> operator as well to maintain consistency.</p>
 </section>
 
-
+    
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 int get hashCode =&gt; a.hashCode ^ b.hashCode;</code></pre>
 </section>
 
-</section>
+  </section>
 
 
-  </div> <!-- /.main-content -->
-
-  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
-    <header id="header-search-sidebar" class="hidden-l">
+</div> <!-- /.main-content -->
+<div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+  <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
   <form class="search-sidebar" role="search">
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
 </header>
-
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
-  <li><a href="../../index.html">geometry_kit</a></li>
-  <li><a href="../../geometry_kit/geometry_kit-library.html">geometry_kit</a></li>
-  <li><a href="../../geometry_kit/Line-class.html">Line</a></li>
-  <li class="self-crumb">hashCode property</li>
+    <li><a href="../../index.html">geometry_kit</a></li>
+    <li><a href="../../geometry_kit/">geometry_kit</a></li>
+    <li><a href="../../geometry_kit/Line-class.html">Line</a></li>
+    <li class="self-crumb">hashCode property</li>
 </ol>
 
-
-    <h5>Line class</h5>
-    <ol>
-
-        <li class="section-title"><a href="../../geometry_kit/Line-class.html#constructors">Constructors</a></li>
-          <li><a href="../../geometry_kit/Line/Line.html">Line</a></li>
-
-
-        <li class="section-title">
-          <a href="../../geometry_kit/Line-class.html#instance-properties">Properties</a>
-        </li>
-          <li><a href="../../geometry_kit/Line/a.html">a</a></li>
-          <li><a href="../../geometry_kit/Line/b.html">b</a></li>
-          <li><a href="../../geometry_kit/Line/hashCode.html">hashCode</a></li>
-          <li><a href="../../geometry_kit/Line/length.html">length</a></li>
-          <li><a href="../../geometry_kit/Line/midPoint.html">midPoint</a></li>
-          <li><a href="../../geometry_kit/Line/points.html">points</a></li>
-          <li class="inherited"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/runtimeType.html">runtimeType</a></li>
-          <li><a href="../../geometry_kit/Line/slope.html">slope</a></li>
-
-        <li class="section-title"><a href="../../geometry_kit/Line-class.html#instance-methods">Methods</a></li>
-          <li><a href="../../geometry_kit/Line/distanceFromAPoint.html">distanceFromAPoint</a></li>
-          <li><a href="../../geometry_kit/Line/getAngleWith.html">getAngleWith</a></li>
-          <li><a href="../../geometry_kit/Line/getIntersectPoint.html">getIntersectPoint</a></li>
-          <li><a href="../../geometry_kit/Line/hasPoint.html">hasPoint</a></li>
-          <li><a href="../../geometry_kit/Line/innerAngleWith.html">innerAngleWith</a></li>
-          <li><a href="../../geometry_kit/Line/intersect.html">intersect</a></li>
-          <li class="inherited"><a href="https://api.dart.dev/stable/2.19.2/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
-          <li><a href="../../geometry_kit/Line/outerAngleWith.html">outerAngleWith</a></li>
-          <li><a href="../../geometry_kit/Line/toString.html">toString</a></li>
-
-        <li class="section-title"><a href="../../geometry_kit/Line-class.html#operators">Operators</a></li>
-          <li><a href="../../geometry_kit/Line/operator_equals.html">operator ==</a></li>
-
-
-
-
-</ol>
-
-  </div><!--/.sidebar-offcanvas-->
-
-  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
-  </div><!--/.sidebar-offcanvas-->
-
+  <h5>Line class</h5>
+  <div id="dartdoc-sidebar-left-content"></div>
+</div><!--/.sidebar-offcanvas-->
+<div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
 </main>
-
 <footer>
   <span class="no-break">
     geometry_kit
-      1.0.0-dev
+      1.2.0
   </span>
-
   
 </footer>
-
 
 
 <script src="../../static-assets/highlight.pack.js?v1"></script>
 <script src="../../static-assets/docs.dart.js"></script>
 
-
-
 </body>
-
 </html>
 

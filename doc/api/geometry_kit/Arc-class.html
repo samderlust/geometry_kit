@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the Arc class from the geometry_kit library, for the Dart programming language.">
+  <title>Arc class - geometry_kit library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">geometry_kit</a></li>
+    <li><a href="../geometry_kit/">geometry_kit.dart</a></li>
+    <li class="self-crumb">Arc class</li>
+  </ol>
+  <div class="self-name">Arc</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="geometry_kit&#47;geometry_kit-library-sidebar.html"
+    data-below-sidebar="geometry_kit&#47;Arc-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">Arc</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>An arc defined by a center, radius, start angle, and end angle.</p>
+<p>Angles are in radians. The arc sweeps counter-clockwise
+from <a href="../geometry_kit/Arc/startAngle.html">startAngle</a> to <a href="../geometry_kit/Arc/endAngle.html">endAngle</a>.</p>
+</section>
+
+
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="Arc.new" class="callable">
+          <span class="name"><a href="../geometry_kit/Arc/Arc.html">Arc</a></span><span class="signature">({<span class="parameter" id="-param-center"><span>required</span> <span class="type-annotation"><a href="../geometry_kit/Point-class.html">Point</a></span> <span class="parameter-name">center</span>, </span><span class="parameter" id="-param-radius"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">radius</span>, </span><span class="parameter" id="-param-startAngle"><span>required</span> <span class="type-annotation"><a href="../geometry_kit/Rad.html">Rad</a></span> <span class="parameter-name">startAngle</span>, </span><span class="parameter" id="-param-endAngle"><span>required</span> <span class="type-annotation"><a href="../geometry_kit/Rad.html">Rad</a></span> <span class="parameter-name">endAngle</span></span>})</span>
+        </dt>
+        <dd>
+          
+            <div class="constructor-modifier features">const</div>
+        </dd>
+        <dt id="Arc.fromDegrees" class="callable">
+          <span class="name"><a href="../geometry_kit/Arc/Arc.fromDegrees.html">Arc.fromDegrees</a></span><span class="signature">({<span class="parameter" id="fromDegrees-param-center"><span>required</span> <span class="type-annotation"><a href="../geometry_kit/Point-class.html">Point</a></span> <span class="parameter-name">center</span>, </span><span class="parameter" id="fromDegrees-param-radius"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">radius</span>, </span><span class="parameter" id="fromDegrees-param-startDeg"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">startDeg</span>, </span><span class="parameter" id="fromDegrees-param-endDeg"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">endDeg</span></span>})</span>
+        </dt>
+        <dd>
+          Create an arc from degrees instead of radians
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="center" class="property">
+  <span class="name"><a href="../geometry_kit/Arc/center.html">center</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span>
+  
+
+</dt>
+<dd>
+  Center point of the arc's circle
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="endAngle" class="property">
+  <span class="name"><a href="../geometry_kit/Arc/endAngle.html">endAngle</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Rad.html">Rad</a></span>
+  
+
+</dt>
+<dd>
+  End angle in radians
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="endPoint" class="property">
+  <span class="name"><a href="../geometry_kit/Arc/endPoint.html">endPoint</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span>
+  
+
+</dt>
+<dd>
+  The point at the end of the arc
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property">
+  <span class="name"><a href="../geometry_kit/Arc/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="length" class="property">
+  <span class="name"><a href="../geometry_kit/Arc/length.html">length</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  The length of the arc
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="midPoint" class="property">
+  <span class="name"><a href="../geometry_kit/Arc/midPoint.html">midPoint</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span>
+  
+
+</dt>
+<dd>
+  The midpoint of the arc
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="radius" class="property">
+  <span class="name"><a href="../geometry_kit/Arc/radius.html">radius</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Radius of the arc's circle
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.11.3/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="sectorArea" class="property">
+  <span class="name"><a href="../geometry_kit/Arc/sectorArea.html">sectorArea</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  The area of the sector formed by this arc
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="startAngle" class="property">
+  <span class="name"><a href="../geometry_kit/Arc/startAngle.html">startAngle</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Rad.html">Rad</a></span>
+  
+
+</dt>
+<dd>
+  Start angle in radians
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="startPoint" class="property">
+  <span class="name"><a href="../geometry_kit/Arc/startPoint.html">startPoint</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span>
+  
+
+</dt>
+<dd>
+  The point at the start of the arc
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="sweepAngle" class="property">
+  <span class="name"><a href="../geometry_kit/Arc/sweepAngle.html">sweepAngle</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Rad.html">Rad</a></span>
+  
+
+</dt>
+<dd>
+  The sweep angle of the arc in radians
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="containsAngle" class="callable">
+  <span class="name"><a href="../geometry_kit/Arc/containsAngle.html">containsAngle</a></span><span class="signature">(<wbr><span class="parameter" id="containsAngle-param-angle"><span class="type-annotation"><a href="../geometry_kit/Rad.html">Rad</a></span> <span class="parameter-name">angle</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Check if an angle (in radians) falls within this arc's sweep
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.11.3/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="pointAt" class="callable">
+  <span class="name"><a href="../geometry_kit/Arc/pointAt.html">pointAt</a></span><span class="signature">(<wbr><span class="parameter" id="pointAt-param-t"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">t</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Get a point on the arc at parameter <code>t</code> (0 = start, 1 = end)
+  
+
+</dd>
+
+        <dt id="scale" class="callable">
+  <span class="name"><a href="../geometry_kit/Arc/scale.html">scale</a></span><span class="signature">(<wbr><span class="parameter" id="scale-param-factor"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">factor</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit/Arc-class.html">Arc</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Scale the arc by <code>factor</code>
+  
+
+</dd>
+
+        <dt id="toString" class="callable">
+  <span class="name"><a href="../geometry_kit/Arc/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  A string representation of this object.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="translate" class="callable">
+  <span class="name"><a href="../geometry_kit/Arc/translate.html">translate</a></span><span class="signature">(<wbr>{<span class="parameter" id="translate-param-x"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">x</span> = <span class="default-value">0</span>, </span><span class="parameter" id="translate-param-y"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">y</span> = <span class="default-value">0</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit/Arc-class.html">Arc</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Translate the arc
+  
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable">
+  <span class="name"><a href="../geometry_kit/Arc/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  The equality operator.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">geometry_kit</a></li>
+    <li><a href="../geometry_kit/">geometry_kit</a></li>
+    <li class="self-crumb">Arc class</li>
+</ol>
+
+    <h5>geometry_kit library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    geometry_kit
+      1.2.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the Capsule class from the geometry_kit library, for the Dart programming language.">
+  <title>Capsule class - geometry_kit library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">geometry_kit</a></li>
+    <li><a href="../geometry_kit/">geometry_kit.dart</a></li>
+    <li class="self-crumb">Capsule class</li>
+  </ol>
+  <div class="self-name">Capsule</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="geometry_kit&#47;geometry_kit-library-sidebar.html"
+    data-below-sidebar="geometry_kit&#47;Capsule-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">Capsule</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>A capsule (stadium) shape — a rectangle with semicircle caps on each end.</p>
+<p>Defined by a center <a href="../geometry_kit/Line-class.html">Line</a> (the medial axis) and a <a href="../geometry_kit/Capsule/radius.html">radius</a>.
+The total length is the line length plus the diameter (two semicircle caps).</p>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+
+        
+  <dt>Implemented types</dt>
+  <dd>
+    <ul class="comma-separated clazz-relationships">
+        <li><a href="../geometry_kit/Shape-class.html">Shape</a></li>
+    </ul>
+  </dd>
+        
+
+
+        
+        
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="Capsule.new" class="callable">
+          <span class="name"><a href="../geometry_kit/Capsule/Capsule.html">Capsule</a></span><span class="signature">({<span class="parameter" id="-param-medialAxis"><span>required</span> <span class="type-annotation"><a href="../geometry_kit/Line-class.html">Line</a></span> <span class="parameter-name">medialAxis</span>, </span><span class="parameter" id="-param-radius"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">radius</span></span>})</span>
+        </dt>
+        <dd>
+          
+            <div class="constructor-modifier features">const</div>
+        </dd>
+        <dt id="Capsule.circle" class="callable">
+          <span class="name"><a href="../geometry_kit/Capsule/Capsule.circle.html">Capsule.circle</a></span><span class="signature">({<span class="parameter" id="circle-param-center"><span>required</span> <span class="type-annotation"><a href="../geometry_kit/Point-class.html">Point</a></span> <span class="parameter-name">center</span>, </span><span class="parameter" id="circle-param-radius"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">radius</span></span>})</span>
+        </dt>
+        <dd>
+          Create a capsule that is a perfect circle (medial axis has zero length)
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+        <dt id="Capsule.fromRect" class="callable">
+          <span class="name"><a href="../geometry_kit/Capsule/Capsule.fromRect.html">Capsule.fromRect</a></span><span class="signature">({<span class="parameter" id="fromRect-param-center"><span>required</span> <span class="type-annotation"><a href="../geometry_kit/Point-class.html">Point</a></span> <span class="parameter-name">center</span>, </span><span class="parameter" id="fromRect-param-width"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">width</span>, </span><span class="parameter" id="fromRect-param-height"><span>required</span> <span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">height</span></span>})</span>
+        </dt>
+        <dd>
+          Create a capsule from center point, total width, total height.
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="area" class="property">
+  <span class="name"><a href="../geometry_kit/Capsule/area.html">area</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Area of this shape.
+  <div class="features"><span class="feature">no setter</span><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="axisLength" class="property">
+  <span class="name"><a href="../geometry_kit/Capsule/axisLength.html">axisLength</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Length of the medial axis
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="boundingBox" class="property">
+  <span class="name"><a href="../geometry_kit/Capsule/boundingBox.html">boundingBox</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Rectangle-class.html">Rectangle</a></span>
+  
+
+</dt>
+<dd>
+  Get the bounding rectangle of this capsule
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="center" class="property">
+  <span class="name"><a href="../geometry_kit/Capsule/center.html">center</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Point-class.html">Point</a></span>
+  
+
+</dt>
+<dd>
+  Center point of the capsule
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="endCaps" class="property">
+  <span class="name"><a href="../geometry_kit/Capsule/endCaps.html">endCaps</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../geometry_kit/Circle-class.html">Circle</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  The two semicircle center points (endpoints of the medial axis)
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property">
+  <span class="name"><a href="../geometry_kit/Capsule/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="medialAxis" class="property">
+  <span class="name"><a href="../geometry_kit/Capsule/medialAxis.html">medialAxis</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit/Line-class.html">Line</a></span>
+  
+
+</dt>
+<dd>
+  The medial axis of the capsule
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="perimeter" class="property">
+  <span class="name"><a href="../geometry_kit/Capsule/perimeter.html">perimeter</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Perimeter (circumference) of this shape.
+  <div class="features"><span class="feature">no setter</span><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="radius" class="property">
+  <span class="name"><a href="../geometry_kit/Capsule/radius.html">radius</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  The radius of the semicircle caps (and half-width of the rectangular body)
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.11.3/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="totalLength" class="property">
+  <span class="name"><a href="../geometry_kit/Capsule/totalLength.html">totalLength</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Total length of the capsule (axis + diameter)
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="totalWidth" class="property">
+  <span class="name"><a href="../geometry_kit/Capsule/totalWidth.html">totalWidth</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Total width perpendicular to the medial axis
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="contains" class="callable">
+  <span class="name"><a href="../geometry_kit/Capsule/contains.html">contains</a></span><span class="signature">(<wbr><span class="parameter" id="contains-param-p"><span class="type-annotation"><a href="../geometry_kit/Point-class.html">Point</a></span> <span class="parameter-name">p</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Check if a point is inside this capsule.
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.dart.dev/stable/3.11.3/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="rotate" class="callable">
+  <span class="name"><a href="../geometry_kit/Capsule/rotate.html">rotate</a></span><span class="signature">(<wbr><span class="parameter" id="rotate-param-deg"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">deg</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit/Capsule-class.html">Capsule</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Rotate the shape by <code>deg</code> degrees
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="scale" class="callable">
+  <span class="name"><a href="../geometry_kit/Capsule/scale.html">scale</a></span><span class="signature">(<wbr><span class="parameter" id="scale-param-value"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">value</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit/Capsule-class.html">Capsule</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  scale the shape by <code>value</code>
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="toString" class="callable">
+  <span class="name"><a href="../geometry_kit/Capsule/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  A string representation of this object.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="translate" class="callable">
+  <span class="name"><a href="../geometry_kit/Capsule/translate.html">translate</a></span><span class="signature">(<wbr>{<span class="parameter" id="translate-param-x"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">x</span> = <span class="default-value">0</span>, </span><span class="parameter" id="translate-param-y"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a></span> <span class="parameter-name">y</span> = <span class="default-value">0</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit/Capsule-class.html">Capsule</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  translate the shape with <code>x</code> in horizontally and <code>y</code> vertically
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable">
+  <span class="name"><a href="../geometry_kit/Capsule/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.11.3/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.11.3/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  The equality operator.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">geometry_kit</a></li>
+    <li><a href="../geometry_kit/">geometry_kit</a></li>
+    <li class="self-crumb">Capsule class</li>
+</ol>
+
+    <h5>geometry_kit library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    geometry_kit
+      1.2.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
