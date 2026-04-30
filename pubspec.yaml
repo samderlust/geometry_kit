@@ -1,10 +1,10 @@
 name: geometry_kit
 description: A set of utils that help with geometry (line, circle, triangle, polygon,...)
-version: 0.1.1
+version: 1.0.0
 homepage: https://github.com/samderlust/geometry_kit
 
 environment:
-  sdk: ">=2.17.6 <3.0.0"
+  sdk: ">=3.2.4 <4.0.0"
 
 # dependencies:
 #   path: ^1.8.0

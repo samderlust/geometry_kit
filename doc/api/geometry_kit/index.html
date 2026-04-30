@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="geometry_kit library API docs, for the Dart programming language.">
+  <title>geometry_kit library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">geometry_kit</a></li>
+    <li class="self-crumb">geometry_kit.dart</li>
+  </ol>
+  <div class="self-name">geometry_kit</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar=""
+    data-below-sidebar="geometry_kit&#47;geometry_kit-library-sidebar.html">
+  
+    <div>
+      
+
+      <h1>
+        <span class="kind-library">geometry_kit</span>
+        library 
+ 
+
+      </h1>
+    </div>
+
+    
+<section class="desc markdown">
+  <p>A Dart package providing immutable 2D geometry primitives and utilities.</p>
+<p>Includes <a href="../geometry_kit/Point-class.html">Point</a>, <a href="../geometry_kit/Line-class.html">Line</a>, <a href="../geometry_kit/Circle-class.html">Circle</a>, <a href="../geometry_kit/Triangle-class.html">Triangle</a>, <a href="../geometry_kit/Polygon-class.html">Polygon</a>, <a href="../geometry_kit/Rectangle-class.html">Rectangle</a>,
+<a href="../geometry_kit/Ellipse-class.html">Ellipse</a>, <a href="../geometry_kit/Ray-class.html">Ray</a>, <a href="../geometry_kit/Arc-class.html">Arc</a>, <a href="../geometry_kit/Quadrilateral-class.html">Quadrilateral</a>, <a href="../geometry_kit/Ring-class.html">Ring</a>, <a href="../geometry_kit/Capsule-class.html">Capsule</a>, <a href="../geometry_kit/Polyline-class.html">Polyline</a>,
+<a href="../geometry_kit/QuadraticBezier-class.html">QuadraticBezier</a>, <a href="../geometry_kit/CubicBezier-class.html">CubicBezier</a>, <a href="../geometry_kit/Spline-class.html">Spline</a>, and angle conversion tools.</p>
+<p>All geometry classes are immutable — transform methods return new instances.</p>
+</section>
+
+
+    <section class="summary offset-anchor" id="classes">
+      <h2>Classes</h2>
+      <dl>
+          <dt id="AngleUtils">
+  <span class="name deprecated"><a class="deprecated" href="../geometry_kit/AngleUtils-class.html">AngleUtils</a></span> 
+
+</dt>
+<dd>
+  Angle Utils
+</dd>
+
+          <dt id="Arc">
+  <span class="name "><a href="../geometry_kit/Arc-class.html">Arc</a></span> 
+
+</dt>
+<dd>
+  An arc defined by a center, radius, start angle, and end angle.
+</dd>
+
+          <dt id="Capsule">
+  <span class="name "><a href="../geometry_kit/Capsule-class.html">Capsule</a></span> 
+
+</dt>
+<dd>
+  A capsule (stadium) shape — a rectangle with semicircle caps on each end.
+</dd>
+
+          <dt id="Circle">
+  <span class="name "><a href="../geometry_kit/Circle-class.html">Circle</a></span> 
+
+</dt>
+<dd>
+  A circle defined by a <a href="../geometry_kit/Circle/center.html">center</a> point and a <a href="../geometry_kit/Circle/radius.html">radius</a>.
+</dd>
+
+          <dt id="CubicBezier">
+  <span class="name "><a href="../geometry_kit/CubicBezier-class.html">CubicBezier</a></span> 
+
+</dt>
+<dd>
+  A cubic Bezier curve defined by four control points.
+</dd>
+
+          <dt id="Ellipse">
+  <span class="name "><a href="../geometry_kit/Ellipse-class.html">Ellipse</a></span> 
+
+</dt>
+<dd>
+  An ellipse defined by its center and two radii.
+</dd>
+
+          <dt id="Line">
+  <span class="name "><a href="../geometry_kit/Line-class.html">Line</a></span> 
+
+</dt>
+<dd>
+  A line segment defined by two endpoints <a href="../geometry_kit/Line/a.html">a</a> and <a href="../geometry_kit/Line/b.html">b</a>.
+</dd>
+
+          <dt id="Point">
+  <span class="name "><a href="../geometry_kit/Point-class.html">Point</a></span> 
+
+</dt>
+<dd>
+  An immutable 2D point (or vector) with x and y coordinates.
+</dd>
+
+          <dt id="Polygon">
+  <span class="name "><a href="../geometry_kit/Polygon-class.html">Polygon</a></span> 
+
+</dt>
+<dd>
+  A polygon defined by an ordered list of vertices.
+</dd>
+
+          <dt id="Polyline">
+  <span class="name "><a href="../geometry_kit/Polyline-class.html">Polyline</a></span> 
+
+</dt>
+<dd>
+  An open path defined by a sequence of connected points.
+</dd>
+
+          <dt id="QuadraticBezier">
+  <span class="name "><a href="../geometry_kit/QuadraticBezier-class.html">QuadraticBezier</a></span> 
+
+</dt>
+<dd>
+  A quadratic Bezier curve defined by three control points.
+</dd>
+
+          <dt id="Quadrilateral">
+  <span class="name "><a href="../geometry_kit/Quadrilateral-class.html">Quadrilateral</a></span> 
+
+</dt>
+<dd>
+  A quadrilateral defined by four vertices in order.
+</dd>
+
+          <dt id="Ray">
+  <span class="name "><a href="../geometry_kit/Ray-class.html">Ray</a></span> 
+
+</dt>
+<dd>
+  A ray defined by an origin point and a direction.
+</dd>
+
+          <dt id="Rectangle">
+  <span class="name "><a href="../geometry_kit/Rectangle-class.html">Rectangle</a></span> 
+
+</dt>
+<dd>
+  An axis-aligned rectangle defined by position and size.
+</dd>
+
+          <dt id="Ring">
+  <span class="name "><a href="../geometry_kit/Ring-class.html">Ring</a></span> 
+
+</dt>
+<dd>
+  A ring (annulus) defined by two concentric circles.
+</dd>
+
+          <dt id="Shape">
+  <span class="name "><a href="../geometry_kit/Shape-class.html">Shape</a></span> 
+
+</dt>
+<dd>
+  Base interface for all 2D geometric shapes.
+</dd>
+
+          <dt id="Spline">
+  <span class="name "><a href="../geometry_kit/Spline-class.html">Spline</a></span> 
+
+</dt>
+<dd>
+  A Catmull-Rom spline through a series of control points.
+</dd>
+
+          <dt id="Triangle">
+  <span class="name "><a href="../geometry_kit/Triangle-class.html">Triangle</a></span> 
+
+</dt>
+<dd>
+  A triangle defined by three vertices <a href="../geometry_kit/Triangle/a.html">a</a>, <a href="../geometry_kit/Triangle/b.html">b</a>, and <a href="../geometry_kit/Triangle/c.html">c</a>.
+</dd>
+
+      </dl>
+    </section>
+
+
+
+
+    <section class="summary offset-anchor" id="extensions">
+      <h2>Extensions</h2>
+      <dl>
+          <dt id="DegX">
+  <span class="name "><a href="../geometry_kit/DegX.html">DegX</a></span>
+  on <a href="../geometry_kit/Deg.html">Deg</a>
+  
+
+</dt>
+<dd>
+  Extension on <a href="../geometry_kit/Deg.html">Deg</a> for converting degrees to radians.
+</dd>
+
+          <dt id="RadX">
+  <span class="name "><a href="../geometry_kit/RadX.html">RadX</a></span>
+  on <a href="../geometry_kit/Rad.html">Rad</a>
+  
+
+</dt>
+<dd>
+  Extension on <a href="../geometry_kit/Rad.html">Rad</a> for converting radians to degrees.
+</dd>
+
+      </dl>
+    </section>
+
+
+
+
+    <section class="summary offset-anchor" id="typedefs">
+      <h2>Typedefs</h2>
+      <dl>
+          
+  <dt id="Deg" class="">
+  <span class="name"><a href="../geometry_kit/Deg.html">Deg</a></span>
+    = <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a>
+  </span>
+  
+
+</dt>
+<dd>
+  A value in degrees.
+  
+
+</dd>
+
+
+          
+  <dt id="Rad" class="">
+  <span class="name"><a href="../geometry_kit/Rad.html">Rad</a></span>
+    = <a href="https://api.dart.dev/stable/3.11.3/dart-core/double-class.html">double</a>
+  </span>
+  
+
+</dt>
+<dd>
+  A value in radians.
+  
+
+</dd>
+
+
+          
+  <dt id="Segment" class="">
+  <span class="name"><a href="../geometry_kit/Segment.html">Segment</a></span>
+    = <a href="../geometry_kit/Line-class.html">Line</a>
+  </span>
+  
+
+</dt>
+<dd>
+  A segment is a finite portion of a line between two endpoints.
+  
+
+</dd>
+
+
+      </dl>
+    </section>
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">geometry_kit</a></li>
+    <li class="self-crumb">geometry_kit.dart</li>
+</ol>
+
+    <h5><span class="package-name">geometry_kit</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="../geometry_kit/">geometry_kit</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+    <h5>geometry_kit library</h5>
+  </div><!--/sidebar-offcanvas-right-->
+</main>
+<footer>
+  <span class="no-break">
+    geometry_kit
+      1.2.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
