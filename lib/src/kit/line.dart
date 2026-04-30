@@ -60,7 +60,7 @@ class Line {
     final a1 = _getAtan2(this);
     final a2 = _getAtan2(other);
 
-    if (a1 != double.nan && a2 != double.nan) {
+    if (!a1.isNaN && !a2.isNaN) {
       return a2 - a1;
     }
     return double.nan;

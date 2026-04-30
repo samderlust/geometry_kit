@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import '../interface/shape.dart';
 import 'line.dart';
 import 'point.dart';
@@ -30,15 +28,19 @@ class Quadrilateral implements Shape {
   List<Point> get vertices => [a, b, c, d];
 
   /// Side from a to b
+  // ignore: non_constant_identifier_names
   Line get AB => Line(a, b);
 
   /// Side from b to c
+  // ignore: non_constant_identifier_names
   Line get BC => Line(b, c);
 
   /// Side from c to d
+  // ignore: non_constant_identifier_names
   Line get CD => Line(c, d);
 
   /// Side from d to a
+  // ignore: non_constant_identifier_names
   Line get DA => Line(d, a);
 
   /// The four sides in order
@@ -54,17 +56,20 @@ class Quadrilateral implements Shape {
   @override
   double get area {
     // Shoelace formula
-    final sum = a.x * b.y - b.x * a.y +
-        b.x * c.y - c.x * b.y +
-        c.x * d.y - d.x * c.y +
-        d.x * a.y - a.x * d.y;
+    final sum = a.x * b.y -
+        b.x * a.y +
+        b.x * c.y -
+        c.x * b.y +
+        c.x * d.y -
+        d.x * c.y +
+        d.x * a.y -
+        a.x * d.y;
     return sum.abs() / 2;
   }
 
   /// Perimeter of this quadrilateral (sum of all four side lengths).
   @override
-  double get perimeter =>
-      AB.length + BC.length + CD.length + DA.length;
+  double get perimeter => AB.length + BC.length + CD.length + DA.length;
 
   /// Center point (average of vertices)
   Point get center => Point(

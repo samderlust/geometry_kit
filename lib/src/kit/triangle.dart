@@ -228,15 +228,19 @@ class Triangle implements Shape {
   List<Line> get sides => [AB, BC, CA];
 
   /// Line that goes from a to b;
+  // ignore: non_constant_identifier_names
   Line get AB => Line(a, b);
 
   /// Line that goes from b to c;
+  // ignore: non_constant_identifier_names
   Line get BC => Line(b, c);
 
   /// Line that goes from c to a;
+  // ignore: non_constant_identifier_names
   Line get CA => Line(c, a);
 
   /// Line that goes from a to c;
+  // ignore: non_constant_identifier_names
   Line get AC => Line(a, c);
 
   /// Pos vertex
