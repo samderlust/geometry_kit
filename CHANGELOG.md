@@ -1,6 +1,7 @@
-## 1.2.0
+## 1.0.0
 
 ### New Classes
+
 - **feat:** added `Rectangle` class with AABB constructors (`fromPoints`, `fromCenter`, `square`), containment, overlap detection, diagonal, corners, `intersectsLine()`, `intersectsCircle()`
 - **feat:** added `Ellipse` class with dual radii, area, perimeter (Ramanujan approximation), containment, eccentricity, foci
 - **feat:** added `Ray` class with origin/direction, `pointAt`, intersection with `Line` and `Circle`
@@ -14,6 +15,7 @@
 - **feat:** added `Segment` type alias for `Line`
 
 ### New Methods on Existing Classes
+
 - **feat:** `Point` — added `angleTo()`, `dot()`, `magnitude`, `normalized`, `midPointTo()`
 - **feat:** `Line` — added `isVertical`, `isHorizontal`, `isParallelTo()`, `isPerpendicularTo()`, `translate()`, `scale()`, `rotate()`
 - **feat:** `Triangle` — added `isScalene`, `centroid`, `circumcenter`, `incenter`, `contains()`
@@ -21,6 +23,7 @@
 - **feat:** `Circle` — added `contains()`, `distanceTo()`, `intersectsLine()`, `intersectsCircle()`
 
 ### Bug Fixes
+
 - **fix:** `Point.translate()` now correctly translates instead of doubling input (variable shadowing bug)
 - **fix:** `Circle.hasPoint()` inverted logic — now correctly returns `true` when point is inside; added type annotation
 - **fix:** `Circle.scale()` now actually scales radius and center
@@ -36,11 +39,13 @@
 - **fix:** removed debug `print()` left in `Triangle.angles`
 
 ### Breaking Changes
+
 - **refactor:** `Shape` subclasses now use `implements Shape` instead of `extends Shape`
 - **feat:** `Polygon` transform methods now return `Polygon` instead of `Shape` (covariant return types)
 - **feat:** exported `Shape` abstract class for consumers to extend
 
 ### Maintenance
+
 - **chore:** deprecated `AngleUtils` in favor of `Rad`/`Deg` extensions from `units.dart`
 - **chore:** removed unused `TransformationsMixin` dead code
 - **chore:** established angle convention — transforms take degrees, `Line` angle methods return `Rad`
