@@ -75,7 +75,9 @@ void main() {
   print('Incenter: ${tri.incenter}');
   print('Contains (2,1): ${tri.contains(Point(2, 1))}');
   print('Hypotenuse length: ${tri.hypotenuse.length}');
-  print('Circumscribed circle: r=${tri.circumscribedCircle.radius.toStringAsFixed(2)}');
+  print(
+    'Circumscribed circle: r=${tri.circumscribedCircle.radius.toStringAsFixed(2)}',
+  );
   print('Inscribed circle: r=${tri.inscribedCircle.radius.toStringAsFixed(2)}');
   print('');
 
@@ -88,9 +90,14 @@ void main() {
   print('Centroid: ${hex.centroid}');
 
   final poly = Polygon([
-    Point(1, 0), Point(0, 2), Point(0, 3),
-    Point(2, 5), Point(3, 5), Point(5, 3),
-    Point(5, 1), Point(3, 0),
+    Point(1, 0),
+    Point(0, 2),
+    Point(0, 3),
+    Point(2, 5),
+    Point(3, 5),
+    Point(5, 3),
+    Point(5, 1),
+    Point(3, 0),
   ]);
   print('Contains (5,2): ${poly.contains(Point(5, 2))}'); // true
   print('Contains (9,2): ${poly.contains(Point(9, 2))}'); // false
@@ -98,7 +105,10 @@ void main() {
 
   // ── Quadrilateral ──
   final quad = Quadrilateral(
-    Point(0, 0), Point(4, 0), Point(4, 3), Point(0, 3),
+    Point(0, 0),
+    Point(4, 0),
+    Point(4, 3),
+    Point(0, 3),
   );
   print('Is rectangle: ${quad.isRectangle}');
   print('Is parallelogram: ${quad.isParallelogram}');
@@ -109,7 +119,10 @@ void main() {
 
   // ── Arc ──
   final arc = Arc.fromDegrees(
-    center: Point(0, 0), radius: 10, startDeg: 0, endDeg: 90,
+    center: Point(0, 0),
+    radius: 10,
+    startDeg: 0,
+    endDeg: 90,
   );
   print('Arc length: ${arc.length}');
   print('Sector area: ${arc.sectorArea}');
@@ -126,9 +139,7 @@ void main() {
   print('');
 
   // ── Capsule ──
-  final capsule = Capsule.fromRect(
-    center: Point(0, 0), width: 20, height: 8,
-  );
+  final capsule = Capsule.fromRect(center: Point(0, 0), width: 20, height: 8);
   print('Capsule area: ${capsule.area}');
   print('Capsule perimeter: ${capsule.perimeter}');
   print('Axis length: ${capsule.axisLength}');
@@ -136,19 +147,21 @@ void main() {
   print('');
 
   // ── Polyline ──
-  final pl = Polyline([
-    Point(0, 0), Point(5, 3), Point(10, 1), Point(15, 4),
-  ]);
+  final pl = Polyline([Point(0, 0), Point(5, 3), Point(10, 1), Point(15, 4)]);
   print('Polyline length: ${pl.length}');
   print('Segment count: ${pl.segmentCount}');
   print('Point at 0.5: ${pl.pointAt(0.5)}');
   final simplified = pl.simplify(2.0);
-  print('Simplified: ${simplified.points.length} points (from ${pl.points.length})');
+  print(
+    'Simplified: ${simplified.points.length} points (from ${pl.points.length})',
+  );
   print('');
 
   // ── Bezier ──
   final qBez = QuadraticBezier(
-    start: Point(0, 0), control: Point(5, 10), end: Point(10, 0),
+    start: Point(0, 0),
+    control: Point(5, 10),
+    end: Point(10, 0),
   );
   print('Quadratic bezier at 0.5: ${qBez.pointAt(0.5)}');
   print('Quadratic length: ${qBez.length}');
@@ -157,17 +170,17 @@ void main() {
   print('Split into ${halves.length} curves');
 
   final cBez = CubicBezier(
-    start: Point(0, 0), control1: Point(3, 10),
-    control2: Point(7, 10), end: Point(10, 0),
+    start: Point(0, 0),
+    control1: Point(3, 10),
+    control2: Point(7, 10),
+    end: Point(10, 0),
   );
   print('Cubic bezier at 0.5: ${cBez.pointAt(0.5)}');
   print('Cubic length: ${cBez.length}');
   print('');
 
   // ── Spline ──
-  final spline = Spline([
-    Point(0, 0), Point(3, 5), Point(7, 2), Point(10, 8),
-  ]);
+  final spline = Spline([Point(0, 0), Point(3, 5), Point(7, 2), Point(10, 8)]);
   print('Spline at t=1.5: ${spline.pointAt(1.5)}');
   print('Tangent at t=1.5: ${spline.tangentAt(1.5)}');
   print('Approx length: ${spline.approximateLength()}');
@@ -176,5 +189,5 @@ void main() {
 
   // ── Angle utilities ──
   print('90° to rad: ${90.0.toRad}'); // π/2
-  print('π to deg: ${pi.toDeg}');     // 180.0
+  print('π to deg: ${pi.toDeg}'); // 180.0
 }
