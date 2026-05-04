@@ -23,5 +23,7 @@ flutter run
 | ShapeStyleTheme     | Inherited default style with interactive color + dash toggle  |
 | CoordinateMapper    | identity / yUp / centered                                     |
 | Clipping & layering | `clipBehavior` (hardEdge vs none), Stack layering, transparent canvas |
+| Transforms          | Interactive `rotate` / `scale` / `translate` on Triangle + Polygon |
+| Properties & contains | `area`, `perimeter`, `centroid`, `isAcute/Convex`, tap-to-probe `contains` |
 
 Each demo lives in `lib/demos/`. Shared scaffolding in `lib/demos/_demo_card.dart`.

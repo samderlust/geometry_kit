@@ -7,9 +7,11 @@ import 'demos/coordinate_mapper_demo.dart';
 import 'demos/ellipse_demo.dart';
 import 'demos/line_demo.dart';
 import 'demos/polygon_demo.dart';
+import 'demos/properties_demo.dart';
 import 'demos/quadrilateral_demo.dart';
 import 'demos/rectangle_demo.dart';
 import 'demos/style_demo.dart';
+import 'demos/transforms_demo.dart';
 import 'demos/triangle_demo.dart';
 
 void main() {
@@ -51,6 +53,8 @@ final _demos = <_Demo>[
   _Demo('ShapeStyleTheme', 'Inherited default style', (_) => const StyleDemo()),
   _Demo('CoordinateMapper', 'Y-up + centered origins', (_) => const CoordinateMapperDemo()),
   _Demo('Clipping & layering', 'clipBehavior + Stack composition', (_) => const ClippingDemo()),
+  _Demo('Transforms', 'rotate / scale / translate (interactive)', (_) => const TransformsDemo()),
+  _Demo('Properties & contains', 'area / perimeter / centroid / contains', (_) => const PropertiesDemo()),
 ];
 
 class _Home extends StatelessWidget {
