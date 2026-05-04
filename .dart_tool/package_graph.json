@@ -1,6 +1,8 @@
 {
   "roots": [
     "geometry_kit",
+    "geometry_kit_widgets",
+    "geometry_kit_widgets_example",
     "geometry_kits_mono"
   ],
   "packages": [
@@ -19,6 +21,31 @@
       "devDependencies": [
         "lints",
         "test"
+      ]
+    },
+    {
+      "name": "geometry_kit_widgets",
+      "version": "0.1.0",
+      "dependencies": [
+        "flutter",
+        "geometry_kit"
+      ],
+      "devDependencies": [
+        "flutter_lints",
+        "flutter_test"
+      ]
+    },
+    {
+      "name": "geometry_kit_widgets_example",
+      "version": "0.1.0+1",
+      "dependencies": [
+        "flutter",
+        "geometry_kit",
+        "geometry_kit_widgets"
+      ],
+      "devDependencies": [
+        "flutter_lints",
+        "flutter_test"
       ]
     },
     {
@@ -52,8 +79,45 @@
       ]
     },
     {
+      "name": "flutter_lints",
+      "version": "6.0.0",
+      "dependencies": [
+        "lints"
+      ]
+    },
+    {
+      "name": "flutter_test",
+      "version": "0.0.0",
+      "dependencies": [
+        "clock",
+        "collection",
+        "fake_async",
+        "flutter",
+        "leak_tracker_flutter_testing",
+        "matcher",
+        "meta",
+        "path",
+        "stack_trace",
+        "stream_channel",
+        "test_api",
+        "vector_math"
+      ]
+    },
+    {
+      "name": "flutter",
+      "version": "0.0.0",
+      "dependencies": [
+        "characters",
+        "collection",
+        "material_color_utilities",
+        "meta",
+        "sky_engine",
+        "vector_math"
+      ]
+    },
+    {
       "name": "test",
-      "version": "1.31.1",
+      "version": "1.30.0",
       "dependencies": [
         "analyzer",
         "async",
@@ -84,7 +148,7 @@
     },
     {
       "name": "lints",
-      "version": "2.1.1",
+      "version": "6.1.0",
       "dependencies": []
     },
     {
@@ -183,7 +247,7 @@
     },
     {
       "name": "meta",
-      "version": "1.18.2",
+      "version": "1.17.0",
       "dependencies": []
     },
     {
@@ -267,6 +331,92 @@
       "dependencies": []
     },
     {
+      "name": "stream_channel",
+      "version": "2.1.4",
+      "dependencies": [
+        "async"
+      ]
+    },
+    {
+      "name": "leak_tracker_flutter_testing",
+      "version": "3.0.10",
+      "dependencies": [
+        "flutter",
+        "leak_tracker",
+        "leak_tracker_testing",
+        "matcher",
+        "meta"
+      ]
+    },
+    {
+      "name": "vector_math",
+      "version": "2.2.0",
+      "dependencies": []
+    },
+    {
+      "name": "stack_trace",
+      "version": "1.12.1",
+      "dependencies": [
+        "path"
+      ]
+    },
+    {
+      "name": "clock",
+      "version": "1.1.2",
+      "dependencies": []
+    },
+    {
+      "name": "fake_async",
+      "version": "1.3.3",
+      "dependencies": [
+        "clock",
+        "collection"
+      ]
+    },
+    {
+      "name": "matcher",
+      "version": "0.12.19",
+      "dependencies": [
+        "async",
+        "meta",
+        "stack_trace",
+        "term_glyph",
+        "test_api"
+      ]
+    },
+    {
+      "name": "test_api",
+      "version": "0.7.10",
+      "dependencies": [
+        "async",
+        "boolean_selector",
+        "collection",
+        "meta",
+        "source_span",
+        "stack_trace",
+        "stream_channel",
+        "string_scanner",
+        "term_glyph"
+      ]
+    },
+    {
+      "name": "sky_engine",
+      "version": "0.0.0",
+      "dependencies": []
+    },
+    {
+      "name": "material_color_utilities",
+      "version": "0.13.0",
+      "dependencies": [
+        "collection"
+      ]
+    },
+    {
+      "name": "characters",
+      "version": "1.4.1",
+      "dependencies": []
+    },
+    {
       "name": "webkit_inspection_protocol",
       "version": "1.2.1",
       "dependencies": [
@@ -293,7 +443,7 @@
     },
     {
       "name": "test_core",
-      "version": "0.6.18",
+      "version": "0.6.16",
       "dependencies": [
         "analyzer",
         "args",
@@ -316,35 +466,6 @@
         "test_api",
         "vm_service",
         "yaml"
-      ]
-    },
-    {
-      "name": "test_api",
-      "version": "0.7.12",
-      "dependencies": [
-        "async",
-        "boolean_selector",
-        "collection",
-        "meta",
-        "source_span",
-        "stack_trace",
-        "stream_channel",
-        "string_scanner",
-        "term_glyph"
-      ]
-    },
-    {
-      "name": "stream_channel",
-      "version": "2.1.4",
-      "dependencies": [
-        "async"
-      ]
-    },
-    {
-      "name": "stack_trace",
-      "version": "1.12.1",
-      "dependencies": [
-        "path"
       ]
     },
     {
@@ -410,17 +531,6 @@
       "dependencies": []
     },
     {
-      "name": "matcher",
-      "version": "0.12.20",
-      "dependencies": [
-        "async",
-        "meta",
-        "stack_trace",
-        "term_glyph",
-        "test_api"
-      ]
-    },
-    {
       "name": "io",
       "version": "1.0.5",
       "dependencies": [
@@ -463,7 +573,7 @@
     },
     {
       "name": "analyzer",
-      "version": "13.0.0",
+      "version": "10.0.1",
       "dependencies": [
         "_fe_analyzer_shared",
         "collection",
@@ -533,6 +643,31 @@
       ]
     },
     {
+      "name": "leak_tracker_testing",
+      "version": "3.0.2",
+      "dependencies": [
+        "leak_tracker",
+        "matcher",
+        "meta"
+      ]
+    },
+    {
+      "name": "leak_tracker",
+      "version": "11.0.2",
+      "dependencies": [
+        "clock",
+        "collection",
+        "meta",
+        "path",
+        "vm_service"
+      ]
+    },
+    {
+      "name": "term_glyph",
+      "version": "1.2.2",
+      "dependencies": []
+    },
+    {
       "name": "logging",
       "version": "1.3.0",
       "dependencies": []
@@ -581,11 +716,6 @@
       ]
     },
     {
-      "name": "term_glyph",
-      "version": "1.2.2",
-      "dependencies": []
-    },
-    {
       "name": "mime",
       "version": "2.0.0",
       "dependencies": []
@@ -615,7 +745,7 @@
     },
     {
       "name": "_fe_analyzer_shared",
-      "version": "100.0.0",
+      "version": "93.0.0",
       "dependencies": [
         "meta",
         "source_span"

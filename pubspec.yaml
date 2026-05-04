@@ -4,5 +4,8 @@ environment:
   sdk: ^3.10.0
 workspace:
   - packages/geometry_kit
+  - packages/geometry_kit_widgets
+  - packages/geometry_kit_widgets/example
+
 dev_dependencies:
   melos: ^7.5.1

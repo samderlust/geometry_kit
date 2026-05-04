@@ -3,13 +3,13 @@
   "packages": [
     {
       "name": "_fe_analyzer_shared",
-      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/_fe_analyzer_shared-100.0.0",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/_fe_analyzer_shared-93.0.0",
       "packageUri": "lib/",
-      "languageVersion": "3.11"
+      "languageVersion": "3.9"
     },
     {
       "name": "analyzer",
-      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/analyzer-13.0.0",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/analyzer-10.0.1",
       "packageUri": "lib/",
       "languageVersion": "3.9"
     },
@@ -38,6 +38,12 @@
       "languageVersion": "3.1"
     },
     {
+      "name": "characters",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/characters-1.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
       "name": "charcode",
       "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/charcode-1.4.0",
       "packageUri": "lib/",
@@ -64,6 +70,12 @@
     {
       "name": "cli_util",
       "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/cli_util-0.4.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "clock",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/clock-1.1.2",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
@@ -98,10 +110,34 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "fake_async",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/fake_async-1.3.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
       "name": "file",
       "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/file-7.0.1",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "flutter",
+      "rootUri": "file:///Users/samderlust/Development/flutter/packages/flutter",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "flutter_lints",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/flutter_lints-6.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "flutter_test",
+      "rootUri": "file:///Users/samderlust/Development/flutter/packages/flutter_test",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
     },
     {
       "name": "frontend_server_client",
@@ -152,10 +188,28 @@
       "languageVersion": "3.9"
     },
     {
-      "name": "lints",
-      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/lints-2.1.1",
+      "name": "leak_tracker",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/leak_tracker-11.0.2",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "leak_tracker_flutter_testing",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/leak_tracker_flutter_testing-3.0.10",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "leak_tracker_testing",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/leak_tracker_testing-3.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "lints",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/lints-6.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
     },
     {
       "name": "logging",
@@ -165,9 +219,15 @@
     },
     {
       "name": "matcher",
-      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/matcher-0.12.20",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/matcher-0.12.19",
       "packageUri": "lib/",
-      "languageVersion": "3.10"
+      "languageVersion": "3.7"
+    },
+    {
+      "name": "material_color_utilities",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/material_color_utilities-0.13.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
     },
     {
       "name": "melos",
@@ -177,7 +237,7 @@
     },
     {
       "name": "meta",
-      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/meta-1.18.2",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/meta-1.17.0",
       "packageUri": "lib/",
       "languageVersion": "3.5"
     },
@@ -284,6 +344,12 @@
       "languageVersion": "3.5"
     },
     {
+      "name": "sky_engine",
+      "rootUri": "file:///Users/samderlust/Development/flutter/bin/cache/pkg/sky_engine",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
       "name": "source_map_stack_trace",
       "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/source_map_stack_trace-2.1.2",
       "packageUri": "lib/",
@@ -327,27 +393,33 @@
     },
     {
       "name": "test",
-      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/test-1.31.1",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/test-1.30.0",
       "packageUri": "lib/",
-      "languageVersion": "3.10"
+      "languageVersion": "3.7"
     },
     {
       "name": "test_api",
-      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/test_api-0.7.12",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/test_api-0.7.10",
       "packageUri": "lib/",
-      "languageVersion": "3.10"
+      "languageVersion": "3.7"
     },
     {
       "name": "test_core",
-      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/test_core-0.6.18",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/test_core-0.6.16",
       "packageUri": "lib/",
-      "languageVersion": "3.10"
+      "languageVersion": "3.7"
     },
     {
       "name": "typed_data",
       "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/typed_data-1.4.0",
       "packageUri": "lib/",
       "languageVersion": "3.5"
+    },
+    {
+      "name": "vector_math",
+      "rootUri": "file:///Users/samderlust/.pub-cache/hosted/pub.dev/vector_math-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
     },
     {
       "name": "vm_service",
@@ -414,6 +486,18 @@
       "rootUri": "../packages/geometry_kit",
       "packageUri": "lib/",
       "languageVersion": "3.5"
+    },
+    {
+      "name": "geometry_kit_widgets",
+      "rootUri": "../packages/geometry_kit_widgets",
+      "packageUri": "lib/",
+      "languageVersion": "3.11"
+    },
+    {
+      "name": "geometry_kit_widgets_example",
+      "rootUri": "../packages/geometry_kit_widgets/example",
+      "packageUri": "lib/",
+      "languageVersion": "3.11"
     }
   ],
   "generator": "pub",

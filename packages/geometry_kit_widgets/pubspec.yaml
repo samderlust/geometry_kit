@@ -1,0 +1,22 @@
+name: geometry_kit_widgets
+description: Flutter widgets for geometry_kit shapes — CustomPainter-backed, styled, and interactive.
+version: 0.1.0
+homepage: https://github.com/samderlust/geometry_kits_mono/packages/geometry_kit_widgets
+repository: https://github.com/samderlust/geometry_kits_mono/packages/geometry_kit_widgets
+issue_tracker: https://github.com/samderlust/geometry_kits_mono/issues
+
+resolution: workspace
+
+environment:
+  sdk: ^3.11.3
+  flutter: ">=3.27.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  geometry_kit: ^1.0.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
