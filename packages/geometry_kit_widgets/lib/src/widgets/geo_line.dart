@@ -5,6 +5,7 @@ import '../coord/coordinate_mapper.dart';
 import '../painters/line_painter.dart';
 import '../style/shape_style.dart';
 import '../style/shape_style_theme.dart';
+import 'geo_shape_container.dart';
 
 /// A widget that paints a [Line] segment between two points.
 ///
@@ -24,6 +25,9 @@ class GeoLine extends StatelessWidget {
   /// Logical size of the widget.
   final Size size;
 
+  /// How content extending past [size] is clipped.
+  final Clip clipBehavior;
+
   /// Optional accessibility label.
   final String? semanticLabel;
 
@@ -35,6 +39,7 @@ class GeoLine extends StatelessWidget {
     this.style,
     this.mapper = CoordinateMapper.identity,
     this.size = const Size(200, 200),
+    this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
   }) : line = Line(Point(a.dx, a.dy), Point(b.dx, b.dy));
 
@@ -45,6 +50,7 @@ class GeoLine extends StatelessWidget {
     this.style,
     this.mapper = CoordinateMapper.identity,
     this.size = const Size(200, 200),
+    this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
   });
 
@@ -52,17 +58,14 @@ class GeoLine extends StatelessWidget {
   Widget build(BuildContext context) {
     final resolved =
         style ?? ShapeStyleTheme.resolve(context, const ShapeStyle());
-    return Semantics(
-      label: semanticLabel,
-      child: RepaintBoundary(
-        child: CustomPaint(
-          size: size,
-          painter: LinePainter(
-            line: line,
-            style: resolved,
-            mapper: mapper,
-          ),
-        ),
+    return GeoShapeContainer(
+      size: size,
+      clipBehavior: clipBehavior,
+      semanticLabel: semanticLabel,
+      painter: LinePainter(
+        line: line,
+        style: resolved,
+        mapper: mapper,
       ),
     );
   }

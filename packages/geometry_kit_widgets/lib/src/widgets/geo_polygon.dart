@@ -5,6 +5,7 @@ import '../coord/coordinate_mapper.dart';
 import '../painters/polygon_painter.dart';
 import '../style/shape_style.dart';
 import '../style/shape_style_theme.dart';
+import 'geo_shape_container.dart';
 
 /// A widget that paints a [Polygon] from an ordered vertex list.
 class GeoPolygon extends StatelessWidget {
@@ -20,6 +21,9 @@ class GeoPolygon extends StatelessWidget {
   /// Logical size of the widget.
   final Size size;
 
+  /// How content extending past [size] is clipped.
+  final Clip clipBehavior;
+
   /// Optional accessibility label.
   final String? semanticLabel;
 
@@ -30,6 +34,7 @@ class GeoPolygon extends StatelessWidget {
     this.style,
     this.mapper = CoordinateMapper.identity,
     this.size = const Size(200, 200),
+    this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
   })  : assert(vertices.length >= 3),
         polygon = Polygon(
@@ -43,6 +48,7 @@ class GeoPolygon extends StatelessWidget {
     this.style,
     this.mapper = CoordinateMapper.identity,
     this.size = const Size(200, 200),
+    this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
   });
 
@@ -50,17 +56,14 @@ class GeoPolygon extends StatelessWidget {
   Widget build(BuildContext context) {
     final resolved =
         style ?? ShapeStyleTheme.resolve(context, const ShapeStyle());
-    return Semantics(
-      label: semanticLabel,
-      child: RepaintBoundary(
-        child: CustomPaint(
-          size: size,
-          painter: PolygonPainter(
-            polygon: polygon,
-            style: resolved,
-            mapper: mapper,
-          ),
-        ),
+    return GeoShapeContainer(
+      size: size,
+      clipBehavior: clipBehavior,
+      semanticLabel: semanticLabel,
+      painter: PolygonPainter(
+        polygon: polygon,
+        style: resolved,
+        mapper: mapper,
       ),
     );
   }

@@ -5,6 +5,7 @@ import '../coord/coordinate_mapper.dart';
 import '../painters/quadrilateral_painter.dart';
 import '../style/shape_style.dart';
 import '../style/shape_style_theme.dart';
+import 'geo_shape_container.dart';
 
 /// A widget that paints a [Quadrilateral] from four ordered vertices.
 class GeoQuadrilateral extends StatelessWidget {
@@ -20,6 +21,9 @@ class GeoQuadrilateral extends StatelessWidget {
   /// Logical size of the widget.
   final Size size;
 
+  /// How content extending past [size] is clipped.
+  final Clip clipBehavior;
+
   /// Optional accessibility label.
   final String? semanticLabel;
 
@@ -33,6 +37,7 @@ class GeoQuadrilateral extends StatelessWidget {
     this.style,
     this.mapper = CoordinateMapper.identity,
     this.size = const Size(200, 200),
+    this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
   }) : quad = Quadrilateral(
           Point(a.dx, a.dy),
@@ -48,6 +53,7 @@ class GeoQuadrilateral extends StatelessWidget {
     this.style,
     this.mapper = CoordinateMapper.identity,
     this.size = const Size(200, 200),
+    this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
   });
 
@@ -55,17 +61,14 @@ class GeoQuadrilateral extends StatelessWidget {
   Widget build(BuildContext context) {
     final resolved =
         style ?? ShapeStyleTheme.resolve(context, const ShapeStyle());
-    return Semantics(
-      label: semanticLabel,
-      child: RepaintBoundary(
-        child: CustomPaint(
-          size: size,
-          painter: QuadrilateralPainter(
-            quad: quad,
-            style: resolved,
-            mapper: mapper,
-          ),
-        ),
+    return GeoShapeContainer(
+      size: size,
+      clipBehavior: clipBehavior,
+      semanticLabel: semanticLabel,
+      painter: QuadrilateralPainter(
+        quad: quad,
+        style: resolved,
+        mapper: mapper,
       ),
     );
   }

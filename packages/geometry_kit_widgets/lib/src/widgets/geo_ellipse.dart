@@ -5,6 +5,7 @@ import '../coord/coordinate_mapper.dart';
 import '../painters/ellipse_painter.dart';
 import '../style/shape_style.dart';
 import '../style/shape_style_theme.dart';
+import 'geo_shape_container.dart';
 
 /// A widget that paints an [Ellipse] using a [CustomPainter].
 class GeoEllipse extends StatelessWidget {
@@ -20,6 +21,9 @@ class GeoEllipse extends StatelessWidget {
   /// Logical size of the widget.
   final Size size;
 
+  /// How content extending past [size] is clipped.
+  final Clip clipBehavior;
+
   /// Optional accessibility label.
   final String? semanticLabel;
 
@@ -32,6 +36,7 @@ class GeoEllipse extends StatelessWidget {
     this.style,
     this.mapper = CoordinateMapper.identity,
     this.size = const Size(200, 200),
+    this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
   }) : ellipse = Ellipse(
           center: Point(center.dx, center.dy),
@@ -46,6 +51,7 @@ class GeoEllipse extends StatelessWidget {
     this.style,
     this.mapper = CoordinateMapper.identity,
     this.size = const Size(200, 200),
+    this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
   });
 
@@ -53,17 +59,14 @@ class GeoEllipse extends StatelessWidget {
   Widget build(BuildContext context) {
     final resolved =
         style ?? ShapeStyleTheme.resolve(context, const ShapeStyle());
-    return Semantics(
-      label: semanticLabel,
-      child: RepaintBoundary(
-        child: CustomPaint(
-          size: size,
-          painter: EllipsePainter(
-            ellipse: ellipse,
-            style: resolved,
-            mapper: mapper,
-          ),
-        ),
+    return GeoShapeContainer(
+      size: size,
+      clipBehavior: clipBehavior,
+      semanticLabel: semanticLabel,
+      painter: EllipsePainter(
+        ellipse: ellipse,
+        style: resolved,
+        mapper: mapper,
       ),
     );
   }

@@ -38,7 +38,16 @@ class GeometryCanvas extends StatelessWidget {
   final CoordinateMapper mapper;
 
   /// Background color painted before any shape.
+  ///
+  /// `null` (default) leaves the canvas transparent so widgets stacked
+  /// underneath remain visible.
   final Color? backgroundColor;
+
+  /// How content drawn outside [size] is clipped.
+  ///
+  /// Defaults to [Clip.hardEdge] so shapes never bleed onto neighboring
+  /// widgets. Set to [Clip.none] to allow overflow.
+  final Clip clipBehavior;
 
   /// Creates a multi-shape canvas.
   const GeometryCanvas({
@@ -47,20 +56,23 @@ class GeometryCanvas extends StatelessWidget {
     required this.shapes,
     this.mapper = CoordinateMapper.identity,
     this.backgroundColor,
+    this.clipBehavior = Clip.hardEdge,
   });
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: CustomPaint(
-        size: size,
-        painter: _GeometryCanvasPainter(
-          shapes: shapes,
-          mapper: mapper,
-          backgroundColor: backgroundColor,
-        ),
+    Widget paint = CustomPaint(
+      size: size,
+      painter: _GeometryCanvasPainter(
+        shapes: shapes,
+        mapper: mapper,
+        backgroundColor: backgroundColor,
       ),
     );
+    if (clipBehavior != Clip.none) {
+      paint = ClipRect(clipBehavior: clipBehavior, child: paint);
+    }
+    return RepaintBoundary(child: paint);
   }
 }
 

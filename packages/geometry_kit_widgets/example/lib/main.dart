@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'demos/canvas_demo.dart';
 import 'demos/circle_demo.dart';
+import 'demos/clipping_demo.dart';
 import 'demos/coordinate_mapper_demo.dart';
 import 'demos/ellipse_demo.dart';
 import 'demos/line_demo.dart';
@@ -49,6 +50,7 @@ final _demos = <_Demo>[
   _Demo('GeometryCanvas', 'Multi-shape rendering', (_) => const CanvasDemo()),
   _Demo('ShapeStyleTheme', 'Inherited default style', (_) => const StyleDemo()),
   _Demo('CoordinateMapper', 'Y-up + centered origins', (_) => const CoordinateMapperDemo()),
+  _Demo('Clipping & layering', 'clipBehavior + Stack composition', (_) => const ClippingDemo()),
 ];
 
 class _Home extends StatelessWidget {

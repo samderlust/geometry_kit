@@ -1,1 +1,1 @@
-{"version":2,"entries":[{"package":"geometry_kits_mono","rootUri":"../","packageUri":"lib/"},{"package":"geometry_kit","rootUri":"../packages/geometry_kit/","packageUri":"lib/"}]}
+{"version":2,"entries":[{"package":"geometry_kits_mono","rootUri":"../","packageUri":"lib/"},{"package":"geometry_kit","rootUri":"../packages/geometry_kit/","packageUri":"lib/"},{"package":"geometry_kit_widgets","rootUri":"../packages/geometry_kit_widgets/","packageUri":"lib/"},{"package":"geometry_kit_widgets_example","rootUri":"../packages/geometry_kit_widgets/example/","packageUri":"lib/"}]}

@@ -5,26 +5,29 @@ import '../coord/coordinate_mapper.dart';
 import '../painters/circle_painter.dart';
 import '../style/shape_style.dart';
 import '../style/shape_style_theme.dart';
+import 'geo_shape_container.dart';
 
 /// A widget that paints a [Circle] using a [CustomPainter].
 ///
 /// Provides two constructors:
 ///
 /// - [GeoCircle] — flat parameters (`radius`, `center`); the widget builds
-///   the [Circle] internally. Easiest entry point.
-/// - [GeoCircle.fromGeometry] — pass an existing [Circle] computed by
-///   business logic.
+///   the [Circle] internally.
+/// - [GeoCircle.fromGeometry] — pass an existing [Circle].
 ///
 /// Style is resolved from the explicit [style] parameter, falling back to
 /// the closest [ShapeStyleTheme] ancestor, then to a default 1px black
-/// stroke. Coordinate transforms are applied via [mapper] (defaults to
-/// [CoordinateMapper.identity]).
+/// stroke. Coordinate transforms flow through [mapper]
+/// ([CoordinateMapper.identity] by default).
+///
+/// Content is clipped to [size] when [clipBehavior] is anything other than
+/// [Clip.none] — set [clipBehavior] to [Clip.none] to let the shape draw
+/// outside the widget bounds.
 class GeoCircle extends StatelessWidget {
   /// The geometry circle to paint.
   final Circle circle;
 
-  /// Style to apply. When `null`, falls back to [ShapeStyleTheme.of] then
-  /// to a default stroked black style.
+  /// Style override. When `null`, resolves through [ShapeStyleTheme].
   final ShapeStyle? style;
 
   /// Coordinate mapper. Defaults to [CoordinateMapper.identity].
@@ -32,6 +35,9 @@ class GeoCircle extends StatelessWidget {
 
   /// Logical size of the widget.
   final Size size;
+
+  /// How content extending past [size] is clipped.
+  final Clip clipBehavior;
 
   /// Optional accessibility label.
   final String? semanticLabel;
@@ -44,6 +50,7 @@ class GeoCircle extends StatelessWidget {
     this.style,
     this.mapper = CoordinateMapper.identity,
     this.size = const Size(200, 200),
+    this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
   }) : circle = Circle(
           radius: radius,
@@ -57,27 +64,22 @@ class GeoCircle extends StatelessWidget {
     this.style,
     this.mapper = CoordinateMapper.identity,
     this.size = const Size(200, 200),
+    this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
   });
 
   @override
   Widget build(BuildContext context) {
-    final resolved = style ??
-        ShapeStyleTheme.resolve(
-          context,
-          const ShapeStyle(),
-        );
-    return Semantics(
-      label: semanticLabel,
-      child: RepaintBoundary(
-        child: CustomPaint(
-          size: size,
-          painter: CirclePainter(
-            circle: circle,
-            style: resolved,
-            mapper: mapper,
-          ),
-        ),
+    final resolved =
+        style ?? ShapeStyleTheme.resolve(context, const ShapeStyle());
+    return GeoShapeContainer(
+      size: size,
+      clipBehavior: clipBehavior,
+      semanticLabel: semanticLabel,
+      painter: CirclePainter(
+        circle: circle,
+        style: resolved,
+        mapper: mapper,
       ),
     );
   }

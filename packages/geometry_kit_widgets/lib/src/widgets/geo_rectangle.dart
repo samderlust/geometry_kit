@@ -5,6 +5,7 @@ import '../coord/coordinate_mapper.dart';
 import '../painters/rectangle_painter.dart';
 import '../style/shape_style.dart';
 import '../style/shape_style_theme.dart';
+import 'geo_shape_container.dart';
 
 /// A widget that paints a [geo.Rectangle], optionally rounded.
 class GeoRectangle extends StatelessWidget {
@@ -23,6 +24,9 @@ class GeoRectangle extends StatelessWidget {
   /// Logical size of the widget.
   final Size size;
 
+  /// How content extending past [size] is clipped.
+  final Clip clipBehavior;
+
   /// Optional accessibility label.
   final String? semanticLabel;
 
@@ -37,6 +41,7 @@ class GeoRectangle extends StatelessWidget {
     this.mapper = CoordinateMapper.identity,
     this.cornerRadius = Radius.zero,
     this.size = const Size(200, 200),
+    this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
   }) : rectangle = geo.Rectangle(
           x: x,
@@ -53,6 +58,7 @@ class GeoRectangle extends StatelessWidget {
     this.mapper = CoordinateMapper.identity,
     this.cornerRadius = Radius.zero,
     this.size = const Size(200, 200),
+    this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
   });
 
@@ -60,18 +66,15 @@ class GeoRectangle extends StatelessWidget {
   Widget build(BuildContext context) {
     final resolved =
         style ?? ShapeStyleTheme.resolve(context, const ShapeStyle());
-    return Semantics(
-      label: semanticLabel,
-      child: RepaintBoundary(
-        child: CustomPaint(
-          size: size,
-          painter: RectanglePainter(
-            rectangle: rectangle,
-            style: resolved,
-            mapper: mapper,
-            cornerRadius: cornerRadius,
-          ),
-        ),
+    return GeoShapeContainer(
+      size: size,
+      clipBehavior: clipBehavior,
+      semanticLabel: semanticLabel,
+      painter: RectanglePainter(
+        rectangle: rectangle,
+        style: resolved,
+        mapper: mapper,
+        cornerRadius: cornerRadius,
       ),
     );
   }
