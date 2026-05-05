@@ -1,12 +1,3 @@
-/// A Dart package providing immutable 2D geometry primitives and utilities.
-///
-/// Includes [Point], [Line], [Circle], [Triangle], [Polygon], [Rectangle],
-/// [Ellipse], [Ray], [Arc], [Quadrilateral], [Ring], [Capsule], [Polyline],
-/// [QuadraticBezier], [CubicBezier], [Spline], and angle conversion tools.
-///
-/// All geometry classes are immutable — transform methods return new instances.
-library geometry_kit;
-
 export './src/interface/shape.dart';
 export './src/kit/angle_utils.dart';
 export './src/kit/arc.dart';
