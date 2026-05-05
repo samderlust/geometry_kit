@@ -1,10 +1,10 @@
 name: geometry_kit
 description: A set of utils that help with geometry (line, circle, triangle, polygon, arc, ring, capsule, bezier, spline, ellipse, rectangle, ray).
-version: 1.2.1
+version: 1.2.2
 
-homepage: https://github.com/samderlust/geometry_kits_mono/tree/main/packages/geometry_Kit
-repository: https://github.com/samderlust/geometry_kits_mono
-issue_tracker: https://github.com/samderlust/geometry_kits_mono/issues
+homepage: http://github.com/samderlust/geometry_kit/tree/main/packages/geometry_kit
+repository: https://github.com/samderlust/geometry_kit
+issue_tracker: https://github.com/samderlust/geometry_kit/issues
 
 topics:
   - geometry

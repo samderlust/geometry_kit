@@ -1,3 +1,7 @@
+## 1.2.2
+
+- update git hub info
+
 ## 1.2.1
 
 - **fix:** `Line` — tightened NaN checks across slope/intercept calculations

@@ -1,3 +1,7 @@
+## 0.1.1
+
+- update git info
+
 ## 0.1.0
 
 Initial release. Phase 1 of the widget library.
