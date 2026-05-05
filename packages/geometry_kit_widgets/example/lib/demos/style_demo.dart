@@ -14,6 +14,7 @@ class StyleDemo extends StatefulWidget {
 class _StyleDemoState extends State<StyleDemo> {
   Color _color = Colors.deepPurple;
   bool _dashed = false;
+  bool _isFilled = false;
 
   static const _palette = [
     Colors.deepPurple,
@@ -30,6 +31,7 @@ class _StyleDemoState extends State<StyleDemo> {
       strokeColor: _color,
       strokeWidth: 3,
       dashPattern: _dashed ? const DashPattern([8, 4]) : null,
+      fillColor: _isFilled ? _color.withValues(alpha: 0.3) : null,
     );
 
     return ListView(
@@ -71,7 +73,7 @@ class _StyleDemoState extends State<StyleDemo> {
                       radius: 50,
                       center: const Point(60, 60),
                     ),
-                    style: const ShapeStyle.filled(Colors.amber),
+                    // style: ShapeStyle.filled(_color),
                     size: const Size(120, 120),
                   ),
                 ],
@@ -116,6 +118,12 @@ class _StyleDemoState extends State<StyleDemo> {
                 title: const Text('Dashed stroke'),
                 value: _dashed,
                 onChanged: (v) => setState(() => _dashed = v),
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Filled'),
+                value: _isFilled,
+                onChanged: (v) => setState(() => _isFilled = v),
               ),
             ],
           ),
