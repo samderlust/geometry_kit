@@ -7,10 +7,6 @@
 
 ## 1.2.0
 
-- Released as part of `v1.2.0-dev` branch merge (see git history for details).
-
-## 1.0.0
-
 ### New Classes
 
 - **feat:** added `Rectangle` class with AABB constructors (`fromPoints`, `fromCenter`, `square`), containment, overlap detection, diagonal, corners, `intersectsLine()`, `intersectsCircle()`
