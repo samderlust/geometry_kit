@@ -16,7 +16,7 @@
     },
     {
       "name": "geometry_kit",
-      "version": "1.0.0",
+      "version": "1.2.1",
       "dependencies": [],
       "devDependencies": [
         "lints",

@@ -1,3 +1,14 @@
+## 1.2.1
+
+- **fix:** `Line` — tightened NaN checks across slope/intercept calculations
+- **refactor:** `Quadrilateral` and `Triangle` — clearer getter names for sides and special points
+- **docs:** expanded dartdoc on `Circle`, `Line`, `Point`, `Polygon`, `Quadrilateral`, `Ring`, `Triangle`, and `units`
+- **chore:** moved package into `geometry_kits_mono` monorepo alongside new `geometry_kit_widgets`
+
+## 1.2.0
+
+- Released as part of `v1.2.0-dev` branch merge (see git history for details).
+
 ## 1.0.0
 
 ### New Classes
