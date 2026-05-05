@@ -1,0 +1,25 @@
+name: geometry_kit_widgets_example
+description: Example app showcasing geometry_kit_widgets.
+publish_to: "none"
+version: 0.1.0+1
+
+resolution: workspace
+
+environment:
+  sdk: ^3.11.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  geometry_kit:
+    path: ../../geometry_Kit
+  geometry_kit_widgets:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
