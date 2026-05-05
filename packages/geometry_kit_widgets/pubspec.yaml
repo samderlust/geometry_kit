@@ -1,10 +1,10 @@
 name: geometry_kit_widgets
 description: Flutter widgets for geometry_kit shapes — CustomPainter-backed, styled, themable, and composable. Includes circle, ellipse, rectangle, triangle, polygon, line, and a multi-shape canvas.
-version: 0.1.0
+version: 0.1.1
 
-homepage: https://github.com/samderlust/geometry_kits_mono/tree/main/packages/geometry_kit_widgets
-repository: https://github.com/samderlust/geometry_kits_mono
-issue_tracker: https://github.com/samderlust/geometry_kits_mono/issues
+homepage: http://github.com/samderlust/geometry_kit/tree/main/packages/geometry_kit_widgets
+repository: https://github.com/samderlust/geometry_kit
+issue_tracker: https://github.com/samderlust/geometry_kit/issues
 
 topics:
   - geometry
