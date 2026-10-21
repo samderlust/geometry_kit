@@ -1,3 +1,5 @@
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/samderlust)
+
 # geometry_kit_3d
 
 Immutable 3D solids for Dart, built on [`geometry_kit`](../geometry_Kit).
@@ -141,3 +143,7 @@ final onAxis = ray.closestPointOnLine(pose.position, Point3.unitX);
 `Point3` (also used as a vector), `Quaternion`, `Transform3`, `Ray3`,
 `Segment3`, `Plane`, `PlaneFrame`, `Aabb`, `Mesh`, `MeshBuilder`,
 `OrbitCamera`.
+
+---
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/samderlust)

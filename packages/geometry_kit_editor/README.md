@@ -1,3 +1,5 @@
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/samderlust)
+
 # geometry_kit_editor
 
 Interactive editing for [`geometry_kit_widgets`](https://pub.dev/packages/geometry_kit_widgets)
@@ -73,3 +75,7 @@ class LiftTool extends EditorTool {
 
 editor.tool = LiftTool();
 ```
+
+---
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/samderlust)
