@@ -40,11 +40,11 @@ class GeoQuadrilateral extends StatelessWidget {
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
   }) : quad = Quadrilateral(
-          Point(a.dx, a.dy),
-          Point(b.dx, b.dy),
-          Point(c.dx, c.dy),
-          Point(d.dx, d.dy),
-        );
+         Point(a.dx, a.dy),
+         Point(b.dx, b.dy),
+         Point(c.dx, c.dy),
+         Point(d.dx, d.dy),
+       );
 
   /// Creates a quadrilateral widget from an existing [Quadrilateral].
   const GeoQuadrilateral.fromGeometry({

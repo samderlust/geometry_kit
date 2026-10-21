@@ -36,10 +36,10 @@ class GeoPolygon extends StatelessWidget {
     this.size = const Size(200, 200),
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
-  })  : assert(vertices.length >= 3),
-        polygon = Polygon(
-          vertices.map((o) => Point(o.dx, o.dy)).toList(growable: false),
-        );
+  }) : assert(vertices.length >= 3),
+       polygon = Polygon(
+         vertices.map((o) => Point(o.dx, o.dy)).toList(growable: false),
+       );
 
   /// Creates a polygon widget from an existing [Polygon] geometry.
   const GeoPolygon.fromGeometry({

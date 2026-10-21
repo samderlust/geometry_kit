@@ -166,7 +166,7 @@ class _GeoSceneState extends State<GeoScene> {
     }
     var next = _camera;
     if (widget.enableZoom && d.pointerCount > 1 && d.scale > 0) {
-      next = next.copyWith(distance: _startDistance / d.scale);
+      next = next.withDistance(_startDistance / d.scale);
     }
     if (widget.enableOrbit) {
       next = next.orbit(

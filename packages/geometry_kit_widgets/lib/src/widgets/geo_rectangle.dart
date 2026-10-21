@@ -43,12 +43,7 @@ class GeoRectangle extends StatelessWidget {
     this.size = const Size(200, 200),
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
-  }) : rectangle = geo.Rectangle(
-          x: x,
-          y: y,
-          width: width,
-          height: height,
-        );
+  }) : rectangle = geo.Rectangle(x: x, y: y, width: width, height: height);
 
   /// Creates a rectangle widget from an existing [geo.Rectangle] geometry.
   const GeoRectangle.fromGeometry({

@@ -48,41 +48,45 @@ void main() {
 
   group('Widgets render', () {
     testWidgets('GeoCircle paints', (tester) async {
-      await tester.pumpWidget(const Directionality(
-        textDirection: TextDirection.ltr,
-        child: Center(
-          child: GeoCircle.fromGeometry(
-            circle: Circle(center: Point(50, 50), radius: 30),
-            size: Size(100, 100),
+      await tester.pumpWidget(
+        const Directionality(
+          textDirection: TextDirection.ltr,
+          child: Center(
+            child: GeoCircle.fromGeometry(
+              circle: Circle(center: Point(50, 50), radius: 30),
+              size: Size(100, 100),
+            ),
           ),
         ),
-      ));
+      );
       expect(find.byType(GeoCircle), findsOneWidget);
     });
 
     testWidgets('GeometryCanvas paints mixed shapes', (tester) async {
-      await tester.pumpWidget(Directionality(
-        textDirection: TextDirection.ltr,
-        child: Center(
-          child: GeometryCanvas(
-            size: const Size(200, 200),
-            shapes: [
-              StyledShape(
-                const Circle(center: Point(50, 50), radius: 20),
-                style: const ShapeStyle.filled(Color(0xFF0000FF)),
-              ),
-              StyledShape(
-                Triangle(
-                  const Point(100, 100),
-                  const Point(180, 180),
-                  const Point(40, 180),
+      await tester.pumpWidget(
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: Center(
+            child: GeometryCanvas(
+              size: const Size(200, 200),
+              shapes: [
+                StyledShape(
+                  const Circle(center: Point(50, 50), radius: 20),
+                  style: const ShapeStyle.filled(Color(0xFF0000FF)),
                 ),
-                style: const ShapeStyle.stroked(Color(0xFF000000)),
-              ),
-            ],
+                StyledShape(
+                  Triangle(
+                    const Point(100, 100),
+                    const Point(180, 180),
+                    const Point(40, 180),
+                  ),
+                  style: const ShapeStyle.stroked(Color(0xFF000000)),
+                ),
+              ],
+            ),
           ),
         ),
-      ));
+      );
       expect(find.byType(GeometryCanvas), findsOneWidget);
     });
   });

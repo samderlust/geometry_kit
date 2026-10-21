@@ -39,10 +39,10 @@ class GeoEllipse extends StatelessWidget {
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
   }) : ellipse = Ellipse(
-          center: Point(center.dx, center.dy),
-          radiusX: radiusX,
-          radiusY: radiusY,
-        );
+         center: Point(center.dx, center.dy),
+         radiusX: radiusX,
+         radiusY: radiusY,
+       );
 
   /// Creates an ellipse widget from an existing [Ellipse] geometry.
   const GeoEllipse.fromGeometry({

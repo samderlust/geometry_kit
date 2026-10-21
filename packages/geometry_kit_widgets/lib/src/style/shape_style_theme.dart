@@ -22,17 +22,12 @@ class ShapeStyleTheme extends InheritedWidget {
   final ShapeStyle data;
 
   /// Creates a theme that supplies [data] to its [child] subtree.
-  const ShapeStyleTheme({
-    super.key,
-    required this.data,
-    required super.child,
-  });
+  const ShapeStyleTheme({super.key, required this.data, required super.child});
 
   /// Returns the [ShapeStyle] from the closest [ShapeStyleTheme] ancestor,
   /// or `null` if none is present.
   static ShapeStyle? of(BuildContext context) {
-    final theme =
-        context.dependOnInheritedWidgetOfExactType<ShapeStyleTheme>();
+    final theme = context.dependOnInheritedWidgetOfExactType<ShapeStyleTheme>();
     return theme?.data;
   }
 

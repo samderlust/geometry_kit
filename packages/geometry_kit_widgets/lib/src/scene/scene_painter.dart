@@ -2,24 +2,43 @@ import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:flutter/rendering.dart';
+import 'package:geometry_kit/geometry_kit.dart' show Point;
 import 'package:geometry_kit_3d/geometry_kit_3d.dart';
 
+import '../style/shape_style.dart';
 import '../util/paint_helpers.dart';
 import 'scene_node.dart';
 
 /// Caches triangle meshes and their sharp edges per solid.
 ///
-/// Solids are immutable, so a mesh built once for a solid instance stays
-/// valid; the cache is keyed by identity and segment count.
+/// Keyed by the solid's value (`==` / `hashCode`) and segment count, so a
+/// solid rebuilt with the same parameters in every `build()` still hits the
+/// cache. The least recently used entries are dropped beyond [capacity].
 class SceneMeshCache {
-  final _cache = Expando<Map<int, SceneMesh>>('SceneMeshCache');
+  /// Creates a cache holding up to [capacity] meshes.
+  SceneMeshCache({this.capacity = 256}) : assert(capacity > 0);
+
+  /// Maximum number of meshes kept.
+  final int capacity;
+
+  // A LinkedHashMap: iteration order is least to most recently used.
+  final _entries = <(Solid, int), SceneMesh>{};
+
+  /// Number of meshes currently cached.
+  int get length => _entries.length;
 
   /// Mesh for [node], built on first use.
   SceneMesh meshFor(GeoSolid node) {
-    final byCount = _cache[node.solid] ??= <int, SceneMesh>{};
-    return byCount[node.segments] ??= SceneMesh(
-      node.solid.toMesh(segments: node.segments),
-    );
+    final key = (node.solid, node.segments);
+    final hit = _entries.remove(key);
+    if (hit != null) {
+      _entries[key] = hit; // move to most recently used
+      return hit;
+    }
+    final built = SceneMesh(node.solid.toMesh(segments: node.segments));
+    _entries[key] = built;
+    if (_entries.length > capacity) _entries.remove(_entries.keys.first);
+    return built;
   }
 }
 
@@ -99,13 +118,12 @@ class ScenePainter extends CustomPainter {
     if (backgroundColor != null) {
       canvas.drawRect(Offset.zero & size, Paint()..color = backgroundColor!);
     }
-    final w = size.width, h = size.height;
-    final camPos = camera.position;
+    final cv = camera.view(size.width, size.height);
     final l = light.direction.normalized;
     final tris = <_Tri>[];
 
     for (final node in nodes) {
-      if (node is GeoPath3 && !node.overlay) _drawPath(canvas, size, node);
+      if (node is GeoPath3 && !node.overlay) _drawPath(canvas, cv, node);
     }
 
     for (final node in nodes) {
@@ -119,38 +137,59 @@ class ScenePainter extends CustomPainter {
       final edgeColor = node.style.strokeColor;
       final drawEdges = edgeColor != null && node.style.strokeWidth > 0;
 
-      final view = [for (final p in mesh.positions) camera.toView(p)];
-      final screen = List<Offset?>.filled(mesh.positions.length, null);
-      for (var i = 0; i < view.length; i++) {
-        final p = camera.project(mesh.positions[i], w, h);
-        if (p != null) screen[i] = Offset(p.x, p.y);
-      }
+      // One camera transform per vertex; screen positions derive from it.
+      final view = [for (final p in mesh.positions) cv.toView(p)];
+      final screen = [for (final v in view) _offset(cv.projectView(v))];
 
       final idx = mesh.indices;
       for (var t = 0; t < mesh.triangleCount; t++) {
         final ia = idx[t * 3], ib = idx[t * 3 + 1], ic = idx[t * 3 + 2];
-        final sa = screen[ia], sb = screen[ib], sc = screen[ic];
-        if (sa == null || sb == null || sc == null) continue;
+        final va = view[ia], vb = view[ib], vc = view[ic];
+        final near = cv.near;
+        if (va.z < near && vb.z < near && vc.z < near) continue;
+
         var n = sm.normals[t];
-        final toCam = camPos - mesh.positions[ia];
-        final facing = n.dot(toCam) > 0;
+        final facing = n.dot(cv.position - mesh.positions[ia]) > 0;
         if (!facing) {
           if (!translucent) continue;
           n = -n;
         }
         final diffuse = math.max(0.0, n.dot(l));
         final shade = light.ambient + light.intensity * diffuse;
-        final depth = (view[ia].z + view[ib].z + view[ic].z) / 3;
+        final depth = (va.z + vb.z + vc.z) / 3;
+
+        final List<Offset> points;
+        List<(Offset, Offset)>? edges;
+        if (screen[ia] != null && screen[ib] != null && screen[ic] != null) {
+          points = [screen[ia]!, screen[ib]!, screen[ic]!];
+          if (drawEdges && sm.creases[t].isNotEmpty) {
+            edges = [
+              for (final (a, b) in sm.creases[t]) (screen[a]!, screen[b]!),
+            ];
+          }
+        } else {
+          // Part of the triangle is behind the near plane: cut it there
+          // instead of dropping it.
+          points = [
+            for (final v in _clipToNear([va, vb, vc], near)) _onScreen(cv, v),
+          ];
+          if (drawEdges && sm.creases[t].isNotEmpty) {
+            edges = [
+              for (final (a, b) in sm.creases[t])
+                if (_clipSegment(view[a], view[b], near) case (
+                  final p,
+                  final q,
+                ))
+                  (_onScreen(cv, p), _onScreen(cv, q)),
+            ];
+          }
+        }
         tris.add(
           _Tri(
-            sa,
-            sb,
-            sc,
+            points,
             _shade(base, shade, alpha),
             depth,
-            drawEdges && sm.creases[t].isNotEmpty
-                ? [for (final (a, b) in sm.creases[t]) (screen[a], screen[b])]
-                : null,
+            edges,
             drawEdges ? node : null,
           ),
         );
@@ -164,11 +203,11 @@ class ScenePainter extends CustomPainter {
     for (final node in nodes) {
       switch (node) {
         case GeoPath3(overlay: true):
-          _drawPath(canvas, size, node);
+          _drawPath(canvas, cv, node);
         case GeoPath3():
           break;
         case GeoLabel3():
-          _drawLabel(canvas, size, node);
+          _drawLabel(canvas, cv, node);
         case GeoSolid():
           break;
       }
@@ -190,8 +229,11 @@ class ScenePainter extends CustomPainter {
     }
 
     for (final t in tris) {
-      positions.addAll([t.a, t.b, t.c]);
-      colors.addAll([t.color, t.color, t.color]);
+      final p = t.points;
+      for (var i = 1; i < p.length - 1; i++) {
+        positions.addAll([p[0], p[i], p[i + 1]]);
+        colors.addAll([t.color, t.color, t.color]);
+      }
       final edges = t.edges;
       if (edges == null) continue;
       // Edges must be painted in depth order too, so flush first.
@@ -205,34 +247,54 @@ class ScenePainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeCap = StrokeCap.round;
       for (final (a, b) in edges) {
-        if (a != null && b != null) canvas.drawLine(a, b, paint);
+        canvas.drawLine(a, b, paint);
       }
     }
     flush();
   }
 
-  void _drawPath(Canvas canvas, Size size, GeoPath3 node) {
+  void _drawPath(Canvas canvas, CameraView cv, GeoPath3 node) {
+    final pts = node.points;
+    if (pts.length < 2) return;
     final path = Path();
-    var started = false;
-    for (final p in node.points) {
-      final s = camera.project(p, size.width, size.height);
-      if (s == null) {
-        started = false;
+    final view = [for (final p in pts) cv.toView(p)];
+    final count = node.closed ? pts.length : pts.length - 1;
+    Offset? pen;
+    var allVisible = true;
+    for (var i = 0; i < count; i++) {
+      final seg = _clipSegment(view[i], view[(i + 1) % pts.length], cv.near);
+      if (seg == null) {
+        allVisible = false;
+        pen = null;
         continue;
       }
-      if (started) {
-        path.lineTo(s.x, s.y);
-      } else {
-        path.moveTo(s.x, s.y);
-        started = true;
+      final a = _onScreen(cv, seg.$1);
+      final b = _onScreen(cv, seg.$2);
+      if (seg.$1 != view[i] || seg.$2 != view[(i + 1) % pts.length]) {
+        allVisible = false;
       }
+      if (pen != a) path.moveTo(a.dx, a.dy);
+      path.lineTo(b.dx, b.dy);
+      pen = b;
     }
-    if (node.closed) path.close();
-    paintShapePath(canvas, path, node.style);
+    // Only fill a closed outline that is fully in front of the camera.
+    final s = node.style;
+    final style = node.closed && !allVisible
+        ? ShapeStyle(
+            strokeColor: s.strokeColor,
+            strokeWidth: s.strokeWidth,
+            opacity: s.opacity,
+            dashPattern: s.dashPattern,
+            strokeCap: s.strokeCap,
+            strokeJoin: s.strokeJoin,
+          )
+        : s;
+    if (node.closed && allVisible) path.close();
+    paintShapePath(canvas, path, style);
   }
 
-  void _drawLabel(Canvas canvas, Size size, GeoLabel3 node) {
-    final s = camera.project(node.position, size.width, size.height);
+  void _drawLabel(Canvas canvas, CameraView cv, GeoLabel3 node) {
+    final s = cv.project(node.position);
     if (s == null) return;
     final tp = TextPainter(
       text: TextSpan(text: node.text, style: node.style),
@@ -241,6 +303,40 @@ class ScenePainter extends CustomPainter {
     final dx = (node.alignment.x - 1) / 2 * tp.width;
     final dy = (node.alignment.y - 1) / 2 * tp.height;
     tp.paint(canvas, Offset(s.x + dx, s.y + dy));
+  }
+
+  static Offset? _offset(Point? p) => p == null ? null : Offset(p.x, p.y);
+
+  /// Projects a camera-space point already clipped to the near plane.
+  /// Clipped points can sit a rounding error behind it, so no near check.
+  static Offset _onScreen(CameraView cv, Point3 v) {
+    final z = math.max(v.z, cv.near);
+    return Offset(
+      cv.width / 2 + cv.focalLength * v.x / z,
+      cv.height / 2 - cv.focalLength * v.y / z,
+    );
+  }
+
+  /// Clips a camera-space polygon to the region `z >= near`
+  /// (Sutherland–Hodgman against one plane).
+  static List<Point3> _clipToNear(List<Point3> poly, double near) {
+    final out = <Point3>[];
+    for (var i = 0; i < poly.length; i++) {
+      final a = poly[i], b = poly[(i + 1) % poly.length];
+      final aIn = a.z >= near, bIn = b.z >= near;
+      if (aIn) out.add(a);
+      if (aIn != bIn) out.add(a.lerp(b, (near - a.z) / (b.z - a.z)));
+    }
+    return out;
+  }
+
+  /// The part of camera-space segment [a]–[b] with `z >= near`, or `null`.
+  static (Point3, Point3)? _clipSegment(Point3 a, Point3 b, double near) {
+    final aIn = a.z >= near, bIn = b.z >= near;
+    if (aIn && bIn) return (a, b);
+    if (!aIn && !bIn) return null;
+    final cut = a.lerp(b, (near - a.z) / (b.z - a.z));
+    return aIn ? (a, cut) : (cut, b);
   }
 
   static Color _shade(Color c, double k, double alpha) {
@@ -262,20 +358,13 @@ class ScenePainter extends CustomPainter {
 }
 
 class _Tri {
-  final Offset a, b, c;
+  /// Screen polygon: a triangle, or a quad when cut by the near plane.
+  final List<Offset> points;
   final Color color;
   final double depth;
-  final List<(Offset?, Offset?)>? edges;
+  final List<(Offset, Offset)>? edges;
   final GeoSolid? node;
-  const _Tri(
-    this.a,
-    this.b,
-    this.c,
-    this.color,
-    this.depth,
-    this.edges,
-    this.node,
-  );
+  const _Tri(this.points, this.color, this.depth, this.edges, this.node);
 }
 
 bool _nodesEqual(List<SceneNode> a, List<SceneNode> b) {

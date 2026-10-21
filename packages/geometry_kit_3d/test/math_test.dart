@@ -180,6 +180,31 @@ void main() {
       expect(cam.project(behind, 400, 300), isNull);
     });
 
+    test('view() matches project, toView and rayThrough', () {
+      final v = cam.view(400, 300);
+      const p = Point3(0.3, 0.8, -0.4);
+      final a = v.project(p)!, b = cam.project(p, 400, 300)!;
+      expect(a.x, closeTo(b.x, 1e-12));
+      expect(a.y, closeTo(b.y, 1e-12));
+      expect(v.toView(p), closeToPoint(cam.toView(p), 1e-12));
+      expect(v.rayThrough(a).distanceTo(p), closeTo(0, 1e-9));
+      expect(v.projectView(const Point3(1, 1, 0.01)), isNull);
+    });
+
+    test('zoom and withDistance stay within min and max distance', () {
+      const c = OrbitCamera(distance: 2, minDistance: 0.5, maxDistance: 10);
+      expect(c.zoom(0.01).distance, 0.5);
+      expect(c.zoom(100).distance, 10);
+      expect(c.zoom(2).distance, 4);
+      expect(c.withDistance(-3).distance, 0.5);
+      // Pinching can never move the camera through the target.
+      var z = c;
+      for (var i = 0; i < 50; i++) {
+        z = z.zoom(0.5);
+      }
+      expect(z.position.distanceTo(z.target), closeTo(0.5, 1e-9));
+    });
+
     test('orbit clamps pitch', () {
       expect(cam.orbit(pitch: 200).pitch, 89);
       expect(cam.orbit(yaw: 350).yaw, 20);

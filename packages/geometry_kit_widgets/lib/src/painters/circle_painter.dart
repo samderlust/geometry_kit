@@ -21,9 +21,7 @@ class CirclePainter extends CustomPainter {
     if (!style.isVisible) return;
     final center = mapper.toCanvas(circle.center.x, circle.center.y);
     final path = Path()
-      ..addOval(
-        Rect.fromCircle(center: center, radius: circle.radius),
-      );
+      ..addOval(Rect.fromCircle(center: center, radius: circle.radius));
     paintShapePath(canvas, path, style);
   }
 

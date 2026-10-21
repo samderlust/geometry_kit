@@ -9,6 +9,10 @@
 - Picking: `onTap` / `onHover` return a `SceneHit`; `onDragSolid` moves a
   grabbed solid on the horizontal plane.
 - `ScenePainter`, `SceneMeshCache`, `SceneMesh` exposed for custom painting.
+  The mesh cache is keyed by solid value (LRU, 256 entries), so solids
+  rebuilt in `build()` are not re-triangulated.
+- Faces and paths crossing the camera's near plane are clipped, not
+  dropped; pinch zoom stops at `OrbitCamera.minDistance`.
 
 ### Fixes
 

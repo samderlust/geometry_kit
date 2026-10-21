@@ -48,23 +48,23 @@ class ShapeStyle {
 
   /// A solid-fill style with no stroke.
   const ShapeStyle.filled(Color color)
-      : fillColor = color,
-        strokeColor = null,
-        strokeWidth = 0,
-        opacity = 1.0,
-        dashPattern = null,
-        strokeCap = StrokeCap.butt,
-        strokeJoin = StrokeJoin.miter;
+    : fillColor = color,
+      strokeColor = null,
+      strokeWidth = 0,
+      opacity = 1.0,
+      dashPattern = null,
+      strokeCap = StrokeCap.butt,
+      strokeJoin = StrokeJoin.miter;
 
   /// A stroke-only style with no fill.
   const ShapeStyle.stroked(Color color, {double width = 1.0})
-      : fillColor = null,
-        strokeColor = color,
-        strokeWidth = width,
-        opacity = 1.0,
-        dashPattern = null,
-        strokeCap = StrokeCap.butt,
-        strokeJoin = StrokeJoin.miter;
+    : fillColor = null,
+      strokeColor = color,
+      strokeWidth = width,
+      opacity = 1.0,
+      dashPattern = null,
+      strokeCap = StrokeCap.butt,
+      strokeJoin = StrokeJoin.miter;
 
   /// Returns a copy of this style with the given fields replaced.
   ShapeStyle copyWith({
@@ -106,12 +106,12 @@ class ShapeStyle {
 
   @override
   int get hashCode => Object.hash(
-        fillColor,
-        strokeColor,
-        strokeWidth,
-        opacity,
-        dashPattern,
-        strokeCap,
-        strokeJoin,
-      );
+    fillColor,
+    strokeColor,
+    strokeWidth,
+    opacity,
+    dashPattern,
+    strokeCap,
+    strokeJoin,
+  );
 }

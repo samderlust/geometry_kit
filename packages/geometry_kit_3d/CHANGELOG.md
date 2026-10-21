@@ -28,4 +28,6 @@ Initial release.
 
 - `Mesh` with volume, surface area, merge, transforms, packed GPU buffers,
   `toObj()` and `toStl()`; `MeshBuilder`.
-- `OrbitCamera` with `project` and `rayThrough` for screen ↔ world.
+- `OrbitCamera` with `project` and `rayThrough` for screen ↔ world;
+  `view()` returns a `CameraView` that computes the camera axes once for
+  bulk projection; `zoom` / `withDistance` clamp to `minDistance`…`maxDistance`.

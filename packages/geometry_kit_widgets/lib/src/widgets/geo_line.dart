@@ -62,11 +62,7 @@ class GeoLine extends StatelessWidget {
       size: size,
       clipBehavior: clipBehavior,
       semanticLabel: semanticLabel,
-      painter: LinePainter(
-        line: line,
-        style: resolved,
-        mapper: mapper,
-      ),
+      painter: LinePainter(line: line, style: resolved, mapper: mapper),
     );
   }
 }

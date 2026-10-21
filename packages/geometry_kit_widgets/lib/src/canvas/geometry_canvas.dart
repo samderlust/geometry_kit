@@ -102,23 +102,41 @@ class _GeometryCanvasPainter extends CustomPainter {
 
   void _dispatch(Canvas canvas, Size size, geo.Shape shape, ShapeStyle style) {
     if (shape is geo.Circle) {
-      CirclePainter(circle: shape, style: style, mapper: mapper)
-          .paint(canvas, size);
+      CirclePainter(
+        circle: shape,
+        style: style,
+        mapper: mapper,
+      ).paint(canvas, size);
     } else if (shape is geo.Ellipse) {
-      EllipsePainter(ellipse: shape, style: style, mapper: mapper)
-          .paint(canvas, size);
+      EllipsePainter(
+        ellipse: shape,
+        style: style,
+        mapper: mapper,
+      ).paint(canvas, size);
     } else if (shape is geo.Rectangle) {
-      RectanglePainter(rectangle: shape, style: style, mapper: mapper)
-          .paint(canvas, size);
+      RectanglePainter(
+        rectangle: shape,
+        style: style,
+        mapper: mapper,
+      ).paint(canvas, size);
     } else if (shape is geo.Triangle) {
-      TrianglePainter(triangle: shape, style: style, mapper: mapper)
-          .paint(canvas, size);
+      TrianglePainter(
+        triangle: shape,
+        style: style,
+        mapper: mapper,
+      ).paint(canvas, size);
     } else if (shape is geo.Quadrilateral) {
-      QuadrilateralPainter(quad: shape, style: style, mapper: mapper)
-          .paint(canvas, size);
+      QuadrilateralPainter(
+        quad: shape,
+        style: style,
+        mapper: mapper,
+      ).paint(canvas, size);
     } else if (shape is geo.Polygon) {
-      PolygonPainter(polygon: shape, style: style, mapper: mapper)
-          .paint(canvas, size);
+      PolygonPainter(
+        polygon: shape,
+        style: style,
+        mapper: mapper,
+      ).paint(canvas, size);
     } else {
       // Lines aren't a Shape subtype in geometry_kit; users supply Line via
       // a separate path. Future shape types fall through silently.

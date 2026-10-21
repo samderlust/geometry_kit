@@ -55,15 +55,12 @@ class CoordinateMapper {
       Offset(cx - origin.dx, (yUp ? -1 : 1) * (cy - origin.dy));
 
   /// Maps a canvas-space [Offset] to geometry space.
-  Offset offsetFromCanvas(Offset canvas) =>
-      fromCanvas(canvas.dx, canvas.dy);
+  Offset offsetFromCanvas(Offset canvas) => fromCanvas(canvas.dx, canvas.dy);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is CoordinateMapper &&
-          other.origin == origin &&
-          other.yUp == yUp);
+      (other is CoordinateMapper && other.origin == origin && other.yUp == yUp);
 
   @override
   int get hashCode => Object.hash(origin, yUp);

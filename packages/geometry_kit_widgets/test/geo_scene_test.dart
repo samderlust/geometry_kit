@@ -37,7 +37,73 @@ void main() {
     });
   });
 
+  group('SceneMeshCache', () {
+    test('equal solids built separately share one mesh', () {
+      final cache = SceneMeshCache();
+      // A new instance every call, like a solid built inside build().
+      GeoSolid fresh() =>
+          GeoSolid(Cylinder(baseCenter: Point3.zero, radius: 1, height: 2));
+      final first = cache.meshFor(fresh());
+      expect(identical(cache.meshFor(fresh()), first), isTrue);
+      expect(cache.length, 1);
+    });
+
+    test('segment count is part of the key', () {
+      final cache = SceneMeshCache();
+      const ball = Sphere(center: Point3.zero, radius: 1);
+      final coarse = cache.meshFor(const GeoSolid(ball, segments: 8));
+      final fine = cache.meshFor(const GeoSolid(ball, segments: 32));
+      expect(identical(coarse, fine), isFalse);
+      expect(cache.length, 2);
+    });
+
+    test('drops the least recently used mesh beyond capacity', () {
+      final cache = SceneMeshCache(capacity: 2);
+      GeoSolid ball(double r) =>
+          GeoSolid(Sphere(center: Point3.zero, radius: r), segments: 8);
+      final a = cache.meshFor(ball(1));
+      cache.meshFor(ball(2));
+      expect(identical(cache.meshFor(ball(1)), a), isTrue); // a is now newest
+      cache.meshFor(ball(3)); // evicts radius 2, not a
+      expect(cache.length, 2);
+      expect(identical(cache.meshFor(ball(1)), a), isTrue);
+    });
+  });
+
   group('ScenePainter', () {
+    test('clips faces crossing the near plane instead of dropping them', () {
+      // A huge floor slab under the camera: its top face reaches behind the
+      // camera, and every other face is culled.
+      final floor = GeoSolid(
+        Box(
+          center: const Point3(0, -1, 0),
+          width: 100,
+          height: 0.1,
+          depth: 100,
+        ),
+      );
+      final painter = ScenePainter(
+        nodes: [floor],
+        camera: const OrbitCamera(yaw: 0, pitch: 20, distance: 3),
+        cache: SceneMeshCache(),
+      );
+      final recorder = PictureRecorder();
+      painter.paint(Canvas(recorder), const Size(300, 300));
+      recorder.endRecording();
+      expect(painter.lastTriangleCount, 2);
+    });
+
+    test('paths that run behind the camera still draw', () {
+      final painter = ScenePainter(
+        nodes: GeoPath3.grid(extent: 50, step: 5),
+        camera: const OrbitCamera(yaw: 0, pitch: 20, distance: 3),
+        cache: SceneMeshCache(),
+      );
+      final recorder = PictureRecorder();
+      painter.paint(Canvas(recorder), const Size(300, 300));
+      expect(recorder.endRecording, returnsNormally);
+    });
+
     test('culls back faces of opaque solids', () {
       final painter = ScenePainter(
         nodes: [crate],
