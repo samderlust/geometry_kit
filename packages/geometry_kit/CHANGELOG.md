@@ -1,3 +1,8 @@
+## 1.2.3
+
+- **docs:** README shows a rendered image of the 2D shapes, also listed
+  under `screenshots:` for the pub.dev gallery. No code changes.
+
 ## 1.2.2
 
 - update git hub info
