@@ -210,4 +210,97 @@ void main() {
       expect(cam.orbit(yaw: 350).yaw, 20);
     });
   });
+
+  group('Quaternion.toAxisAngle', () {
+    test('round-trips fromAxisAngle', () {
+      const dir = Point3(1, 2, -0.5);
+      for (final deg in const [10.0, 90.0, 179.0]) {
+        final (:axis, :degrees) =
+            Quaternion.fromAxisAngle(dir, deg).toAxisAngle();
+        expect(degrees, closeTo(deg, 1e-9));
+        expect(axis, closeToPoint(dir.normalized));
+      }
+    });
+
+    test('keeps tiny angles instead of rounding them to zero', () {
+      for (final deg in const [1e-3, 1e-6, 1e-9]) {
+        final r = Quaternion.fromAxisAngle(Point3.unitX, deg).toAxisAngle();
+        expect(r.degrees, closeTo(deg, deg * 1e-9));
+        expect(r.axis, closeToPoint(Point3.unitX));
+      }
+    });
+
+    test('takes the short way round and handles identity', () {
+      final q = Quaternion.fromAxisAngle(Point3.unitZ, 270);
+      final r = q.toAxisAngle();
+      expect(r.degrees, closeTo(90, 1e-9));
+      expect(r.axis, closeToPoint(-Point3.unitZ));
+      expect(Quaternion.identity.toAxisAngle().degrees, 0);
+    });
+  });
+
+  group('Ray3.closestPointOnLine', () {
+    test('finds the point on a skew line', () {
+      // Ray along -z at x = 2, y = 1; line is the x axis.
+      final ray = Ray3(const Point3(2, 1, 5), const Point3(0, 0, -1));
+      expect(
+        ray.closestPointOnLine(Point3.zero, const Point3(3, 0, 0)),
+        closeToPoint(const Point3(2, 0, 0)),
+      );
+    });
+
+    test('parallel lines give null', () {
+      final ray = Ray3(const Point3(0, 1, 0), Point3.unitX);
+      expect(ray.closestPointOnLine(Point3.zero, Point3.unitX), isNull);
+    });
+  });
+
+  group('Transform3', () {
+    final t = Transform3(
+      position: const Point3(2, -1, 0.5),
+      rotation: Quaternion.fromAxisAngle(const Point3(1, 1, 0), 40),
+      scale: 1.5,
+    );
+    const p = Point3(0.3, -0.7, 2);
+
+    test('apply is scale, then rotate, then translate', () {
+      expect(t.apply(p), closeToPoint(t.position + t.rotation.rotate(p * 1.5)));
+      expect(Transform3.identity.apply(p), p);
+    });
+
+    test('inverse undoes it and composition matches nesting', () {
+      expect(t.inverse.apply(t.apply(p)), closeToPoint(p));
+      expect((t * t.inverse).isCloseTo(Transform3.identity), isTrue);
+      final u = Transform3.identity.rotated(Point3.unitZ, 30).translated(
+            const Point3(0, 1, 0),
+          );
+      expect((t * u).apply(p), closeToPoint(t.apply(u.apply(p))));
+    });
+
+    test('applyTo matches transforming the solid by hand', () {
+      final box = Box(
+        center: const Point3(0.2, 0, 0),
+        width: 1,
+        height: 2,
+        depth: 0.5,
+      );
+      final placed = t.applyTo(box) as Box;
+      final (:axis, :degrees) = t.rotation.toAxisAngle();
+      final byHand =
+          box.scale(1.5).rotate(axis, degrees).translate(x: 2, y: -1, z: 0.5);
+      expect(placed.center, closeToPoint(byHand.center));
+      expect(placed.center, closeToPoint(t.apply(box.center)));
+      expect(placed.width, closeTo(1.5, 1e-12));
+      expect(placed.rotation.isCloseTo(t.rotation), isTrue);
+      expect(placed.volume, closeTo(box.volume * 1.5 * 1.5 * 1.5, 1e-9));
+    });
+
+    test('rotated and scaled default to the position as pivot', () {
+      final r = t.rotated(Point3.unitY, 90);
+      expect(r.position, t.position);
+      final s = t.scaled(2, pivot: Point3.zero);
+      expect(s.position, closeToPoint(t.position * 2));
+      expect(s.scale, 3);
+    });
+  });
 }

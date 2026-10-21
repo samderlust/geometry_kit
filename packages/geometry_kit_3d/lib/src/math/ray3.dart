@@ -31,6 +31,23 @@ class Ray3 {
   /// Shortest distance from the ray to [point].
   double distanceTo(Point3 point) => closestPoint(point).distanceTo(point);
 
+  /// Point on the infinite line through [linePoint] along [lineDirection]
+  /// that comes closest to this ray's line, or `null` when the two are
+  /// (nearly) parallel.
+  ///
+  /// Use it to drag along an axis: cast a ray through the pointer and take
+  /// the closest point on the axis.
+  Point3? closestPointOnLine(Point3 linePoint, Point3 lineDirection) {
+    final u = lineDirection.normalized;
+    if (u == Point3.zero) return null;
+    final b = direction.dot(u);
+    final denom = 1 - b * b;
+    if (denom < 1e-9) return null;
+    final w = origin - linePoint;
+    final s = (u.dot(w) - b * direction.dot(w)) / denom;
+    return linePoint + u * s;
+  }
+
   @override
   bool operator ==(Object other) =>
       other is Ray3 && other.origin == origin && other.direction == direction;

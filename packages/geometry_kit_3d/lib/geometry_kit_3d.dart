@@ -18,6 +18,7 @@ export 'src/math/point3.dart';
 export 'src/math/quaternion.dart';
 export 'src/math/ray3.dart';
 export 'src/math/segment3.dart';
+export 'src/math/transform3.dart';
 export 'src/mesh/mesh.dart';
 export 'src/solid/box.dart';
 export 'src/solid/cone.dart';
