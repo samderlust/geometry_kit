@@ -342,6 +342,11 @@ GeoScene(
 | `GeoSolid`  | Any `Solid`, shaded by the scene light; edges from `strokeColor` |
 | `GeoPath3`  | A 3D polyline (on top of solids, or underneath with `overlay: false`) |
 | `GeoLabel3` | Text pinned to a 3D point                                   |
+| `GeoHandle` | A fixed-size dot or square at a 3D point, drawn on top and picked on screen |
+
+Give a `GeoSolid` a `transform` (`Transform3`) to place a local-space solid:
+the mesh is cached once and moved at paint time, so animating or dragging it
+never re-triangulates.
 
 Gestures: drag to orbit, pinch or scroll to zoom. `onTap` / `onHover` report a
 `SceneHit` (the node plus distance, point and normal). Set `onDragSolid` and

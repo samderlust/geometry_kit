@@ -117,7 +117,27 @@ final touching = solids.where(drone.intersects); // exact, after a bounds check
 
 `Box.intersectsBox` runs a separating-axis test for two oriented boxes.
 
+### Keep a pose with Transform3
+
+Transforms on a solid are baked into its fields, so a box rotated twice
+cannot tell you how far it was turned. Keep the solid in local space and
+its placement in a `Transform3` (position, rotation, uniform scale) when you
+need the pose itself, for example in an editor:
+
+```dart
+final crate = Box.cube(center: Point3.zero, size: 1); // local space
+var pose = const Transform3(position: Point3(0, 0.5, 0));
+
+pose = pose.rotated(Point3.unitY, 30).translated(const Point3(1, 0, 0));
+final placed = pose.applyTo(crate);        // the solid in world space
+final (:axis, :degrees) = pose.rotation.toAxisAngle(); // 30° about +Y
+
+// Drag along the x axis: closest point on the axis to the pointer ray.
+final onAxis = ray.closestPointOnLine(pose.position, Point3.unitX);
+```
+
 ## Math types
 
-`Point3` (also used as a vector), `Quaternion`, `Ray3`, `Segment3`, `Plane`,
-`PlaneFrame`, `Aabb`, `Mesh`, `MeshBuilder`, `OrbitCamera`.
+`Point3` (also used as a vector), `Quaternion`, `Transform3`, `Ray3`,
+`Segment3`, `Plane`, `PlaneFrame`, `Aabb`, `Mesh`, `MeshBuilder`,
+`OrbitCamera`.
