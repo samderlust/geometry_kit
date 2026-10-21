@@ -17,6 +17,13 @@ import 'shape_style.dart';
 ///   ]),
 /// )
 /// ```
+///
+/// Field-level merging: when a child supplies an explicit override,
+/// [ShapeStyleTheme.resolve] runs `explicit.merge(ambient)`. Fields the child
+/// leaves `null` fall back to the ambient theme's values. Because the
+/// default [ShapeStyle] constructor bakes in concrete values for
+/// `strokeWidth`, `opacity`, `strokeCap`, and `strokeJoin`, those fields
+/// must be explicitly nulled in the override to inherit through.
 class ShapeStyleTheme extends InheritedWidget {
   /// The style applied to descendants that don't supply their own.
   final ShapeStyle data;
@@ -31,10 +38,20 @@ class ShapeStyleTheme extends InheritedWidget {
     return theme?.data;
   }
 
-  /// Returns the [ShapeStyle] from the closest ancestor, or [fallback] if
-  /// none is present.
-  static ShapeStyle resolve(BuildContext context, ShapeStyle fallback) {
-    return of(context) ?? fallback;
+  /// Resolves the effective style for a widget.
+  ///
+  /// - When [explicit] is non-null, returns `explicit.merge(ambient)` — null
+  ///   fields in the override fall back to the closest [ShapeStyleTheme].
+  /// - When [explicit] is null, returns the closest theme's data, or
+  ///   [fallback] (default `const ShapeStyle()`) if no theme is present.
+  static ShapeStyle resolve(
+    BuildContext context,
+    ShapeStyle? explicit, {
+    ShapeStyle fallback = const ShapeStyle(),
+  }) {
+    final ambient = of(context);
+    if (explicit == null) return ambient ?? fallback;
+    return explicit.merge(ambient);
   }
 
   @override

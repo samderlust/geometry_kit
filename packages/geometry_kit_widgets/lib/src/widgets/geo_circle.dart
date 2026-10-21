@@ -5,6 +5,7 @@ import '../coord/coordinate_mapper.dart';
 import '../painters/circle_painter.dart';
 import '../style/shape_style.dart';
 import '../style/shape_style_theme.dart';
+import '../util/shape_path.dart';
 import 'geo_shape_container.dart';
 
 /// A widget that paints a [Circle] using a [CustomPainter].
@@ -42,6 +43,12 @@ class GeoCircle extends StatelessWidget {
   /// Optional accessibility label.
   final String? semanticLabel;
 
+  /// Fires when the pointer is released inside the shape outline.
+  final VoidCallback? onTap;
+
+  /// Fires with `true` on hover entry, `false` on exit.
+  final ValueChanged<bool>? onHoverChanged;
+
   /// Creates a circle widget from a [radius] and [center].
   GeoCircle({
     super.key,
@@ -52,6 +59,8 @@ class GeoCircle extends StatelessWidget {
     this.size = const Size(200, 200),
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
+    this.onTap,
+    this.onHoverChanged,
   }) : circle = Circle(radius: radius, center: Point(center.dx, center.dy));
 
   /// Creates a circle widget from an existing [Circle] geometry.
@@ -63,16 +72,20 @@ class GeoCircle extends StatelessWidget {
     this.size = const Size(200, 200),
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
+    this.onTap,
+    this.onHoverChanged,
   });
 
   @override
   Widget build(BuildContext context) {
-    final resolved =
-        style ?? ShapeStyleTheme.resolve(context, const ShapeStyle());
+    final resolved = ShapeStyleTheme.resolve(context, style);
     return GeoShapeContainer(
       size: size,
       clipBehavior: clipBehavior,
       semanticLabel: semanticLabel,
+      interactionPathBuilder: () => shapeToPath(circle, mapper),
+      onTap: onTap,
+      onHoverChanged: onHoverChanged,
       painter: CirclePainter(circle: circle, style: resolved, mapper: mapper),
     );
   }

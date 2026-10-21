@@ -5,9 +5,17 @@ import '../coord/coordinate_mapper.dart';
 import '../painters/triangle_painter.dart';
 import '../style/shape_style.dart';
 import '../style/shape_style_theme.dart';
+import '../util/shape_path.dart';
 import 'geo_shape_container.dart';
 
 /// A widget that paints a [Triangle] from three vertices.
+///
+/// Two constructors: [GeoTriangle] from three `Offset`s, or
+/// [GeoTriangle.fromGeometry] from an existing [Triangle]. Style flows
+/// from [style], the closest [ShapeStyleTheme], or a default 1px black
+/// stroke. [onTap] / [onHoverChanged] hit-test against the triangle
+/// outline — taps in the widget rect but outside the three edges are
+/// ignored.
 class GeoTriangle extends StatelessWidget {
   /// The geometry triangle to paint.
   final Triangle triangle;
@@ -27,6 +35,12 @@ class GeoTriangle extends StatelessWidget {
   /// Optional accessibility label.
   final String? semanticLabel;
 
+  /// Fires when the pointer is released inside the shape outline.
+  final VoidCallback? onTap;
+
+  /// Fires with `true` on hover entry, `false` on exit.
+  final ValueChanged<bool>? onHoverChanged;
+
   /// Creates a triangle widget from three vertex offsets.
   GeoTriangle({
     super.key,
@@ -38,6 +52,8 @@ class GeoTriangle extends StatelessWidget {
     this.size = const Size(200, 200),
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
+    this.onTap,
+    this.onHoverChanged,
   }) : triangle = Triangle(
          Point(a.dx, a.dy),
          Point(b.dx, b.dy),
@@ -53,16 +69,20 @@ class GeoTriangle extends StatelessWidget {
     this.size = const Size(200, 200),
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
+    this.onTap,
+    this.onHoverChanged,
   });
 
   @override
   Widget build(BuildContext context) {
-    final resolved =
-        style ?? ShapeStyleTheme.resolve(context, const ShapeStyle());
+    final resolved = ShapeStyleTheme.resolve(context, style);
     return GeoShapeContainer(
       size: size,
       clipBehavior: clipBehavior,
       semanticLabel: semanticLabel,
+      interactionPathBuilder: () => shapeToPath(triangle, mapper),
+      onTap: onTap,
+      onHoverChanged: onHoverChanged,
       painter: TrianglePainter(
         triangle: triangle,
         style: resolved,

@@ -4,12 +4,22 @@ import 'package:geometry_kit/geometry_kit.dart';
 import '../coord/coordinate_mapper.dart';
 import '../style/shape_style.dart';
 import '../util/paint_helpers.dart';
+import '../util/shape_path.dart';
 
+/// [CustomPainter] that draws a [Triangle] from three vertices.
+///
+/// Backs [GeoTriangle]. Path construction is shared via [shapeToPath].
 class TrianglePainter extends CustomPainter {
+  /// The geometry triangle to paint.
   final Triangle triangle;
+
+  /// Resolved style applied to the triangle.
   final ShapeStyle style;
+
+  /// Mapper from geometry coordinates to canvas coordinates.
   final CoordinateMapper mapper;
 
+  /// Creates a triangle painter.
   const TrianglePainter({
     required this.triangle,
     required this.style,
@@ -19,15 +29,7 @@ class TrianglePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (!style.isVisible) return;
-    final a = mapper.toCanvas(triangle.a.x, triangle.a.y);
-    final b = mapper.toCanvas(triangle.b.x, triangle.b.y);
-    final c = mapper.toCanvas(triangle.c.x, triangle.c.y);
-    final path = Path()
-      ..moveTo(a.dx, a.dy)
-      ..lineTo(b.dx, b.dy)
-      ..lineTo(c.dx, c.dy)
-      ..close();
-    paintShapePath(canvas, path, style);
+    paintShapePath(canvas, shapeToPath(triangle, mapper), style);
   }
 
   @override

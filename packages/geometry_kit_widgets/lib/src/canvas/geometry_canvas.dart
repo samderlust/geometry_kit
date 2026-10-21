@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:geometry_kit/geometry_kit.dart' as geo;
 
@@ -9,12 +10,14 @@ import '../painters/quadrilateral_painter.dart';
 import '../painters/rectangle_painter.dart';
 import '../painters/triangle_painter.dart';
 import '../style/shape_style.dart';
+import '../util/shape_path.dart';
 import 'styled_shape.dart';
 
 /// Renders an arbitrary list of [StyledShape]s onto a single canvas.
 ///
-/// Phase 1: render only. Hit testing, drag, and grid/axes overlays are
-/// scheduled for later phases.
+/// Per-shape `onTap` and `onHoverChanged` callbacks dispatch top-down:
+/// the topmost shape covering the pointer wins, and shapes painted earlier
+/// (visually below) do not see the event.
 ///
 /// ```dart
 /// GeometryCanvas(
@@ -23,11 +26,12 @@ import 'styled_shape.dart';
 ///     StyledShape(
 ///       Circle(center: Point(100, 100), radius: 50),
 ///       style: ShapeStyle.filled(Colors.blue),
+///       onTap: () => print('blue'),
 ///     ),
 ///   ],
 /// )
 /// ```
-class GeometryCanvas extends StatelessWidget {
+class GeometryCanvas extends StatefulWidget {
   /// Logical size of the canvas.
   final Size size;
 
@@ -60,19 +64,93 @@ class GeometryCanvas extends StatelessWidget {
   });
 
   @override
+  State<GeometryCanvas> createState() => _GeometryCanvasState();
+}
+
+class _GeometryCanvasState extends State<GeometryCanvas> {
+  StyledShape? _hovered;
+
+  bool get _hasInteraction =>
+      widget.shapes.any((s) => s.onTap != null || s.onHoverChanged != null);
+
+  StyledShape? _topShapeAt(Offset position) {
+    for (var i = widget.shapes.length - 1; i >= 0; i--) {
+      final s = widget.shapes[i];
+      if (s.onTap == null && s.onHoverChanged == null) continue;
+      try {
+        final path = shapeToPath(s.shape, widget.mapper);
+        if (path.contains(position)) return s;
+      } on UnsupportedError {
+        continue;
+      }
+    }
+    return null;
+  }
+
+  void _setHovered(StyledShape? next) {
+    if (identical(next, _hovered)) return;
+    _hovered?.onHoverChanged?.call(false);
+    _hovered = next;
+    next?.onHoverChanged?.call(true);
+  }
+
+  void _onPointerHover(Offset position) {
+    _setHovered(_topShapeAt(position));
+  }
+
+  void _onTapUp(TapUpDetails details) {
+    final hit = _topShapeAt(details.localPosition);
+    hit?.onTap?.call();
+  }
+
+  @override
+  void didUpdateWidget(covariant GeometryCanvas old) {
+    super.didUpdateWidget(old);
+    if (!_hasInteraction && _hovered != null) {
+      _hovered?.onHoverChanged?.call(false);
+      _hovered = null;
+    }
+  }
+
+  @override
+  void dispose() {
+    _hovered?.onHoverChanged?.call(false);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Widget paint = CustomPaint(
-      size: size,
+      size: widget.size,
       painter: _GeometryCanvasPainter(
-        shapes: shapes,
-        mapper: mapper,
-        backgroundColor: backgroundColor,
+        shapes: widget.shapes,
+        mapper: widget.mapper,
+        backgroundColor: widget.backgroundColor,
       ),
     );
-    if (clipBehavior != Clip.none) {
-      paint = ClipRect(clipBehavior: clipBehavior, child: paint);
+    if (widget.clipBehavior != Clip.none) {
+      paint = ClipRect(clipBehavior: widget.clipBehavior, child: paint);
     }
-    return RepaintBoundary(child: paint);
+    paint = RepaintBoundary(child: paint);
+    if (!_hasInteraction) return paint;
+
+    return MouseRegion(
+      opaque: false,
+      onHover: (e) => _onPointerHover(e.localPosition),
+      onExit: (_) => _setHovered(null),
+      child: Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerHover: (e) {
+          if (e.kind == PointerDeviceKind.mouse) return;
+          _onPointerHover(e.localPosition);
+        },
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTapUp: _onTapUp,
+          child: paint,
+        ),
+      ),
+    );
   }
 }
 

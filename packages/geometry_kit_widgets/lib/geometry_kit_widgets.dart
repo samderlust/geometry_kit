@@ -11,6 +11,7 @@
 library;
 
 export 'src/coord/coordinate_mapper.dart';
+export 'src/style/animated_shape_style.dart';
 export 'src/style/dash_pattern.dart';
 export 'src/style/shape_style.dart';
 export 'src/style/shape_style_theme.dart';
@@ -21,6 +22,7 @@ export 'src/scene/scene_interaction.dart';
 export 'src/scene/scene_node.dart';
 export 'src/scene/scene_painter.dart';
 export 'src/scene/scene_viewport.dart';
+export 'src/util/shape_path.dart';
 export 'src/widgets/geo_circle.dart';
 export 'src/widgets/geo_ellipse.dart';
 export 'src/widgets/geo_line.dart';
@@ -28,3 +30,5 @@ export 'src/widgets/geo_polygon.dart';
 export 'src/widgets/geo_quadrilateral.dart';
 export 'src/widgets/geo_rectangle.dart';
 export 'src/widgets/geo_triangle.dart';
+export 'src/widgets/shape_clipper.dart';
+export 'src/widgets/shape_widget.dart';

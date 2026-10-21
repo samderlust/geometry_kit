@@ -131,11 +131,12 @@ class ScenePainter extends CustomPainter {
       final sm = cache.meshFor(node);
       final mesh = sm.mesh;
       final base = node.style.fillColor ?? const Color(0xFF90A4AE);
-      final alpha = base.a * node.style.opacity;
+      final alpha = base.a * (node.style.opacity ?? 1.0);
       if (alpha <= 0) continue;
       final translucent = alpha < 1;
       final edgeColor = node.style.strokeColor;
-      final drawEdges = edgeColor != null && node.style.strokeWidth > 0;
+      final drawEdges =
+          edgeColor != null && (node.style.strokeWidth ?? 1.0) > 0;
 
       // Place the cached local mesh, then one camera transform per vertex;
       // screen positions derive from it.
@@ -265,9 +266,9 @@ class ScenePainter extends CustomPainter {
       final style = t.node!.style;
       final paint = Paint()
         ..color = style.strokeColor!.withValues(
-          alpha: style.strokeColor!.a * style.opacity,
+          alpha: style.strokeColor!.a * (style.opacity ?? 1.0),
         )
-        ..strokeWidth = style.strokeWidth
+        ..strokeWidth = style.strokeWidth ?? 1.0
         ..style = PaintingStyle.stroke
         ..strokeCap = StrokeCap.round;
       for (final (a, b) in edges) {
@@ -306,6 +307,8 @@ class ScenePainter extends CustomPainter {
     final style = node.closed && !allVisible
         ? ShapeStyle(
             strokeColor: s.strokeColor,
+            strokeGradient: s.strokeGradient,
+            strokePaintBuilder: s.strokePaintBuilder,
             strokeWidth: s.strokeWidth,
             opacity: s.opacity,
             dashPattern: s.dashPattern,
