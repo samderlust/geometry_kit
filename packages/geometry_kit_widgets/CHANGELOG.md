@@ -13,6 +13,21 @@
   rebuilt in `build()` are not re-triangulated.
 - Faces and paths crossing the camera's near plane are clipped, not
   dropped; pinch zoom stops at `OrbitCamera.minDistance`.
+- `SceneViewport` (camera + size): `rayAt`, `project`, `pick`,
+  `pickHandle`, `onPlane`, and `dragPlane`, which falls back to a
+  camera-facing plane when the requested one is seen edge-on.
+- `GeoScene.interaction`: a `SceneInteraction` gets raw pointer events
+  before the camera and can claim a gesture; a claimed gesture wins the
+  arena, so neither the camera nor an enclosing scroll view reacts. A second
+  finger cancels the claim. `onDragSolid` is
+  built on it and now drags on a camera-facing plane at low pitch instead of
+  flinging the solid.
+- `GeoSolid.transform` (`Transform3`): the mesh is cached for the local
+  solid and placed at paint time, so moving a solid does not
+  re-triangulate it or flood the mesh cache. `GeoSolid.worldSolid` gives the
+  placed solid for exact queries; picking uses it.
+- `GeoHandle` scene node: a fixed-size dot or square at a 3D point, drawn
+  on top and picked on screen.
 
 ### Fixes
 

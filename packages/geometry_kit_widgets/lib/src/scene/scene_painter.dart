@@ -137,8 +137,14 @@ class ScenePainter extends CustomPainter {
       final edgeColor = node.style.strokeColor;
       final drawEdges = edgeColor != null && node.style.strokeWidth > 0;
 
-      // One camera transform per vertex; screen positions derive from it.
-      final view = [for (final p in mesh.positions) cv.toView(p)];
+      // Place the cached local mesh, then one camera transform per vertex;
+      // screen positions derive from it.
+      final xf = node.transform;
+      final local = xf == Transform3.identity;
+      final world = local
+          ? mesh.positions
+          : [for (final p in mesh.positions) xf.apply(p)];
+      final view = [for (final p in world) cv.toView(p)];
       final screen = [for (final v in view) _offset(cv.projectView(v))];
 
       final idx = mesh.indices;
@@ -148,8 +154,8 @@ class ScenePainter extends CustomPainter {
         final near = cv.near;
         if (va.z < near && vb.z < near && vc.z < near) continue;
 
-        var n = sm.normals[t];
-        final facing = n.dot(cv.position - mesh.positions[ia]) > 0;
+        var n = local ? sm.normals[t] : xf.applyDirection(sm.normals[t]);
+        final facing = n.dot(cv.position - world[ia]) > 0;
         if (!facing) {
           if (!translucent) continue;
           n = -n;
@@ -208,10 +214,28 @@ class ScenePainter extends CustomPainter {
           break;
         case GeoLabel3():
           _drawLabel(canvas, cv, node);
-        case GeoSolid():
+        case GeoSolid() || GeoHandle():
           break;
       }
     }
+
+    // Handles go on top of everything, labels included.
+    for (final node in nodes) {
+      if (node is GeoHandle) _drawHandle(canvas, cv, node);
+    }
+  }
+
+  void _drawHandle(Canvas canvas, CameraView cv, GeoHandle node) {
+    final s = cv.project(node.position);
+    if (s == null) return;
+    final c = Offset(s.x, s.y);
+    final path = switch (node.shape) {
+      HandleShape.circle =>
+        Path()..addOval(Rect.fromCircle(center: c, radius: node.radius)),
+      HandleShape.square =>
+        Path()..addRect(Rect.fromCircle(center: c, radius: node.radius)),
+    };
+    paintShapePath(canvas, path, node.style);
   }
 
   void _drawTriangles(Canvas canvas, List<_Tri> tris) {

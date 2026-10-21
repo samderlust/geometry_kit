@@ -25,8 +25,13 @@ sealed class SceneNode {
 /// )
 /// ```
 class GeoSolid extends SceneNode {
-  /// The geometry to draw.
+  /// The geometry to draw, in local space when [transform] is set.
   final Solid solid;
+
+  /// Placement of [solid] in the world. The mesh is cached for the local
+  /// solid and moved at paint time, so animating or dragging the transform
+  /// does not re-triangulate anything.
+  final Transform3 transform;
 
   /// Fill, opacity and edge style.
   final ShapeStyle style;
@@ -43,24 +48,31 @@ class GeoSolid extends SceneNode {
   /// Creates a scene solid.
   const GeoSolid(
     this.solid, {
+    this.transform = Transform3.identity,
     this.style = const ShapeStyle.filled(Color(0xFF90A4AE)),
     this.segments = 32,
     this.pickable = true,
     this.id,
   });
 
+  /// [solid] placed by [transform], for exact queries such as picking.
+  Solid get worldSolid =>
+      transform == Transform3.identity ? solid : transform.applyTo(solid);
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is GeoSolid &&
           other.solid == solid &&
+          other.transform == transform &&
           other.style == style &&
           other.segments == segments &&
           other.pickable == pickable &&
           other.id == id);
 
   @override
-  int get hashCode => Object.hash(solid, style, segments, pickable, id);
+  int get hashCode =>
+      Object.hash(solid, transform, style, segments, pickable, id);
 }
 
 /// A 3D polyline for guides, outlines and grids.
@@ -167,6 +179,73 @@ class GeoLabel3 extends SceneNode {
 
   @override
   int get hashCode => Object.hash(position, text, style, alignment);
+}
+
+/// Shape of a [GeoHandle] on screen.
+enum HandleShape {
+  /// A round dot.
+  circle,
+
+  /// An axis-aligned square.
+  square,
+}
+
+/// A grab point pinned to a 3D position, drawn at a fixed size on screen
+/// over everything else.
+///
+/// Editors use handles for resize corners, polygon vertices and gizmo
+/// tips. Handles are picked on screen by [SceneViewport.pickHandle], within
+/// [radius] plus a little slop, not by ray casting, so they stay easy to
+/// grab at any zoom.
+///
+/// ```dart
+/// GeoHandle(
+///   const Point3(0.5, 1, 0.5),
+///   id: 'corner-0',
+///   style: const ShapeStyle(fillColor: Colors.white, strokeColor: Colors.blue),
+/// )
+/// ```
+class GeoHandle extends SceneNode {
+  /// World position of the handle's centre.
+  final Point3 position;
+
+  /// Identifier reported when the handle is picked.
+  final String id;
+
+  /// Half the handle's size in logical pixels.
+  final double radius;
+
+  /// Dot or square.
+  final HandleShape shape;
+
+  /// Fill and outline.
+  final ShapeStyle style;
+
+  /// Creates a handle.
+  const GeoHandle(
+    this.position, {
+    required this.id,
+    this.radius = 6,
+    this.shape = HandleShape.circle,
+    this.style = const ShapeStyle(
+      fillColor: Color(0xFFFFFFFF),
+      strokeColor: Color(0xFF2A56D6),
+      strokeWidth: 1.5,
+    ),
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GeoHandle &&
+          other.position == position &&
+          other.id == id &&
+          other.radius == radius &&
+          other.shape == shape &&
+          other.style == style);
+
+  @override
+  int get hashCode => Object.hash(position, id, radius, shape, style);
 }
 
 /// Directional light for a [GeoScene], plus flat ambient fill.
