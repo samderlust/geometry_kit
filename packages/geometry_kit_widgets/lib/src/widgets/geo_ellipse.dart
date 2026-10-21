@@ -5,9 +5,17 @@ import '../coord/coordinate_mapper.dart';
 import '../painters/ellipse_painter.dart';
 import '../style/shape_style.dart';
 import '../style/shape_style_theme.dart';
+import '../util/shape_path.dart';
 import 'geo_shape_container.dart';
 
-/// A widget that paints an [Ellipse] using a [CustomPainter].
+/// A widget that paints an axis-aligned [Ellipse].
+///
+/// Two constructors: [GeoEllipse] from radii + center, or
+/// [GeoEllipse.fromGeometry] from an existing [Ellipse]. Style flows from
+/// the explicit [style], the closest [ShapeStyleTheme] ancestor, or a
+/// default 1px black stroke. Optional [onTap] / [onHoverChanged]
+/// callbacks fire only when the pointer is inside the ellipse outline
+/// (shape-precise hit-test, not the host widget rect).
 class GeoEllipse extends StatelessWidget {
   /// The geometry ellipse to paint.
   final Ellipse ellipse;
@@ -27,6 +35,12 @@ class GeoEllipse extends StatelessWidget {
   /// Optional accessibility label.
   final String? semanticLabel;
 
+  /// Fires when the pointer is released inside the shape outline.
+  final VoidCallback? onTap;
+
+  /// Fires with `true` on hover entry, `false` on exit.
+  final ValueChanged<bool>? onHoverChanged;
+
   /// Creates an ellipse widget from radii and center.
   GeoEllipse({
     super.key,
@@ -38,6 +52,8 @@ class GeoEllipse extends StatelessWidget {
     this.size = const Size(200, 200),
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
+    this.onTap,
+    this.onHoverChanged,
   }) : ellipse = Ellipse(
           center: Point(center.dx, center.dy),
           radiusX: radiusX,
@@ -53,16 +69,21 @@ class GeoEllipse extends StatelessWidget {
     this.size = const Size(200, 200),
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
+    this.onTap,
+    this.onHoverChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     final resolved =
-        style ?? ShapeStyleTheme.resolve(context, const ShapeStyle());
+        ShapeStyleTheme.resolve(context, style);
     return GeoShapeContainer(
       size: size,
       clipBehavior: clipBehavior,
       semanticLabel: semanticLabel,
+      interactionPathBuilder: () => shapeToPath(ellipse, mapper),
+      onTap: onTap,
+      onHoverChanged: onHoverChanged,
       painter: EllipsePainter(
         ellipse: ellipse,
         style: resolved,

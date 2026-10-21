@@ -5,11 +5,13 @@ import 'demos/circle_demo.dart';
 import 'demos/clipping_demo.dart';
 import 'demos/coordinate_mapper_demo.dart';
 import 'demos/ellipse_demo.dart';
+import 'demos/interaction_demo.dart';
 import 'demos/line_demo.dart';
 import 'demos/polygon_demo.dart';
 import 'demos/properties_demo.dart';
 import 'demos/quadrilateral_demo.dart';
 import 'demos/rectangle_demo.dart';
+import 'demos/solar_system_demo.dart';
 import 'demos/style_demo.dart';
 import 'demos/transforms_demo.dart';
 import 'demos/triangle_demo.dart';
@@ -55,6 +57,8 @@ final _demos = <_Demo>[
   _Demo('Clipping & layering', 'clipBehavior + Stack composition', (_) => const ClippingDemo()),
   _Demo('Transforms', 'rotate / scale / translate (interactive)', (_) => const TransformsDemo()),
   _Demo('Properties & contains', 'area / perimeter / centroid / contains', (_) => const PropertiesDemo()),
+  _Demo('Solar system', 'Animated orbits via canvas + transforms', (_) => const SolarSystemDemo()),
+  _Demo('Interactivity', 'onTap + onHoverChanged on Geo* and canvas', (_) => const InteractionDemo()),
 ];
 
 class _Home extends StatelessWidget {

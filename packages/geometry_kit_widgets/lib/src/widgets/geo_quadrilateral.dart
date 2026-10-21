@@ -5,9 +5,17 @@ import '../coord/coordinate_mapper.dart';
 import '../painters/quadrilateral_painter.dart';
 import '../style/shape_style.dart';
 import '../style/shape_style_theme.dart';
+import '../util/shape_path.dart';
 import 'geo_shape_container.dart';
 
 /// A widget that paints a [Quadrilateral] from four ordered vertices.
+///
+/// Two constructors: [GeoQuadrilateral] from four `Offset`s, or
+/// [GeoQuadrilateral.fromGeometry] from an existing [Quadrilateral]. Style
+/// flows from [style], the closest [ShapeStyleTheme], or a default 1px
+/// black stroke. [onTap] / [onHoverChanged] hit-test against the
+/// quadrilateral path — taps in the widget rect but outside the four
+/// edges are ignored.
 class GeoQuadrilateral extends StatelessWidget {
   /// The geometry quadrilateral to paint.
   final Quadrilateral quad;
@@ -27,6 +35,12 @@ class GeoQuadrilateral extends StatelessWidget {
   /// Optional accessibility label.
   final String? semanticLabel;
 
+  /// Fires when the pointer is released inside the shape outline.
+  final VoidCallback? onTap;
+
+  /// Fires with `true` on hover entry, `false` on exit.
+  final ValueChanged<bool>? onHoverChanged;
+
   /// Creates a quadrilateral widget from four vertex offsets.
   GeoQuadrilateral({
     super.key,
@@ -39,6 +53,8 @@ class GeoQuadrilateral extends StatelessWidget {
     this.size = const Size(200, 200),
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
+    this.onTap,
+    this.onHoverChanged,
   }) : quad = Quadrilateral(
           Point(a.dx, a.dy),
           Point(b.dx, b.dy),
@@ -55,16 +71,21 @@ class GeoQuadrilateral extends StatelessWidget {
     this.size = const Size(200, 200),
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
+    this.onTap,
+    this.onHoverChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     final resolved =
-        style ?? ShapeStyleTheme.resolve(context, const ShapeStyle());
+        ShapeStyleTheme.resolve(context, style);
     return GeoShapeContainer(
       size: size,
       clipBehavior: clipBehavior,
       semanticLabel: semanticLabel,
+      interactionPathBuilder: () => shapeToPath(quad, mapper),
+      onTap: onTap,
+      onHoverChanged: onHoverChanged,
       painter: QuadrilateralPainter(
         quad: quad,
         style: resolved,

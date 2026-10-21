@@ -11,7 +11,15 @@ import 'geo_shape_container.dart';
 ///
 /// Lines have no interior, so the painter only strokes. If the supplied
 /// [style] has no `strokeColor` it falls back to `fillColor`, then to
-/// black.
+/// black. `strokeGradient` is not supported (zero-area bounds make
+/// shader resolution degenerate); `strokePaintBuilder` still works for
+/// blur / mask effects.
+///
+/// Two constructors: [GeoLine] from two `Offset`s, or
+/// [GeoLine.fromGeometry] from an existing [Line]. Tap / hover
+/// interaction is **not** exposed — shape-precise hit-test on a
+/// zero-area path is degenerate. Wrap the widget in a `GestureDetector`
+/// or use a filled `Geo*` shape if interaction is needed.
 class GeoLine extends StatelessWidget {
   /// The geometry line to paint.
   final Line line;
@@ -57,7 +65,7 @@ class GeoLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolved =
-        style ?? ShapeStyleTheme.resolve(context, const ShapeStyle());
+        ShapeStyleTheme.resolve(context, style);
     return GeoShapeContainer(
       size: size,
       clipBehavior: clipBehavior,

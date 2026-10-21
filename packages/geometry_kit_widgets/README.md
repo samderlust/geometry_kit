@@ -89,7 +89,53 @@ const ShapeStyle(
 );
 ```
 
-### Theming
+### Gradients
+
+Pass any Flutter `Gradient` (linear, radial, sweep) on `fillGradient` or
+`strokeGradient`. Gradients win over solid colors. Resolved against the
+shape's axis-aligned bounding rect at paint time:
+
+```dart
+const ShapeStyle(
+  fillGradient: RadialGradient(
+    colors: [Color(0xFFFFF6C8), Color(0xFFFFD15C), Color(0xFFE08A1F)],
+    stops: [0.0, 0.55, 1.0],
+  ),
+  strokeColor: null,
+  strokeWidth: 0,
+);
+
+const ShapeStyle.gradientFilled(
+  LinearGradient(colors: [Color(0xFF4FA3E3), Color(0xFF1B4F8B)]),
+);
+```
+
+`opacity` does not modulate gradients — encode alpha directly into the
+gradient color stops. `GeoLine` ignores `strokeGradient` (asserted in debug):
+zero-area bounds make shader resolution degenerate.
+
+### Paint escape hatch
+
+For Skia features `ShapeStyle` does not surface directly (`MaskFilter`,
+`ImageFilter`, `BlendMode`, custom shaders), use `fillPaintBuilder` /
+`strokePaintBuilder`. The hook receives the resolved base `Paint` plus the
+shape's bounds:
+
+```dart
+Paint glow(Paint base, Rect bounds) =>
+    base..maskFilter = const MaskFilter.blur(BlurStyle.normal, 12);
+
+const ShapeStyle(
+  fillColor: Color(0x55FFD15C),
+  fillPaintBuilder: glow,
+);
+```
+
+Prefer top-level or `static` builders — `ShapeStyle` equality compares them
+by reference, so a fresh closure each build will defeat
+`shouldRepaint` short-circuiting.
+
+### Theming + field-level merge
 
 Wrap a subtree in `ShapeStyleTheme` to share a default style:
 
@@ -104,7 +150,46 @@ ShapeStyleTheme(
 )
 ```
 
-Resolution order: explicit `style` → closest `ShapeStyleTheme` ancestor → default 1px black stroke.
+Resolution: `explicit.merge(ambient)` per field — fields the override
+leaves `null` fall back to the closest `ShapeStyleTheme`, otherwise to the
+constructor default (`strokeWidth: 1.0`, `strokeCap: butt`, …). All
+scalar fields (`strokeWidth`, `opacity`, `strokeCap`, `strokeJoin`) are
+nullable; pass `null` explicitly via the raw constructor (not `copyWith`)
+to opt a field into theme inheritance.
+
+```dart
+ShapeStyleTheme(
+  data: const ShapeStyle(strokeColor: Colors.teal, strokeWidth: 2),
+  child: GeoCircle(
+    radius: 30,
+    // dashes here, teal stroke + 2px width inherited from theme
+    style: const ShapeStyle(
+      strokeColor: null,
+      strokeWidth: null,
+      dashPattern: DashPattern([6, 4]),
+    ),
+  ),
+)
+```
+
+### Animating styles
+
+`ShapeStyle.lerp` interpolates colors and the `strokeWidth` / `opacity`
+scalars; gradients, dash patterns, enum fields, and `PaintBuilder`s snap
+at `t >= 0.5`. Drop-in implicit animation via `AnimatedShapeStyle`:
+
+```dart
+AnimatedShapeStyle(
+  style: highlighted ? hotStyle : coolStyle,
+  duration: const Duration(milliseconds: 250),
+  child: const GeoCircle(radius: 30),
+)
+```
+
+`AnimatedShapeStyle` supplies the interpolated style to descendants via a
+`ShapeStyleTheme`, so any `Geo*` widget without an explicit `style` (or
+with a partial style that nulls the relevant fields) follows the animation.
+For explicit driving use `ShapeStyleTween` with an `AnimationController`.
 
 ## Coordinate mapping
 
@@ -141,6 +226,95 @@ GeoCircle(
 
 `GeometryCanvas` defaults to `backgroundColor: null` (transparent) so widgets stacked underneath remain visible.
 
+### Clipping arbitrary widgets to a shape
+
+`ShapeWidget` hosts any child widget clipped to a geometry shape, with an
+optional `ShapeStyle` overlay drawn above the clipped child:
+
+```dart
+ShapeWidget(
+  shape: const Circle(center: Point(50, 50), radius: 50),
+  size: const Size(100, 100),
+  style: const ShapeStyle.stroked(Colors.white, width: 2),
+  child: Image.network('https://picsum.photos/seed/earth/200'),
+)
+```
+
+For raw control, `ShapeClipper` is a `CustomClipper<Path>` you can pass
+to Flutter's `ClipPath` directly. And `shapeToPath(shape, mapper)` returns
+the same canvas-space `Path` the painters use — useful for hit-test
+regions, reflowing text inside a shape, or animated path morphs.
+
+```dart
+ClipPath(
+  clipper: ShapeClipper(
+    shape: Polygon(vertices),
+    mapper: CoordinateMapper.centered(size),
+  ),
+  child: child,
+)
+```
+
+`shapeToPath` supports `Circle`, `Ellipse`, `Rectangle`, `Triangle`,
+`Quadrilateral`, `Polygon`, and `Line`. Clipping a `Line` is degenerate
+(zero-area path) — documented but not asserted.
+
+## Tap + hover interactivity
+
+Every closed `Geo*` widget (`GeoCircle`, `GeoEllipse`, `GeoRectangle`,
+`GeoTriangle`, `GeoQuadrilateral`, `GeoPolygon`) accepts optional `onTap`
+and `onHoverChanged` callbacks. Hit-test is shape-precise — pointer events
+inside the host widget rect but outside the shape outline are ignored.
+`GeoRectangle.cornerRadius` is honoured (taps in the cut-off corners
+correctly miss).
+
+```dart
+GeoCircle(
+  radius: 30,
+  center: const Offset(50, 50),
+  size: const Size(100, 100),
+  style: const ShapeStyle.filled(Colors.indigo),
+  onTap: () => print('tapped'),
+  onHoverChanged: (hovering) => setState(() => _hot = hovering),
+)
+```
+
+Pair with `AnimatedShapeStyle` to fade hover styles smoothly:
+
+```dart
+AnimatedShapeStyle(
+  style: _hot ? hotStyle : coolStyle,
+  duration: const Duration(milliseconds: 150),
+  child: GeoCircle(radius: 30, onHoverChanged: (v) => setState(() => _hot = v)),
+)
+```
+
+`StyledShape` exposes the same callbacks; `GeometryCanvas` walks shapes
+top-down on each pointer event and dispatches to the topmost shape under
+the pointer. A common pattern is to reorder the shape list on tap so the
+tapped shape moves to the top of the paint stack:
+
+```dart
+List<String> _order = ['blue', 'orange', 'green'];
+
+GeometryCanvas(
+  size: const Size(300, 220),
+  shapes: _order.map((id) => StyledShape(
+    _circleFor(id),
+    id: id,
+    style: _styleFor(id),
+    onTap: () => setState(() {
+      _order = [..._order.where((e) => e != id), id];
+    }),
+  )).toList(),
+)
+```
+
+Hover supports both mouse pointers and stylus / touch hover. `GeoLine`
+does not expose interaction (zero-area path makes shape-precise hit-test
+degenerate); reach for a filled `Geo*` widget or a raw `GestureDetector`
+when line interaction is needed.
+
 ## Other features
 
 - `Semantics(label: ...)` baked into every widget for accessibility.
@@ -149,7 +323,14 @@ GeoCircle(
 
 ## See also
 
-The `example/` app ships ten interactive demos covering every widget, theme overrides, dash patterns, coordinate mappers, multi-shape canvas, and clipping/layering.
+The `example/` app ships interactive demos covering every widget, theme
+overrides, dash patterns, coordinate mappers, multi-shape canvas, gradient
++ `PaintBuilder` styling (animated solar system with sliders for orbit
+speed and planet scale), shape clipping (gradient circle, text in
+triangle, plus a live image-clip playground with vertex-count + rotation
+sliders and a network/Flutter-logo/gradient source picker), and tap +
+hover interactivity (per-`Geo*` callbacks plus a canvas demo where
+tapping a shape reorders it to the top of the paint stack).
 
 ```bash
 cd example && flutter run
@@ -157,9 +338,12 @@ cd example && flutter run
 
 ## Roadmap
 
-- **Phase 2**: tap/hover interactivity, `GeoArc`, `GeoRing`, `GeoCapsule`, `GeoBezierCurve`, `GeoSpline`, `GeoPolyline`, `GeoRay`, `GeometryCanvas` hit-testing.
+- **Phase 2**: `GeoArc`, `GeoRing`, `GeoCapsule`, `GeoBezierCurve`, `GeoSpline`, `GeoPolyline`, `GeoRay`. (Tap/hover interactivity + `GeometryCanvas` hit-testing already shipped in 0.2.0.)
 - **Phase 3**: drag, grid + axes overlay, debug parameters (`showBoundingBox`, `showCenter`, `showVertices`).
 - **Phase 4**: tooltips, image export, dark mode presets.
+- **Deferred** (gated on demand): multi-ancestor `ShapeStyleTheme` merge
+  chain, `ShapeStyleResolver` builder for context-driven theming, shader
+  cache for animated gradient grids. See `plan/decorative_styling.md`.
 
 ---
 
