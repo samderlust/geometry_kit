@@ -1,3 +1,21 @@
+## 0.2.0
+
+### 3D scenes
+
+- `GeoScene` — renders `geometry_kit_3d` solids on a Flutter canvas with an
+  `OrbitCamera`, flat shading from a `DirectionalLight`, back-face culling and
+  painter's-algorithm depth sorting. Drag to orbit, pinch/scroll to zoom.
+- `GeoSolid`, `GeoPath3` (with `GeoPath3.grid`), `GeoLabel3` scene nodes.
+- Picking: `onTap` / `onHover` return a `SceneHit`; `onDragSolid` moves a
+  grabbed solid on the horizontal plane.
+- `ScenePainter`, `SceneMeshCache`, `SceneMesh` exposed for custom painting.
+
+### Fixes
+
+- Fill and stroke colours with their own alpha are no longer forced opaque:
+  the colour's alpha is now multiplied by `ShapeStyle.opacity` instead of
+  replaced by it.
+
 ## 0.1.1
 
 - update git info

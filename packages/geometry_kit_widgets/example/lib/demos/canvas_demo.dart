@@ -29,16 +29,10 @@ class CanvasDemo extends StatelessWidget {
                   radius: 70,
                   center: const Point(110, 140),
                 ),
-                style: const ShapeStyle(
-                  fillColor: Colors.indigo,
-                  opacity: 0.6,
-                ),
+                style: const ShapeStyle(fillColor: Colors.indigo, opacity: 0.6),
               ),
               StyledShape(
-                const Circle(
-                  center: Point(220, 100),
-                  radius: 60,
-                ),
+                const Circle(center: Point(220, 100), radius: 60),
                 style: const ShapeStyle(
                   fillColor: Colors.amber,
                   strokeColor: Colors.deepOrange,
@@ -66,24 +60,15 @@ class CanvasDemo extends StatelessWidget {
             shapes: [
               StyledShape(
                 const Circle(center: Point(140, 140), radius: 80),
-                style: const ShapeStyle(
-                  fillColor: Colors.red,
-                  opacity: 0.5,
-                ),
+                style: const ShapeStyle(fillColor: Colors.red, opacity: 0.5),
               ),
               StyledShape(
                 const Circle(center: Point(220, 140), radius: 80),
-                style: const ShapeStyle(
-                  fillColor: Colors.blue,
-                  opacity: 0.5,
-                ),
+                style: const ShapeStyle(fillColor: Colors.blue, opacity: 0.5),
               ),
               StyledShape(
                 const Circle(center: Point(180, 200), radius: 80),
-                style: const ShapeStyle(
-                  fillColor: Colors.green,
-                  opacity: 0.5,
-                ),
+                style: const ShapeStyle(fillColor: Colors.green, opacity: 0.5),
               ),
             ],
           ),

@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
   geometry_kit:
     path: ../../geometry_Kit
+  geometry_kit_3d:
+    path: ../../geometry_kit_3d
   geometry_kit_widgets:
     path: ../
 

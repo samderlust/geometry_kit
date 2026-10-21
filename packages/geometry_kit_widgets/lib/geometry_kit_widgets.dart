@@ -5,6 +5,9 @@
 /// triangles, quadrilaterals, polygons, and lines, plus a `GeometryCanvas`
 /// for multi-shape scenes. Styling flows through `ShapeStyle` / `ShapeStyleTheme`.
 /// Coordinate transforms (Y-up, centered, …) flow through `CoordinateMapper`.
+///
+/// `GeoScene` draws `geometry_kit_3d` solids with an orbit camera, flat
+/// shading and tap/hover picking.
 library;
 
 export 'src/coord/coordinate_mapper.dart';
@@ -13,6 +16,9 @@ export 'src/style/shape_style.dart';
 export 'src/style/shape_style_theme.dart';
 export 'src/canvas/geometry_canvas.dart';
 export 'src/canvas/styled_shape.dart';
+export 'src/scene/geo_scene.dart';
+export 'src/scene/scene_node.dart';
+export 'src/scene/scene_painter.dart';
 export 'src/widgets/geo_circle.dart';
 export 'src/widgets/geo_ellipse.dart';
 export 'src/widgets/geo_line.dart';

@@ -4,6 +4,7 @@ environment:
   sdk: ^3.10.0
 workspace:
   - packages/geometry_kit
+  - packages/geometry_kit_3d
   - packages/geometry_kit_widgets
   - packages/geometry_kit_widgets/example
 
