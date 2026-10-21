@@ -4,6 +4,8 @@
 
 A comprehensive Dart package for 2D geometry — points, lines, curves, and shapes with transforms, containment checks, intersections, and more.
 
+![Circle with line intersections, ellipse, triangle, hexagon, arc, ring, capsule, cubic Bézier with control points and a spline](https://raw.githubusercontent.com/samderlust/geometry_kit/main/packages/geometry_kit/screenshots/shapes.png)
+
 ## Table of Contents
 
 - [Installing](#installing)

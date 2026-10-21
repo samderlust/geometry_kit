@@ -6,6 +6,10 @@ homepage: https://github.com/samderlust/geometry_kit/tree/main/packages/geometry
 repository: https://github.com/samderlust/geometry_kit
 issue_tracker: https://github.com/samderlust/geometry_kit/issues
 
+screenshots:
+  - description: "Solids (box, sphere, cylinder, cone, revolution, prism) and a cone cross-section"
+    path: screenshots/solids.png
+
 topics:
   - geometry
   - math

@@ -6,6 +6,10 @@ homepage: http://github.com/samderlust/geometry_kit/tree/main/packages/geometry_
 repository: https://github.com/samderlust/geometry_kit
 issue_tracker: https://github.com/samderlust/geometry_kit/issues
 
+screenshots:
+  - description: "2D shapes: circle–line intersections, ellipse, triangle, polygon, arc, ring, capsule, Bézier and spline"
+    path: screenshots/shapes.png
+
 topics:
   - geometry
   - math

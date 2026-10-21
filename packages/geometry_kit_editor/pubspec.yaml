@@ -6,6 +6,10 @@ homepage: https://github.com/samderlust/geometry_kit/tree/main/packages/geometry
 repository: https://github.com/samderlust/geometry_kit
 issue_tracker: https://github.com/samderlust/geometry_kit/issues
 
+screenshots:
+  - description: "EditorScene with a multi-selection"
+    path: screenshots/editor.png
+
 topics:
   - geometry
   - editor

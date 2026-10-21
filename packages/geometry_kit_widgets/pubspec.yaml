@@ -6,6 +6,14 @@ homepage: https://github.com/samderlust/geometry_kit/tree/main/packages/geometry
 repository: https://github.com/samderlust/geometry_kit
 issue_tracker: https://github.com/samderlust/geometry_kit/issues
 
+screenshots:
+  - description: "2D Geo* widgets with gradients and dash patterns"
+    path: screenshots/widgets_2d.png
+  - description: "GeoScene 3D bar chart"
+    path: screenshots/scene.png
+  - description: "SolidGradient on 3D solids"
+    path: screenshots/gradients.png
+
 topics:
   - geometry
   - widgets

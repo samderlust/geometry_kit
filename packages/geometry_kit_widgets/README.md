@@ -1,9 +1,13 @@
-[![GitHub](https://img.shields.io/badge/GitHub-samderlust/geometry__kits__mono-181717?logo=github)](https://github.com/samderlust/geometry_kits_mono)
+[![GitHub](https://img.shields.io/badge/GitHub-samderlust/geometry__kit-181717?logo=github)](https://github.com/samderlust/geometry_kit)
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/samderlust)
 
 # geometry_kit_widgets
 
-Flutter widgets for [`geometry_kit`](../geometry_Kit) shapes — `CustomPainter`-backed, styled, and composable.
+Flutter widgets for [`geometry_kit`](../geometry_kit) shapes — `CustomPainter`-backed, styled, and composable.
+
+![2D widgets: gradient circle, dashed rectangle, triangle, sweep-gradient pentagon, ellipse, quadrilateral and dotted circle](https://raw.githubusercontent.com/samderlust/geometry_kit/main/packages/geometry_kit_widgets/screenshots/widgets_2d.png)
+
+![GeoScene: a 3D bar chart on a floor grid with a dashed trend line and handles](https://raw.githubusercontent.com/samderlust/geometry_kit/main/packages/geometry_kit_widgets/screenshots/scene.png)
 
 ## Quick start
 
@@ -350,6 +354,8 @@ never re-triangulates.
 
 ### Gradients on solids
 
+![Solid gradients: top-to-bottom cube, three-colour corner-to-corner cube, radial cylinder and radial sphere](https://raw.githubusercontent.com/samderlust/geometry_kit/main/packages/geometry_kit_widgets/screenshots/gradients.png)
+
 Give a `GeoSolid` a `gradient` to colour it with a `SolidGradient` instead of
 `fillColor`. The gradient is laid across the solid's **local** bounding box,
 so it moves, turns and scales with the solid's `transform`. Opacity and edge
@@ -457,5 +463,5 @@ cd example && flutter run
 
 ---
 
-[![GitHub](https://img.shields.io/badge/GitHub-samderlust/geometry__kits__mono-181717?logo=github)](https://github.com/samderlust/geometry_kits_mono)
+[![GitHub](https://img.shields.io/badge/GitHub-samderlust/geometry__kit-181717?logo=github)](https://github.com/samderlust/geometry_kit)
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/samderlust)

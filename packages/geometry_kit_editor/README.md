@@ -5,6 +5,8 @@
 Interactive editing for [`geometry_kit_widgets`](https://pub.dev/packages/geometry_kit_widgets)
 3D scenes: select solids, drag them around, undo and redo.
 
+![EditorScene with two selected objects outlined inside a dashed selection box, a locked gradient pillar and a cylinder](https://raw.githubusercontent.com/samderlust/geometry_kit/main/packages/geometry_kit_editor/screenshots/editor.png)
+
 > 0.x: the API will change as resize handles, gizmos and snapping land.
 
 ## Model
