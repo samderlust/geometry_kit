@@ -10,13 +10,17 @@ import 'dashed_path.dart';
 void paintShapePath(Canvas canvas, Path path, ShapeStyle style) {
   if (style.fillColor != null) {
     final fill = Paint()
-      ..color = style.fillColor!.withValues(alpha: style.opacity)
+      ..color = style.fillColor!.withValues(
+        alpha: style.fillColor!.a * style.opacity,
+      )
       ..style = PaintingStyle.fill;
     canvas.drawPath(path, fill);
   }
   if (style.strokeColor != null && style.strokeWidth > 0) {
     final stroke = Paint()
-      ..color = style.strokeColor!.withValues(alpha: style.opacity)
+      ..color = style.strokeColor!.withValues(
+        alpha: style.strokeColor!.a * style.opacity,
+      )
       ..style = PaintingStyle.stroke
       ..strokeWidth = style.strokeWidth
       ..strokeCap = style.strokeCap

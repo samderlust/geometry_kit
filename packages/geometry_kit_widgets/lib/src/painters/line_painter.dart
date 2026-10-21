@@ -31,7 +31,7 @@ class LinePainter extends CustomPainter {
       ..lineTo(b.dx, b.dy);
 
     final paint = Paint()
-      ..color = color.withValues(alpha: style.opacity)
+      ..color = color.withValues(alpha: color.a * style.opacity)
       ..style = PaintingStyle.stroke
       ..strokeWidth = width
       ..strokeCap = style.strokeCap
@@ -45,7 +45,5 @@ class LinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant LinePainter old) =>
-      !identical(old.line, line) ||
-      old.style != style ||
-      old.mapper != mapper;
+      !identical(old.line, line) || old.style != style || old.mapper != mapper;
 }

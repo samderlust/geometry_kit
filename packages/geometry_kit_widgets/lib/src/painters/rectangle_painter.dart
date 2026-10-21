@@ -26,7 +26,9 @@ class RectanglePainter extends CustomPainter {
       mapper.toCanvas(rectangle.x, rectangle.y),
       mapper.toCanvas(rectangle.x + rectangle.width, rectangle.y),
       mapper.toCanvas(
-          rectangle.x + rectangle.width, rectangle.y + rectangle.height),
+        rectangle.x + rectangle.width,
+        rectangle.y + rectangle.height,
+      ),
       mapper.toCanvas(rectangle.x, rectangle.y + rectangle.height),
     ];
 

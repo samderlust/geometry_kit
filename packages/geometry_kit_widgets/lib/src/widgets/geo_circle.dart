@@ -52,10 +52,7 @@ class GeoCircle extends StatelessWidget {
     this.size = const Size(200, 200),
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
-  }) : circle = Circle(
-          radius: radius,
-          center: Point(center.dx, center.dy),
-        );
+  }) : circle = Circle(radius: radius, center: Point(center.dx, center.dy));
 
   /// Creates a circle widget from an existing [Circle] geometry.
   const GeoCircle.fromGeometry({
@@ -76,11 +73,7 @@ class GeoCircle extends StatelessWidget {
       size: size,
       clipBehavior: clipBehavior,
       semanticLabel: semanticLabel,
-      painter: CirclePainter(
-        circle: circle,
-        style: resolved,
-        mapper: mapper,
-      ),
+      painter: CirclePainter(circle: circle, style: resolved, mapper: mapper),
     );
   }
 }

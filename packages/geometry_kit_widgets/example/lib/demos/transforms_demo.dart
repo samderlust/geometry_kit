@@ -79,7 +79,9 @@ class _TransformsDemoState extends State<TransformsDemo> {
         _PropertyRow('area', tri.area.toStringAsFixed(1)),
         _PropertyRow('perimeter', tri.perimeter.toStringAsFixed(1)),
         _PropertyRow(
-            'centroid', '(${tri.centroid.x.toStringAsFixed(1)}, ${tri.centroid.y.toStringAsFixed(1)})'),
+          'centroid',
+          '(${tri.centroid.x.toStringAsFixed(1)}, ${tri.centroid.y.toStringAsFixed(1)})',
+        ),
         _PropertyRow('isAcute', '${tri.isAcute}'),
         _PropertyRow('isRight', '${tri.isRightTriangle}'),
         _PropertyRow('isObtuse', '${tri.isObtuse}'),
@@ -204,17 +206,9 @@ class _Slider extends StatelessWidget {
       children: [
         SizedBox(width: 96, child: Text(label)),
         Expanded(
-          child: Slider(
-            value: value,
-            min: min,
-            max: max,
-            onChanged: onChanged,
-          ),
+          child: Slider(value: value, min: min, max: max, onChanged: onChanged),
         ),
-        SizedBox(
-          width: 48,
-          child: Text(display, textAlign: TextAlign.right),
-        ),
+        SizedBox(width: 48, child: Text(display, textAlign: TextAlign.right)),
       ],
     );
   }

@@ -1,0 +1,25 @@
+name: geometry_kit_3d
+description: Immutable 3D solids for Dart — volume, surface area, ray picking, cross-sections, extrusion and revolution of geometry_kit 2D shapes, meshes with OBJ/STL export.
+version: 0.1.0
+
+homepage: https://github.com/samderlust/geometry_kit/tree/main/packages/geometry_kit_3d
+repository: https://github.com/samderlust/geometry_kit
+issue_tracker: https://github.com/samderlust/geometry_kit/issues
+
+topics:
+  - geometry
+  - math
+  - solid
+  - mesh
+
+resolution: workspace
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+
+dependencies:
+  geometry_kit: ^1.2.2
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.16.0

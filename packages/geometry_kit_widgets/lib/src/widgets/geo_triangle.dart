@@ -39,10 +39,10 @@ class GeoTriangle extends StatelessWidget {
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
   }) : triangle = Triangle(
-          Point(a.dx, a.dy),
-          Point(b.dx, b.dy),
-          Point(c.dx, c.dy),
-        );
+         Point(a.dx, a.dy),
+         Point(b.dx, b.dy),
+         Point(c.dx, c.dy),
+       );
 
   /// Creates a triangle widget from an existing [Triangle] geometry.
   const GeoTriangle.fromGeometry({

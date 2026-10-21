@@ -19,9 +19,12 @@ class QuadrilateralPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (!style.isVisible) return;
-    final pts = [quad.a, quad.b, quad.c, quad.d]
-        .map((p) => mapper.toCanvas(p.x, p.y))
-        .toList(growable: false);
+    final pts = [
+      quad.a,
+      quad.b,
+      quad.c,
+      quad.d,
+    ].map((p) => mapper.toCanvas(p.x, p.y)).toList(growable: false);
     final path = Path()..moveTo(pts[0].dx, pts[0].dy);
     for (var i = 1; i < pts.length; i++) {
       path.lineTo(pts[i].dx, pts[i].dy);
@@ -32,7 +35,5 @@ class QuadrilateralPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant QuadrilateralPainter old) =>
-      !identical(old.quad, quad) ||
-      old.style != style ||
-      old.mapper != mapper;
+      !identical(old.quad, quad) || old.style != style || old.mapper != mapper;
 }

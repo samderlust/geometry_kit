@@ -101,7 +101,9 @@ class _PropertiesDemoState extends State<PropertiesDemo> {
           ),
         ),
         const SizedBox(height: 16),
-        _Section('Probe @ (${_probe.dx.toStringAsFixed(0)}, ${_probe.dy.toStringAsFixed(0)})'),
+        _Section(
+          'Probe @ (${_probe.dx.toStringAsFixed(0)}, ${_probe.dy.toStringAsFixed(0)})',
+        ),
         _Row('circle.contains', '$inCircle'),
         _Row('triangle.contains', '$inTriangle'),
         _Row('hex.contains', '$inHex'),
@@ -115,8 +117,10 @@ class _PropertiesDemoState extends State<PropertiesDemo> {
         _Section('Triangle'),
         _Row('area', _triangle.area.toStringAsFixed(2)),
         _Row('perimeter', _triangle.perimeter.toStringAsFixed(2)),
-        _Row('centroid',
-            '(${_triangle.centroid.x.toStringAsFixed(1)}, ${_triangle.centroid.y.toStringAsFixed(1)})'),
+        _Row(
+          'centroid',
+          '(${_triangle.centroid.x.toStringAsFixed(1)}, ${_triangle.centroid.y.toStringAsFixed(1)})',
+        ),
         _Row('isAcute', '${_triangle.isAcute}'),
         _Row('isObtuse', '${_triangle.isObtuse}'),
         _Row('isEquilateral', '${_triangle.isEquilateral}'),

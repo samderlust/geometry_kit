@@ -141,6 +141,44 @@ GeoCircle(
 
 `GeometryCanvas` defaults to `backgroundColor: null` (transparent) so widgets stacked underneath remain visible.
 
+## 3D scenes
+
+`GeoScene` draws [`geometry_kit_3d`](../geometry_kit_3d) solids with an orbit
+camera, flat shading and picking. It runs on the normal Flutter `Canvas`, so it
+works on every platform with no GPU setup.
+
+```dart
+GeoScene(
+  camera: const OrbitCamera(yaw: 35, pitch: 25, distance: 7),
+  onTap: (hit) => debugPrint(hit?.node.id),
+  children: [
+    ...GeoPath3.grid(extent: 3, step: 0.5),
+    GeoSolid(
+      Box.fromBase(center: Point3.zero, width: 1, depth: 1, height: 1.5),
+      style: const ShapeStyle(fillColor: Colors.indigo, strokeColor: Colors.black),
+      id: 'crate',
+    ),
+    const GeoLabel3(Point3(0, 1.8, 0), 'crate'),
+  ],
+)
+```
+
+| Node        | Draws                                                        |
+| ----------- | ------------------------------------------------------------ |
+| `GeoSolid`  | Any `Solid`, shaded by the scene light; edges from `strokeColor` |
+| `GeoPath3`  | A 3D polyline (on top of solids, or underneath with `overlay: false`) |
+| `GeoLabel3` | Text pinned to a 3D point                                   |
+
+Gestures: drag to orbit, pinch or scroll to zoom. `onTap` / `onHover` report a
+`SceneHit` (the node plus distance, point and normal). Set `onDragSolid` and
+dragging a solid moves it on the horizontal plane instead of orbiting.
+
+How it renders: each solid is triangulated, back faces are culled, triangles are
+sorted back to front and filled with one `drawVertices` call. That is fine for
+charts, rooms and simple models up to a few thousand triangles. There is no
+depth buffer, so faces that cut through each other can draw in the wrong order.
+For heavy models, export `solid.toMesh()` to a GPU renderer instead.
+
 ## Other features
 
 - `Semantics(label: ...)` baked into every widget for accessibility.
@@ -149,7 +187,7 @@ GeoCircle(
 
 ## See also
 
-The `example/` app ships ten interactive demos covering every widget, theme overrides, dash patterns, coordinate mappers, multi-shape canvas, and clipping/layering.
+The `example/` app ships interactive demos covering every widget, theme overrides, dash patterns, coordinate mappers, multi-shape canvas, clipping/layering, and a 3D tab: solids tour, cone slice, bar chart, room, draw-and-extrude, picking & contact, and vase export. Each demo shows the live scene, its controls and the code that builds it.
 
 ```bash
 cd example && flutter run

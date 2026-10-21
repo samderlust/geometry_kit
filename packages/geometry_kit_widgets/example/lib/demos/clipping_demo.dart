@@ -175,10 +175,7 @@ class _TransparentCanvas extends StatelessWidget {
             shapes: [
               StyledShape(
                 const Circle(center: Point(80, 100), radius: 50),
-                style: const ShapeStyle(
-                  fillColor: Colors.indigo,
-                  opacity: 0.6,
-                ),
+                style: const ShapeStyle(fillColor: Colors.indigo, opacity: 0.6),
               ),
               StyledShape(
                 const Circle(center: Point(200, 100), radius: 50),
