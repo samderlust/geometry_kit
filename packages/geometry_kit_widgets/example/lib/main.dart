@@ -16,6 +16,7 @@ import 'demos/triangle_demo.dart';
 import 'demos3d/bar_chart_demo.dart';
 import 'demos3d/cone_slice_demo.dart';
 import 'demos3d/draw_extrude_demo.dart';
+import 'demos3d/editor_demo.dart';
 import 'demos3d/picking_demo.dart';
 import 'demos3d/room_demo.dart';
 import 'demos3d/solids_gallery_demo.dart';
@@ -128,6 +129,11 @@ final _demos3d = <_Demo>[
     'Vase',
     'SolidOfRevolution(spline) + STL / OBJ export',
     (_) => const VaseDemo(),
+  ),
+  _Demo(
+    'Editor',
+    'Select, move, undo with geometry_kit_editor',
+    (_) => const EditorDemo(),
   ),
 ];
 

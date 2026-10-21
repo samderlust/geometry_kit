@@ -7,6 +7,7 @@ workspace:
   - packages/geometry_kit_3d
   - packages/geometry_kit_widgets
   - packages/geometry_kit_widgets/example
+  - packages/geometry_kit_editor
 
 dev_dependencies:
   melos: ^7.5.1

@@ -1,0 +1,30 @@
+name: geometry_kit_editor
+description: Interactive editing for geometry_kit scenes — selection, drag to move, undo and redo on an immutable document, with a tool API for handles and gizmos.
+version: 0.1.0
+
+homepage: https://github.com/samderlust/geometry_kit/tree/main/packages/geometry_kit_editor
+repository: https://github.com/samderlust/geometry_kit
+issue_tracker: https://github.com/samderlust/geometry_kit/issues
+
+topics:
+  - geometry
+  - editor
+  - 3d
+  - flutter
+
+resolution: workspace
+
+environment:
+  sdk: ^3.11.3
+  flutter: ">=3.27.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  geometry_kit_3d: ^0.1.0
+  geometry_kit_widgets: ^0.2.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter

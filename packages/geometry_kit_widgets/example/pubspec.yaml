@@ -17,6 +17,8 @@ dependencies:
     path: ../../geometry_kit_3d
   geometry_kit_widgets:
     path: ../
+  geometry_kit_editor:
+    path: ../../geometry_kit_editor
 
 dev_dependencies:
   flutter_test:
