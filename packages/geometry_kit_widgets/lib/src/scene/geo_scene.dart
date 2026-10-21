@@ -62,6 +62,9 @@ class GeoScene extends StatefulWidget {
   final Size? size;
 
   /// Whether one-finger drags orbit the camera.
+  ///
+  /// Inside a scroll view, drags that start on the scene orbit rather than
+  /// scroll the page. Set this to false to let the page scroll instead.
   final bool enableOrbit;
 
   /// Whether pinch and mouse-wheel zoom are on.
@@ -223,8 +226,6 @@ class _GeoSceneState extends State<GeoScene> {
 
     scene = GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onScaleStart: _onScaleStart,
-      onScaleUpdate: _onScaleUpdate,
       onTapUp: widget.onTap == null
           ? null
           : (d) => widget.onTap!(_pick(d.localPosition)),
@@ -232,12 +233,22 @@ class _GeoSceneState extends State<GeoScene> {
     );
 
     final interaction = _interaction;
-    if (interaction != null) {
-      // Wins the gesture arena as soon as the interaction claims a pointer,
-      // so neither the camera nor an enclosing scroll view also reacts.
-      scene = RawGestureDetector(
-        behavior: HitTestBehavior.opaque,
-        gestures: {
+    scene = RawGestureDetector(
+      behavior: HitTestBehavior.opaque,
+      gestures: {
+        // Orbit claims a drag once it travels the touch slop in any
+        // direction, before an enclosing scroll view claims it along its axis.
+        _OrbitRecognizer:
+            GestureRecognizerFactoryWithHandlers<_OrbitRecognizer>(
+              () => _OrbitRecognizer(debugOwner: this),
+              (r) => r
+                ..eager = widget.enableOrbit
+                ..onStart = _onScaleStart
+                ..onUpdate = _onScaleUpdate,
+            ),
+        // Wins the arena as soon as the interaction claims a pointer, so
+        // neither the camera nor an enclosing scroll view also reacts.
+        if (interaction != null)
           _ClaimRecognizer:
               GestureRecognizerFactoryWithHandlers<_ClaimRecognizer>(
                 () => _ClaimRecognizer(debugOwner: this),
@@ -255,10 +266,9 @@ class _GeoSceneState extends State<GeoScene> {
                     owner?.onPointerCancel();
                   },
               ),
-        },
-        child: scene,
-      );
-    }
+      },
+      child: scene,
+    );
 
     scene = Listener(
       behavior: HitTestBehavior.opaque,
@@ -387,4 +397,39 @@ class _ClaimRecognizer extends OneSequenceGestureRecognizer {
 
   @override
   String get debugDescription => 'scene interaction';
+}
+
+/// The camera's scale recognizer, made eager: when [eager] is on, it
+/// accepts as soon as one pointer has moved the touch slop in any
+/// direction. An enclosing scroll view only accepts after the same distance
+/// along its own axis, and this recognizer, deeper in the tree, sees each
+/// move first, so dragging inside the scene orbits instead of scrolling.
+class _OrbitRecognizer extends ScaleGestureRecognizer {
+  _OrbitRecognizer({super.debugOwner});
+
+  bool eager = true;
+
+  final _downAt = <int, Offset>{};
+
+  @override
+  void addAllowedPointer(PointerDownEvent event) {
+    super.addAllowedPointer(event);
+    if (eager) _downAt[event.pointer] = event.position;
+  }
+
+  @override
+  void handleEvent(PointerEvent event) {
+    super.handleEvent(event);
+    if (event is PointerUpEvent || event is PointerCancelEvent) {
+      _downAt.remove(event.pointer);
+      return;
+    }
+    if (event is! PointerMoveEvent) return;
+    final start = _downAt[event.pointer];
+    if (start == null) return;
+    final slop = computeHitSlop(event.kind, gestureSettings);
+    if ((event.position - start).distance <= slop) return;
+    _downAt.clear();
+    resolve(GestureDisposition.accepted);
+  }
 }

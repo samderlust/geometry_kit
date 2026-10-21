@@ -31,6 +31,9 @@ Adds 3D scenes for `geometry_kit_3d` solids on top of 0.2.0.
   solid and placed at paint time, so moving a solid does not
   re-triangulate it or flood the mesh cache. `GeoSolid.worldSolid` gives the
   placed solid for exact queries; picking uses it.
+- Inside a scroll view, drags that start on a `GeoScene` orbit the camera
+  instead of scrolling the page (vertical drags used to scroll). With
+  `enableOrbit: false` the page scrolls as before.
 - `GeoHandle` scene node: a fixed-size dot or square at a 3D point, drawn
   on top and picked on screen.
 

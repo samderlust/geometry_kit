@@ -251,6 +251,85 @@ void main() {
       expect(cam!.yaw, isNot(_camera.yaw));
     });
 
+    group('inside a scroll view', () {
+      Future<(Offset, ScrollController)> pumpInList(
+        WidgetTester tester, {
+        bool enableOrbit = true,
+        ValueChanged<OrbitCamera>? onCameraChanged,
+      }) async {
+        final scroll = ScrollController();
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: ListView(
+                controller: scroll,
+                children: [
+                  GeoScene(
+                    size: const Size(300, 300),
+                    camera: _camera,
+                    enableOrbit: enableOrbit,
+                    onCameraChanged: onCameraChanged,
+                    children: [crate],
+                  ),
+                  const SizedBox(height: 2000),
+                ],
+              ),
+            ),
+          ),
+        );
+        return (tester.getTopLeft(find.byType(GeoScene)), scroll);
+      }
+
+      testWidgets('a vertical drag on the scene orbits, not scrolls', (
+        tester,
+      ) async {
+        OrbitCamera? cam;
+        final (origin, scroll) = await pumpInList(
+          tester,
+          onCameraChanged: (c) => cam = c,
+        );
+        await tester.dragFrom(
+          origin + const Offset(20, 200),
+          const Offset(10, -120),
+        );
+        expect(scroll.offset, 0);
+        expect(cam, isNotNull);
+        expect(cam!.pitch, isNot(_camera.pitch));
+      });
+
+      testWidgets('with orbit off, the page scrolls', (tester) async {
+        final (origin, scroll) = await pumpInList(tester, enableOrbit: false);
+        await tester.dragFrom(
+          origin + const Offset(20, 200),
+          const Offset(0, -120),
+        );
+        expect(scroll.offset, greaterThan(0));
+      });
+
+      testWidgets('a tap still reaches onTap', (tester) async {
+        SceneHit? tapped;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: ListView(
+                children: [
+                  GeoScene(
+                    size: const Size(300, 300),
+                    camera: _camera,
+                    onTap: (h) => tapped = h,
+                    children: [crate],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+        final origin = tester.getTopLeft(find.byType(GeoScene));
+        await tester.tapAt(origin + const Offset(150, 150));
+        expect(tapped?.node.id, 'crate');
+      });
+    });
+
     testWidgets('onDragSolid moves the grabbed solid instead of orbiting', (
       tester,
     ) async {
@@ -429,7 +508,7 @@ void main() {
       expect(scroll.offset, 0);
       expect(log.events.last, 'up');
 
-      // Empty space is not claimed, so the list scrolls as usual.
+      // Empty space is not claimed by the interaction; the scene orbits.
       await tester.dragFrom(
         origin + const Offset(10, 10),
         const Offset(0, -120),
