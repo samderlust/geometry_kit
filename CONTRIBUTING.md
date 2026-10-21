@@ -118,6 +118,15 @@ dart pub publish --dry-run
 
 API docs are generated with `dart doc` into each package's `doc/api/`.
 
+README images live in each package's `screenshots/` folder and are listed under `screenshots:` in its `pubspec.yaml`. They are drawn by a render script, not captured by hand, so regenerate them whenever rendering changes:
+
+```bash
+cd packages/geometry_kit_widgets/example
+flutter test tool/readme_images_test.dart
+```
+
+The READMEs load them from `raw.githubusercontent.com/.../main/`, so new or changed images show on GitHub and pub.dev once they reach `main`.
+
 ## Pull requests
 
 - `dart analyze` / `flutter analyze` and the tests pass in every package you touched, and `flutter test` passes in the example app

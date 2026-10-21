@@ -3,6 +3,7 @@ import 'package:flutter/painting.dart';
 import 'package:geometry_kit_3d/geometry_kit_3d.dart';
 
 import '../style/shape_style.dart';
+import 'solid_gradient.dart';
 
 /// Something a [GeoScene] can draw.
 @immutable
@@ -12,11 +13,13 @@ sealed class SceneNode {
 
 /// A shaded 3D solid in a [GeoScene].
 ///
-/// [ShapeStyle.fillColor] is the base colour, shaded by the scene light.
+/// [ShapeStyle.fillColor] is the base colour, shaded by the scene light;
+/// set [gradient] to colour the solid with a [SolidGradient] instead.
 /// [ShapeStyle.opacity] below 1 makes the solid see-through.
 /// [ShapeStyle.strokeColor] outlines the solid's sharp edges (box corners,
-/// cylinder rims), not every triangle. Gradients and paint builders apply
-/// to flat 2D shapes and [GeoPath3] only; solids use the solid colours.
+/// cylinder rims), not every triangle. [ShapeStyle.fillGradient],
+/// [ShapeStyle.strokeGradient] and paint builders apply to flat 2D shapes
+/// and [GeoPath3] only.
 ///
 /// ```dart
 /// GeoSolid(
@@ -37,6 +40,10 @@ class GeoSolid extends SceneNode {
   /// Fill, opacity and edge style.
   final ShapeStyle style;
 
+  /// Colours the solid across its local bounds, in place of
+  /// [ShapeStyle.fillColor]. [ShapeStyle.opacity] still applies.
+  final SolidGradient? gradient;
+
   /// Slices around curved solids; more is smoother and slower.
   final int segments;
 
@@ -51,6 +58,7 @@ class GeoSolid extends SceneNode {
     this.solid, {
     this.transform = Transform3.identity,
     this.style = const ShapeStyle.filled(Color(0xFF90A4AE)),
+    this.gradient,
     this.segments = 32,
     this.pickable = true,
     this.id,
@@ -67,13 +75,14 @@ class GeoSolid extends SceneNode {
           other.solid == solid &&
           other.transform == transform &&
           other.style == style &&
+          other.gradient == gradient &&
           other.segments == segments &&
           other.pickable == pickable &&
           other.id == id);
 
   @override
   int get hashCode =>
-      Object.hash(solid, transform, style, segments, pickable, id);
+      Object.hash(solid, transform, style, gradient, segments, pickable, id);
 }
 
 /// A 3D polyline for guides, outlines and grids.

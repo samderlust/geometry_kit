@@ -51,6 +51,19 @@ void main() {
         _size,
       ).project(c.document[id]!.transform.position)!;
 
+  testWidgets('node gradients reach the scene, selected or not', (
+    tester,
+  ) async {
+    const g = SolidGradient.linear(colors: [Colors.red, Colors.blue]);
+    c.apply(c.document.put(c.document['a']!.copyWith(gradient: g)));
+    c.select({'a'});
+    await pump(tester);
+    final scene = tester.widget<GeoScene>(find.byType(GeoScene));
+    final solids = scene.children.whereType<GeoSolid>().toList();
+    expect(solids.firstWhere((s) => s.id == 'a').gradient, g);
+    expect(solids.firstWhere((s) => s.id == 'b').gradient, isNull);
+  });
+
   testWidgets('tap selects, tap on empty space clears', (tester) async {
     final origin = await pump(tester);
     await tester.tapAt(at(origin, 'a'));

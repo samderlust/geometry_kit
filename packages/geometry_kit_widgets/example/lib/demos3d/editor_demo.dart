@@ -53,6 +53,26 @@ class _EditorDemoState extends State<EditorDemo> {
     (name: 'Grey', color: Color(0xFF90A4AE)),
   ];
 
+  /// Linear gradient directions offered, as start → end anchors.
+  static const _directions = [
+    (name: 'Top → bottom', start: Anchor3.top, end: Anchor3.bottom),
+    (name: 'Left → right', start: Anchor3.left, end: Anchor3.right),
+    (name: 'Front → back', start: Anchor3.front, end: Anchor3.back),
+    (
+      name: 'Corner → corner',
+      start: Anchor3.topLeftFront,
+      end: Anchor3.bottomRightBack,
+    ),
+  ];
+
+  /// Radial gradient centres offered. None sits in the middle: every point
+  /// on a ball is the same distance from it, so the ball would be one colour.
+  static const _centers = [
+    (name: 'From top', center: Anchor3.top),
+    (name: 'From corner', center: Anchor3.topLeftFront),
+    (name: 'From front', center: Anchor3.front),
+  ];
+
   static EditorNode _node(
     String id,
     Solid solid, {
@@ -93,7 +113,24 @@ editor.add(EditorNode(id: 'pillar', solid: ...));
 editor.apply(editor.document.updateAll(
   editor.selection,
   (n) => n.copyWith(style: ShapeStyle.filled(Colors.red)),
-));''';
+));
+
+// Or give it a gradient fixed to the solid. Anchors are points in the
+// solid's local bounding box, -1..1 per axis (x left→right, y bottom→top,
+// z back→front), so start/end pick which side the gradient starts from.
+editor.apply(editor.document.updateAll(
+  editor.selection,
+  (n) => n.copyWith(
+    gradient: const SolidGradient.linear(
+      start: Anchor3.top,
+      end: Anchor3.bottom,
+      colors: [Colors.teal, Colors.purple],
+    ),
+  ),
+));
+// SolidGradient.radial(center: Anchor3.top, colors: [...]) glows out from
+// a point; keep the centre off the middle of a ball, or it is one colour.
+// gradient.reversed flips it, copyWith(gradient: null) removes it.''';
 
   @override
   void dispose() {
@@ -107,13 +144,89 @@ editor.apply(editor.document.updateAll(
     _editor.add(_node(id, solid, x: (_count % 5 - 2) * 0.6, y: y, z: 1.8));
   }
 
-  /// Paints every unlocked selected node [color], as one undo step.
-  void _paint(Color color) => _editor.apply(
-    _editor.document.updateAll(
-      _editor.selection,
-      (n) => n.copyWith(style: ShapeStyle.filled(color)),
+  /// Changes every unlocked selected node with [edit], as one undo step.
+  void _restyle(EditorNode Function(EditorNode n) edit) =>
+      _editor.apply(_editor.document.updateAll(_editor.selection, edit));
+
+  /// [g] with its first and last colours replaced.
+  static SolidGradient _recolor(SolidGradient g, {Color? from, Color? to}) {
+    final colors = [from ?? g.colors.first, to ?? g.colors.last];
+    return switch (g) {
+      LinearSolidGradient() => g.copyWith(colors: colors),
+      RadialSolidGradient() => g.copyWith(colors: colors),
+    };
+  }
+
+  /// Paints the selection [color]: the whole fill, or a gradient's start.
+  void _paint(Color color) => _restyle(
+    (n) => n.copyWith(
+      style: ShapeStyle.filled(color),
+      gradient: n.gradient == null ? null : _recolor(n.gradient!, from: color),
     ),
   );
+
+  /// Sets the end colour of the selection's gradients.
+  void _paintTo(Color color) => _restyle(
+    (n) => n.gradient == null
+        ? n
+        : n.copyWith(gradient: _recolor(n.gradient!, to: color)),
+  );
+
+  /// Switches the selection between a solid colour and a gradient kind,
+  /// keeping its colours.
+  void _setFill(_Fill fill) => _restyle((n) {
+    final from = n.style.fillColor ?? _swatches.first.color;
+    final to = n.gradient?.colors.last ?? _swatches[5].color;
+    final dir = _directions.first;
+    return n.copyWith(
+      gradient: switch (fill) {
+        _Fill.solid => null,
+        _Fill.linear => switch (n.gradient) {
+          final LinearSolidGradient g => g,
+          _ => LinearSolidGradient(
+            start: dir.start,
+            end: dir.end,
+            colors: [from, to],
+          ),
+        },
+        _Fill.radial => switch (n.gradient) {
+          final RadialSolidGradient g => g,
+          _ => RadialSolidGradient(colors: [from, to]),
+        },
+      },
+    );
+  });
+
+  /// Points the selection's linear gradients from [start] to [end].
+  void _direct(Anchor3 start, Anchor3 end) => _restyle(
+    (n) => switch (n.gradient) {
+      final LinearSolidGradient g => n.copyWith(
+        gradient: g.copyWith(start: start, end: end),
+      ),
+      _ => n,
+    },
+  );
+
+  /// Moves the centre of the selection's radial gradients to [center].
+  void _centre(Anchor3 center) => _restyle(
+    (n) => switch (n.gradient) {
+      final RadialSolidGradient g => n.copyWith(
+        gradient: g.copyWith(center: center),
+      ),
+      _ => n,
+    },
+  );
+
+  /// Runs the selection's gradients the other way.
+  void _flip() => _restyle(
+    (n) => n.gradient == null ? n : n.copyWith(gradient: n.gradient!.reversed),
+  );
+
+  static _Fill _fillOf(EditorNode n) => switch (n.gradient) {
+    null => _Fill.solid,
+    LinearSolidGradient() => _Fill.linear,
+    RadialSolidGradient() => _Fill.radial,
+  };
 
   void _toggleLock() {
     final nodes = _editor.selectedNodes.toList();
@@ -148,6 +261,62 @@ editor.apply(editor.document.updateAll(
         final paintable = sel.any((n) => !n.locked);
         final colors = {for (final n in sel) n.style.fillColor};
         final current = colors.length == 1 ? colors.single : null;
+        final fills = {for (final n in sel) _fillOf(n)};
+        final fill = fills.length == 1 ? fills.single : null;
+        final graded = sel.where((n) => n.gradient != null && !n.locked);
+        final ends = {for (final n in graded) n.gradient!.colors.last};
+        final currentTo = ends.length == 1 ? ends.single : null;
+        final linears = {
+          for (final n in graded)
+            if (n.gradient case final LinearSolidGradient g) (g.start, g.end),
+        };
+        final radials = {
+          for (final n in graded)
+            if (n.gradient case final RadialSolidGradient g) g.center,
+        };
+        final linear = fill == _Fill.linear && graded.isNotEmpty;
+        final radial = fill == _Fill.radial && graded.isNotEmpty;
+        Widget labelled(String label, List<Widget> children) => Padding(
+          padding: const EdgeInsets.fromLTRB(14, 6, 14, 2),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 52,
+                child: Text(label, style: p.mono(12, color: p.muted)),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: children,
+                ),
+              ),
+            ],
+          ),
+        );
+        Widget chip(String label, bool selected, VoidCallback? onTap) =>
+            ChoiceChip(
+              label: Text(label, style: p.mono(12)),
+              selected: selected,
+              onSelected: onTap == null ? null : (_) => onTap(),
+              visualDensity: VisualDensity.compact,
+            );
+        List<Widget> swatches(
+          Color? selected,
+          ValueChanged<Color>? onPick, {
+          String suffix = '',
+        }) => [
+          for (final s in _swatches)
+            _Swatch(
+              name: '${s.name}$suffix',
+              color: s.color,
+              ring: p.fg,
+              selected: s.color == selected,
+              onTap: onPick == null ? null : () => onPick(s.color),
+            ),
+        ];
         Widget button(IconData icon, String label, VoidCallback? onTap) =>
             TextButton.icon(
               onPressed: onTap,
@@ -174,31 +343,43 @@ editor.apply(editor.document.updateAll(
             footer: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(14, 10, 14, 4),
-                  child: Row(
-                    children: [
-                      Text('Colour', style: p.mono(12, color: p.muted)),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: [
-                            for (final s in _swatches)
-                              _Swatch(
-                                name: s.name,
-                                color: s.color,
-                                ring: p.fg,
-                                selected: s.color == current,
-                                onTap: paintable ? () => _paint(s.color) : null,
-                              ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                const SizedBox(height: 4),
+                labelled('Fill', [
+                  for (final f in _Fill.values)
+                    chip(
+                      f.label,
+                      f == fill,
+                      paintable ? () => _setFill(f) : null,
+                    ),
+                ]),
+                labelled(
+                  graded.isEmpty ? 'Colour' : 'From',
+                  swatches(current, paintable ? _paint : null),
                 ),
+                if (graded.isNotEmpty)
+                  labelled(
+                    'To',
+                    swatches(currentTo, _paintTo, suffix: ' (to)'),
+                  ),
+                if (graded.isNotEmpty)
+                  labelled('Dir', [
+                    if (linear)
+                      for (final d in _directions)
+                        chip(
+                          d.name,
+                          linears.length == 1 &&
+                              linears.single == (d.start, d.end),
+                          () => _direct(d.start, d.end),
+                        ),
+                    if (radial)
+                      for (final c in _centers)
+                        chip(
+                          c.name,
+                          radials.length == 1 && radials.single == c.center,
+                          () => _centre(c.center),
+                        ),
+                    chip('⇅ Flip', false, _flip),
+                  ]),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 6,
@@ -276,6 +457,16 @@ editor.apply(editor.document.updateAll(
       },
     );
   }
+}
+
+/// How a node is filled.
+enum _Fill {
+  solid('Solid'),
+  linear('Linear'),
+  radial('Radial');
+
+  final String label;
+  const _Fill(this.label);
 }
 
 /// A round colour button; shows a ring when it is the selection's colour.

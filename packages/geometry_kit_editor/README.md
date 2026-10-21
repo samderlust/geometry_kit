@@ -5,6 +5,8 @@
 Interactive editing for [`geometry_kit_widgets`](https://pub.dev/packages/geometry_kit_widgets)
 3D scenes: select solids, drag them around, undo and redo.
 
+![EditorScene with two selected objects outlined inside a dashed selection box, a locked gradient pillar and a cylinder](https://raw.githubusercontent.com/samderlust/geometry_kit/main/packages/geometry_kit_editor/screenshots/editor.png)
+
 > 0.x: the API will change as resize handles, gizmos and snapping land.
 
 ## Model
@@ -42,6 +44,20 @@ EditorScene(
 // Elsewhere:
 editor.undo();
 editor.translateSelection(const Point3(0, 1, 0));
+
+// Restyle the selection (locked nodes are skipped) as one undo step,
+// here with a gradient fixed to each solid (see geometry_kit_widgets):
+editor.apply(editor.document.updateAll(
+  editor.selection,
+  (n) => n.copyWith(
+    gradient: const SolidGradient.linear(
+      start: Anchor3.top,
+      end: Anchor3.bottom,
+      colors: [Colors.teal, Colors.purple],
+    ),
+  ),
+));
+// n.copyWith(gradient: null) goes back to the solid fill colour.
 ```
 
 | Input | Does |

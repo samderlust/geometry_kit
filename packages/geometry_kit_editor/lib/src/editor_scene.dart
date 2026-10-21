@@ -182,6 +182,7 @@ class _EditorSceneState extends State<EditorScene> {
                     transform: n.transform,
                     id: n.id,
                     style: style(n, selected: c.isSelected(n.id)),
+                    gradient: n.gradient,
                   ),
               ...c.tool.overlay(c),
               ...widget.foreground,

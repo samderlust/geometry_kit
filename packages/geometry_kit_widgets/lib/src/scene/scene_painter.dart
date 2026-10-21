@@ -8,11 +8,13 @@ import 'package:geometry_kit_3d/geometry_kit_3d.dart';
 import '../style/shape_style.dart';
 import '../util/paint_helpers.dart';
 import 'scene_node.dart';
+import 'solid_gradient.dart';
 
 /// Caches triangle meshes and their sharp edges per solid.
 ///
-/// Keyed by the solid's value (`==` / `hashCode`) and segment count, so a
-/// solid rebuilt with the same parameters in every `build()` still hits the
+/// Keyed by the solid's value (`==` / `hashCode`), segment count and whether
+/// its [GeoSolid.gradient] needs a [SceneMesh.refined] mesh, so a solid
+/// rebuilt with the same parameters in every `build()` still hits the
 /// cache. The least recently used entries are dropped beyond [capacity].
 class SceneMeshCache {
   /// Creates a cache holding up to [capacity] meshes.
@@ -22,20 +24,22 @@ class SceneMeshCache {
   final int capacity;
 
   // A LinkedHashMap: iteration order is least to most recently used.
-  final _entries = <(Solid, int), SceneMesh>{};
+  final _entries = <(Solid, int, bool), SceneMesh>{};
 
   /// Number of meshes currently cached.
   int get length => _entries.length;
 
   /// Mesh for [node], built on first use.
   SceneMesh meshFor(GeoSolid node) {
-    final key = (node.solid, node.segments);
+    final refine = node.gradient?.needsRefinement ?? false;
+    final key = (node.solid, node.segments, refine);
     final hit = _entries.remove(key);
     if (hit != null) {
       _entries[key] = hit; // move to most recently used
       return hit;
     }
-    final built = SceneMesh(node.solid.toMesh(segments: node.segments));
+    var built = SceneMesh(node.solid.toMesh(segments: node.segments));
+    if (refine) built = built.refined();
     _entries[key] = built;
     if (_entries.length > capacity) _entries.remove(_entries.keys.first);
     return built;
@@ -81,6 +85,98 @@ class SceneMesh {
   }
 
   SceneMesh._(this.mesh, this.normals, this.creases);
+
+  /// Bounds of [mesh], which a [SolidGradient] is laid across.
+  late final Aabb bounds = mesh.bounds;
+
+  SolidGradient? _colorsGradient;
+  List<Color>? _colors;
+
+  /// [gradient]'s colour at each vertex of [mesh]. The last result is kept,
+  /// so repaints that only move the camera or the solid reuse it.
+  List<Color> vertexColors(SolidGradient gradient) {
+    if (_colors != null && _colorsGradient == gradient) return _colors!;
+    _colorsGradient = gradient;
+    return _colors = [
+      for (final p in mesh.positions) gradient.colorOf(p, bounds),
+    ];
+  }
+
+  /// This mesh with long triangles split into smaller ones, so per-vertex
+  /// colours (a [SolidGradient]) vary smoothly across big flat faces.
+  ///
+  /// A triangle is halved along each edge until its longest edge is at most
+  /// [fraction] of the bounds diagonal, at most [maxLevels] times (each level
+  /// quarters a triangle). Face normals and sharp edges carry over, so
+  /// shading and outlines look as before.
+  SceneMesh refined({double fraction = 1 / 8, int maxLevels = 2}) {
+    final b = bounds;
+    final limit = b.min.distanceTo(b.max) * fraction;
+    if (limit <= 0 || mesh.triangleCount == 0) return this;
+    final pos = [...mesh.positions];
+    final idx = <int>[];
+    final outNormals = <Point3>[];
+    final outCreases = <List<(int, int)>>[];
+    final mids = <(int, int), int>{};
+    (int, int) key(int a, int b) => a < b ? (a, b) : (b, a);
+    int mid(int a, int b) => mids[key(a, b)] ??= () {
+      pos.add(pos[a].lerp(pos[b], 0.5));
+      return pos.length - 1;
+    }();
+
+    void emit(
+      int a,
+      int b,
+      int c,
+      bool ab,
+      bool bc,
+      bool ca,
+      Point3 n,
+      int level,
+    ) {
+      if (level == 0) {
+        idx.addAll([a, b, c]);
+        outNormals.add(n);
+        outCreases.add([
+          if (ab) key(a, b),
+          if (bc) key(b, c),
+          if (ca) key(c, a),
+        ]);
+        return;
+      }
+      final mab = mid(a, b), mbc = mid(b, c), mca = mid(c, a);
+      final l = level - 1;
+      emit(a, mab, mca, ab, false, ca, n, l);
+      emit(mab, b, mbc, ab, bc, false, n, l);
+      emit(mca, mbc, c, false, bc, ca, n, l);
+      emit(mab, mbc, mca, false, false, false, n, l);
+    }
+
+    final src = mesh.indices;
+    for (var t = 0; t < mesh.triangleCount; t++) {
+      final a = src[t * 3], b = src[t * 3 + 1], c = src[t * 3 + 2];
+      final pa = pos[a], pb = pos[b], pc = pos[c];
+      final longest = math.max(
+        pa.distanceTo(pb),
+        math.max(pb.distanceTo(pc), pc.distanceTo(pa)),
+      );
+      final level = longest <= limit
+          ? 0
+          : math.min(maxLevels, (math.log(longest / limit) / math.ln2).ceil());
+      final sharp = creases[t];
+      emit(
+        a,
+        b,
+        c,
+        sharp.contains(key(a, b)),
+        sharp.contains(key(b, c)),
+        sharp.contains(key(c, a)),
+        normals[t],
+        level,
+      );
+    }
+    return SceneMesh._(Mesh(pos, idx), outNormals, outCreases);
+  }
 }
 
 /// Paints [GeoScene] content: solids depth-sorted back to front (painter's
@@ -130,10 +226,15 @@ class ScenePainter extends CustomPainter {
       if (node is! GeoSolid) continue;
       final sm = cache.meshFor(node);
       final mesh = sm.mesh;
+      final gradient = node.gradient;
       final base = node.style.fillColor ?? const Color(0xFF90A4AE);
-      final alpha = base.a * (node.style.opacity ?? 1.0);
+      final opacity = node.style.opacity ?? 1.0;
+      final alpha = (gradient == null ? base.a : 1.0) * opacity;
       if (alpha <= 0) continue;
-      final translucent = alpha < 1;
+      final translucent =
+          alpha < 1 || (gradient != null && gradient.isTranslucent);
+      // Gradient colour per local vertex, so it stays fixed to the solid.
+      final vertexColors = gradient == null ? null : sm.vertexColors(gradient);
       final edgeColor = node.style.strokeColor;
       final drawEdges =
           edgeColor != null && (node.style.strokeWidth ?? 1.0) > 0;
@@ -167,7 +268,9 @@ class ScenePainter extends CustomPainter {
 
         final List<Offset> points;
         List<(Offset, Offset)>? edges;
-        if (screen[ia] != null && screen[ib] != null && screen[ic] != null) {
+        final whole =
+            screen[ia] != null && screen[ib] != null && screen[ic] != null;
+        if (whole) {
           points = [screen[ia]!, screen[ib]!, screen[ic]!];
           if (drawEdges && sm.creases[t].isNotEmpty) {
             edges = [
@@ -191,15 +294,26 @@ class ScenePainter extends CustomPainter {
             ];
           }
         }
-        tris.add(
-          _Tri(
-            points,
-            _shade(base, shade, alpha),
-            depth,
-            edges,
-            drawEdges ? node : null,
-          ),
-        );
+        final List<Color> colors;
+        if (vertexColors == null) {
+          final c = _shade(base, shade, alpha);
+          colors = [for (final _ in points) c];
+        } else if (whole) {
+          colors = [
+            for (final i in [ia, ib, ic])
+              _shade(vertexColors[i], shade, vertexColors[i].a * opacity),
+          ];
+        } else {
+          // Cut by the near plane: rare, so one averaged colour will do.
+          final avg = Color.lerp(
+            Color.lerp(vertexColors[ia], vertexColors[ib], 0.5),
+            vertexColors[ic],
+            1 / 3,
+          )!;
+          final c = _shade(avg, shade, avg.a * opacity);
+          colors = [for (final _ in points) c];
+        }
+        tris.add(_Tri(points, colors, depth, edges, drawEdges ? node : null));
       }
     }
 
@@ -257,7 +371,7 @@ class ScenePainter extends CustomPainter {
       final p = t.points;
       for (var i = 1; i < p.length - 1; i++) {
         positions.addAll([p[0], p[i], p[i + 1]]);
-        colors.addAll([t.color, t.color, t.color]);
+        colors.addAll([t.colors[0], t.colors[i], t.colors[i + 1]]);
       }
       final edges = t.edges;
       if (edges == null) continue;
@@ -387,11 +501,13 @@ class ScenePainter extends CustomPainter {
 class _Tri {
   /// Screen polygon: a triangle, or a quad when cut by the near plane.
   final List<Offset> points;
-  final Color color;
+
+  /// One colour per point.
+  final List<Color> colors;
   final double depth;
   final List<(Offset, Offset)>? edges;
   final GeoSolid? node;
-  const _Tri(this.points, this.color, this.depth, this.edges, this.node);
+  const _Tri(this.points, this.colors, this.depth, this.edges, this.node);
 }
 
 bool _nodesEqual(List<SceneNode> a, List<SceneNode> b) {

@@ -7,7 +7,7 @@
 /// Coordinate transforms (Y-up, centered, …) flow through `CoordinateMapper`.
 ///
 /// `GeoScene` draws `geometry_kit_3d` solids with an orbit camera, flat
-/// shading and tap/hover picking.
+/// shading, `SolidGradient` colouring and tap/hover picking.
 library;
 
 export 'src/coord/coordinate_mapper.dart';
@@ -22,6 +22,7 @@ export 'src/scene/scene_interaction.dart';
 export 'src/scene/scene_node.dart';
 export 'src/scene/scene_painter.dart';
 export 'src/scene/scene_viewport.dart';
+export 'src/scene/solid_gradient.dart';
 export 'src/util/shape_path.dart';
 export 'src/widgets/geo_circle.dart';
 export 'src/widgets/geo_ellipse.dart';

@@ -2,7 +2,9 @@
 
 # geometry_kit_3d
 
-Immutable 3D solids for Dart, built on [`geometry_kit`](../geometry_Kit).
+Immutable 3D solids for Dart, built on [`geometry_kit`](../geometry_kit).
+
+![Box, sphere, cylinder, cone, solid of revolution and extruded prism on a grid, and a cone sliced by a tilted plane into an ellipse](https://raw.githubusercontent.com/samderlust/geometry_kit/main/packages/geometry_kit_3d/screenshots/solids.png)
 
 Solids know their own volume, surface area and bounds, answer ray and
 containment queries, slice into 2D cross-sections, and export triangle meshes

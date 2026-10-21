@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/painting.dart' show Color;
 import 'package:geometry_kit_3d/geometry_kit_3d.dart';
 import 'package:geometry_kit_editor/geometry_kit_editor.dart';
+import 'package:geometry_kit_widgets/geometry_kit_widgets.dart';
 
 EditorNode box(String id, {double x = 0, bool locked = false}) => EditorNode(
   id: id,
@@ -34,6 +36,17 @@ void main() {
     test('equal by value', () {
       expect(Document([box('a')]), Document([box('a')]));
       expect(Document([box('a')]), isNot(Document([box('a', x: 1)])));
+    });
+
+    test('copyWith keeps the gradient unless told to clear it', () {
+      const g = SolidGradient.linear(
+        colors: [Color(0xFFFF0000), Color(0xFF0000FF)],
+      );
+      final n = box('a').copyWith(gradient: g);
+      expect(n.gradient, g);
+      expect(n.copyWith(locked: true).gradient, g);
+      expect(n.copyWith(gradient: null).gradient, isNull);
+      expect(n, isNot(box('a')));
     });
 
     test('worldSolid applies the transform', () {
@@ -72,6 +85,16 @@ void main() {
       c.redo();
       expect(c.document['a']!.transform.position.x, 1);
       expect(c.canRedo, isFalse);
+    });
+
+    test('gradient edits undo like any other', () {
+      const g = SolidGradient.radial(
+        colors: [Color(0xFFFFFFFF), Color(0xFF000000)],
+      );
+      c.apply(c.document.put(c.document['a']!.copyWith(gradient: g)));
+      expect(c.document['a']!.gradient, g);
+      c.undo();
+      expect(c.document['a']!.gradient, isNull);
     });
 
     test('a new edit clears redo', () {
