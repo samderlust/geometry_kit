@@ -13,9 +13,9 @@ import 'solid_gradient.dart';
 /// Caches triangle meshes and their sharp edges per solid.
 ///
 /// Keyed by the solid's value (`==` / `hashCode`), segment count and whether
-/// the solid has a [GeoSolid.gradient] (which needs a [SceneMesh.refined]
-/// mesh), so a solid rebuilt with the same parameters in every `build()`
-/// still hits the cache. The least recently used entries are dropped beyond [capacity].
+/// its [GeoSolid.gradient] needs a [SceneMesh.refined] mesh, so a solid
+/// rebuilt with the same parameters in every `build()` still hits the
+/// cache. The least recently used entries are dropped beyond [capacity].
 class SceneMeshCache {
   /// Creates a cache holding up to [capacity] meshes.
   SceneMeshCache({this.capacity = 256}) : assert(capacity > 0);
@@ -31,7 +31,7 @@ class SceneMeshCache {
 
   /// Mesh for [node], built on first use.
   SceneMesh meshFor(GeoSolid node) {
-    final refine = node.gradient != null;
+    final refine = node.gradient?.needsRefinement ?? false;
     final key = (node.solid, node.segments, refine);
     final hit = _entries.remove(key);
     if (hit != null) {
@@ -89,6 +89,19 @@ class SceneMesh {
   /// Bounds of [mesh], which a [SolidGradient] is laid across.
   late final Aabb bounds = mesh.bounds;
 
+  SolidGradient? _colorsGradient;
+  List<Color>? _colors;
+
+  /// [gradient]'s colour at each vertex of [mesh]. The last result is kept,
+  /// so repaints that only move the camera or the solid reuse it.
+  List<Color> vertexColors(SolidGradient gradient) {
+    if (_colors != null && _colorsGradient == gradient) return _colors!;
+    _colorsGradient = gradient;
+    return _colors = [
+      for (final p in mesh.positions) gradient.colorOf(p, bounds),
+    ];
+  }
+
   /// This mesh with long triangles split into smaller ones, so per-vertex
   /// colours (a [SolidGradient]) vary smoothly across big flat faces.
   ///
@@ -96,7 +109,7 @@ class SceneMesh {
   /// [fraction] of the bounds diagonal, at most [maxLevels] times (each level
   /// quarters a triangle). Face normals and sharp edges carry over, so
   /// shading and outlines look as before.
-  SceneMesh refined({double fraction = 1 / 8, int maxLevels = 3}) {
+  SceneMesh refined({double fraction = 1 / 8, int maxLevels = 2}) {
     final b = bounds;
     final limit = b.min.distanceTo(b.max) * fraction;
     if (limit <= 0 || mesh.triangleCount == 0) return this;
@@ -221,9 +234,7 @@ class ScenePainter extends CustomPainter {
       final translucent =
           alpha < 1 || (gradient != null && gradient.isTranslucent);
       // Gradient colour per local vertex, so it stays fixed to the solid.
-      final vertexColors = gradient == null
-          ? null
-          : [for (final p in mesh.positions) gradient.colorOf(p, sm.bounds)];
+      final vertexColors = gradient == null ? null : sm.vertexColors(gradient);
       final edgeColor = node.style.strokeColor;
       final drawEdges =
           edgeColor != null && (node.style.strokeWidth ?? 1.0) > 0;

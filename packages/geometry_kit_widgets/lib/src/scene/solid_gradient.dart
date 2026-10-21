@@ -176,6 +176,15 @@ sealed class SolidGradient {
   /// Whether any colour is see-through.
   bool get isTranslucent => colors.any((c) => c.a < 1);
 
+  /// Whether a mesh needs its big faces split to show this gradient.
+  ///
+  /// Colours are blended straight between a triangle's corners, which is
+  /// exact for a two-colour linear gradient that spans the whole box
+  /// without clamping. Everything else (radial, more colours, an end
+  /// inside the box) bends within a face, so the painter splits big faces
+  /// first.
+  bool get needsRefinement => true;
+
   /// Stops mirrored, for a reversed colour list.
   List<double>? get _reversedStops =>
       stops == null ? null : [for (final s in stops!.reversed) 1 - s];
@@ -209,6 +218,32 @@ class LinearSolidGradient extends SolidGradient {
             (a.y - start.y) * dy +
             (a.z - start.z) * dz) /
         len2;
+  }
+
+  @override
+  bool get needsRefinement {
+    if (colors.length != 2) return true;
+    final lo = stops?.first ?? 0, hi = stops?.last ?? 1;
+    // t is linear in anchor space, so its range over the box is set by
+    // the corners.
+    var tMin = double.infinity, tMax = double.negativeInfinity;
+    for (final x in const [-1.0, 1.0]) {
+      for (final y in const [-1.0, 1.0]) {
+        for (final z in const [-1.0, 1.0]) {
+          final dx = end.x - start.x, dy = end.y - start.y;
+          final dz = end.z - start.z;
+          final len2 = dx * dx + dy * dy + dz * dz;
+          if (len2 == 0) return false; // one flat colour
+          final t =
+              ((x - start.x) * dx + (y - start.y) * dy + (z - start.z) * dz) /
+              len2;
+          tMin = math.min(tMin, t);
+          tMax = math.max(tMax, t);
+        }
+      }
+    }
+    const eps = 1e-9;
+    return tMin < lo - eps || tMax > hi + eps;
   }
 
   @override
@@ -292,14 +327,16 @@ class RadialSolidGradient extends SolidGradient {
   );
 
   /// Copy with the given fields replaced.
+  /// Pass `radius: null` to go back to [effectiveRadius]'s automatic
+  /// radius; leave it out to keep the current one.
   RadialSolidGradient copyWith({
     Anchor3? center,
-    double? radius,
+    Object? radius = _keep,
     List<Color>? colors,
     List<double>? stops,
   }) => RadialSolidGradient(
     center: center ?? this.center,
-    radius: radius ?? this.radius,
+    radius: identical(radius, _keep) ? this.radius : radius as double?,
     colors: colors ?? this.colors,
     stops: stops ?? this.stops,
   );
@@ -320,3 +357,6 @@ class RadialSolidGradient extends SolidGradient {
     stops == null ? null : Object.hashAll(stops!),
   );
 }
+
+/// Marks a `copyWith` argument that was left out.
+const Object _keep = Object();

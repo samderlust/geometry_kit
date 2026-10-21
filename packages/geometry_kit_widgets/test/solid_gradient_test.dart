@@ -134,6 +134,50 @@ void main() {
       expect(top.t(Anchor3.top.resolve(bounds), bounds), 0);
     });
 
+    test('needsRefinement only when corner blending would be wrong', () {
+      const two = [_red, _blue];
+      bool needs(SolidGradient g) => g.needsRefinement;
+      // Spans the box exactly: per-corner blending is exact.
+      expect(needs(const SolidGradient.linear(colors: two)), isFalse);
+      expect(
+        needs(
+          const SolidGradient.linear(
+            start: Anchor3.topLeftFront,
+            end: Anchor3.bottomRightBack,
+            colors: two,
+          ),
+        ),
+        isFalse,
+      );
+      // Ends inside the box clamp; extra colours and radials bend.
+      expect(
+        needs(
+          const SolidGradient.linear(
+            start: Anchor3(0, 0.5, 0),
+            end: Anchor3.bottom,
+            colors: two,
+          ),
+        ),
+        isTrue,
+      );
+      expect(
+        needs(const SolidGradient.linear(colors: two, stops: [0.2, 1])),
+        isTrue,
+      );
+      expect(
+        needs(const SolidGradient.linear(colors: [_red, _green, _blue])),
+        isTrue,
+      );
+      expect(needs(const SolidGradient.radial(colors: two)), isTrue);
+    });
+
+    test('radial copyWith keeps or clears the radius', () {
+      const g = RadialSolidGradient(radius: 3, colors: [_red, _blue]);
+      expect(g.copyWith(center: Anchor3.front).radius, 3);
+      expect(g.copyWith(radius: null).radius, isNull);
+      expect(g.copyWith(radius: 1.5).radius, 1.5);
+    });
+
     test('equal by value', () {
       expect(
         const SolidGradient.linear(colors: [_red, _blue]),
@@ -177,17 +221,54 @@ void main() {
       expect(ball.refined().mesh.triangleCount, ball.mesh.triangleCount);
     });
 
-    test('the cache refines only solids with a gradient', () {
+    test('the cache refines only when the gradient needs it', () {
       final cache = SceneMeshCache();
-      final plain = cache.meshFor(GeoSolid(box));
-      final shaded = cache.meshFor(
+      final plain = cache.meshFor(const GeoSolid(box));
+      final linear = cache.meshFor(
         const GeoSolid(
           box,
           gradient: SolidGradient.linear(colors: [_red, _blue]),
         ),
       );
-      expect(shaded.mesh.triangleCount, greaterThan(plain.mesh.triangleCount));
+      expect(identical(linear, plain), isTrue, reason: 'exact unrefined');
+      final radial = cache.meshFor(
+        const GeoSolid(
+          box,
+          gradient: SolidGradient.radial(colors: [_red, _blue]),
+        ),
+      );
+      expect(radial.mesh.triangleCount, greaterThan(plain.mesh.triangleCount));
       expect(cache.length, 2);
+    });
+
+    test('refining stays within a few times the original size', () {
+      for (final solid in <Solid>[
+        Box.cube(center: Point3.zero, size: 1),
+        Cylinder(baseCenter: Point3.zero, radius: 0.4, height: 1.2),
+        Cone(baseCenter: Point3.zero, radius: 0.5, height: 1.5),
+      ]) {
+        final sm = SceneMesh(solid.toMesh(segments: 32));
+        expect(
+          sm.refined().mesh.triangleCount,
+          lessThanOrEqualTo(sm.mesh.triangleCount * 16),
+          reason: '${solid.runtimeType}',
+        );
+      }
+    });
+
+    test('vertex colours are reused until the gradient changes', () {
+      final sm = SceneMesh(box.toMesh());
+      const g = SolidGradient.linear(colors: [_red, _blue]);
+      final first = sm.vertexColors(g);
+      expect(
+        identical(
+          sm.vertexColors(SolidGradient.linear(colors: [_red, _blue].toList())),
+          first,
+        ),
+        isTrue,
+      );
+      expect(identical(sm.vertexColors(g.reversed), first), isFalse);
+      expect(sm.vertexColors(g.reversed).length, sm.mesh.vertexCount);
     });
   });
 
