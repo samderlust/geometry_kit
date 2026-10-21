@@ -1,1 +1,5 @@
 .dart_tool/
+
+# Agent instruction files (kept locally, not in the repo)
+AGENTS.md
+CLAUDE.md

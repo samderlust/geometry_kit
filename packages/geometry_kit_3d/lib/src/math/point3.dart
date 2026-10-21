@@ -98,7 +98,7 @@ class Point3 {
         z + (other.z - z) * t,
       );
 
-  /// Angle between this vector and [other] in radians, range [0, pi].
+  /// Angle between this vector and [other] in radians, range 0 to π.
   double angleTo(Point3 other) {
     final m = magnitude * other.magnitude;
     if (m == 0) return 0;
