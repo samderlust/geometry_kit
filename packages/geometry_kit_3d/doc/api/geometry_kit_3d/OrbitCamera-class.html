@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the OrbitCamera class from the geometry_kit_3d library, for the Dart programming language.">
+  <title>OrbitCamera class - geometry_kit_3d library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">geometry_kit_3d</a></li>
+    <li><a href="../geometry_kit_3d/">geometry_kit_3d.dart</a></li>
+    <li class="self-crumb">OrbitCamera class</li>
+  </ol>
+  <div class="self-name">OrbitCamera</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="geometry_kit_3d&#47;geometry_kit_3d-library-sidebar.html"
+    data-below-sidebar="geometry_kit_3d&#47;OrbitCamera-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">OrbitCamera</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>A perspective camera that circles a <a href="../geometry_kit_3d/OrbitCamera/target.html">target</a> point.</p>
+<p><a href="../geometry_kit_3d/OrbitCamera/yaw.html">yaw</a> turns around the vertical axis and <a href="../geometry_kit_3d/OrbitCamera/pitch.html">pitch</a> tilts up or down, both
+in degrees. Screen coordinates follow Flutter: origin at the top-left,
+y pointing down.</p>
+<pre class="language-dart"><code class="language-dart">const camera = OrbitCamera(yaw: 30, pitch: 20, distance: 8);
+final screen = camera.project(Point3.zero, 400, 300); // Point(200, 150)
+final ray = camera.rayThrough(Point(200, 150), 400, 300);
+</code></pre>
+</section>
+
+
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="OrbitCamera.new" class="callable">
+          <span class="name"><a href="../geometry_kit_3d/OrbitCamera/OrbitCamera.html">OrbitCamera</a></span><span class="signature">({<span class="parameter" id="param-target"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">target</span> = <span class="default-value">Point3.zero</span>, </span><span class="parameter" id="param-yaw"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">yaw</span> = <span class="default-value">30</span>, </span><span class="parameter" id="param-pitch"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">pitch</span> = <span class="default-value">20</span>, </span><span class="parameter" id="param-distance"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">distance</span> = <span class="default-value">8</span>, </span><span class="parameter" id="param-fov"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">fov</span> = <span class="default-value">45</span>, </span><span class="parameter" id="param-near"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">near</span> = <span class="default-value">0.05</span>, </span><span class="parameter" id="param-minDistance"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">minDistance</span> = <span class="default-value">0.5</span>, </span><span class="parameter" id="param-maxDistance"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">maxDistance</span> = <span class="default-value">1000</span></span>})</span>
+        </dt>
+        <dd>
+          Creates a camera.
+            <div class="constructor-modifier features">const</div>
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="distance" class="property">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/distance.html">distance</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Distance from <a href="../geometry_kit_3d/OrbitCamera/target.html">target</a> to the camera.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="forward" class="property">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/forward.html">forward</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>
+  
+
+</dt>
+<dd>
+  Unit view direction, from the camera towards <a href="../geometry_kit_3d/OrbitCamera/target.html">target</a>.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="fov" class="property">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/fov.html">fov</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Vertical field of view in degrees.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="maxDistance" class="property">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/maxDistance.html">maxDistance</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Furthest <a href="../geometry_kit_3d/OrbitCamera/zoom.html">zoom</a> and <a href="../geometry_kit_3d/OrbitCamera/withDistance.html">withDistance</a> may move the camera from <a href="../geometry_kit_3d/OrbitCamera/target.html">target</a>.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="minDistance" class="property">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/minDistance.html">minDistance</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Closest <a href="../geometry_kit_3d/OrbitCamera/zoom.html">zoom</a> and <a href="../geometry_kit_3d/OrbitCamera/withDistance.html">withDistance</a> may bring the camera to <a href="../geometry_kit_3d/OrbitCamera/target.html">target</a>.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="near" class="property">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/near.html">near</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Points closer to the camera than this are not projected.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="pitch" class="property">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/pitch.html">pitch</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Elevation in degrees; positive looks down from above. Kept within
+±89° so "up" stays defined.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="position" class="property">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/position.html">position</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>
+  
+
+</dt>
+<dd>
+  World position of the camera.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="right" class="property">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/right.html">right</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>
+  
+
+</dt>
+<dd>
+  Unit vector pointing to the right of the view.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="target" class="property">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/target.html">target</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>
+  
+
+</dt>
+<dd>
+  Point the camera looks at and orbits around.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="up" class="property">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/up.html">up</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>
+  
+
+</dt>
+<dd>
+  Unit vector pointing up in the view.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="yaw" class="property">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/yaw.html">yaw</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Rotation around the vertical axis, in degrees. 0 looks along −Z.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="copyWith" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/copyWith.html">copyWith</a></span><span class="signature">(<wbr>{<span class="parameter" id="copyWith-param-target"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a>?</span> <span class="parameter-name">target</span>, </span><span class="parameter" id="copyWith-param-yaw"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a>?</span> <span class="parameter-name">yaw</span>, </span><span class="parameter" id="copyWith-param-pitch"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a>?</span> <span class="parameter-name">pitch</span>, </span><span class="parameter" id="copyWith-param-distance"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a>?</span> <span class="parameter-name">distance</span>, </span><span class="parameter" id="copyWith-param-fov"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a>?</span> <span class="parameter-name">fov</span>, </span><span class="parameter" id="copyWith-param-near"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a>?</span> <span class="parameter-name">near</span>, </span><span class="parameter" id="copyWith-param-minDistance"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a>?</span> <span class="parameter-name">minDistance</span>, </span><span class="parameter" id="copyWith-param-maxDistance"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a>?</span> <span class="parameter-name">maxDistance</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/OrbitCamera-class.html">OrbitCamera</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Copy with the given fields replaced.
+  
+
+</dd>
+
+        <dt id="focalLength" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/focalLength.html">focalLength</a></span><span class="signature">(<wbr><span class="parameter" id="focalLength-param-height"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">height</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Focal length in pixels for a viewport <code>height</code>.
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="orbit" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/orbit.html">orbit</a></span><span class="signature">(<wbr>{<span class="parameter" id="orbit-param-yaw"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">yaw</span> = <span class="default-value">0</span>, </span><span class="parameter" id="orbit-param-pitch"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">pitch</span> = <span class="default-value">0</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/OrbitCamera-class.html">OrbitCamera</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Camera turned by <code>yaw</code> and tilted by <code>pitch</code> degrees.
+  
+
+</dd>
+
+        <dt id="project" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/project.html">project</a></span><span class="signature">(<wbr><span class="parameter" id="project-param-point"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">point</span>, </span><span class="parameter" id="project-param-width"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">width</span>, </span><span class="parameter" id="project-param-height"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">height</span></span>)
+    <span class="returntype parameter">&#8594; Point?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Screen position of <code>point</code> in a <code>width</code> × <code>height</code> viewport, or
+<code>null</code> when it is behind the camera (closer than <a href="../geometry_kit_3d/OrbitCamera/near.html">near</a>).
+  
+
+</dd>
+
+        <dt id="rayThrough" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/rayThrough.html">rayThrough</a></span><span class="signature">(<wbr><span class="parameter" id="rayThrough-param-screen"><span class="type-annotation">Point</span> <span class="parameter-name">screen</span>, </span><span class="parameter" id="rayThrough-param-width"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">width</span>, </span><span class="parameter" id="rayThrough-param-height"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">height</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Ray3-class.html">Ray3</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Ray from the camera through <code>screen</code> in a <code>width</code> × <code>height</code> viewport.
+Use it to find what the user tapped.
+  
+
+</dd>
+
+        <dt id="toString" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  A string representation of this object.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="toView" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/toView.html">toView</a></span><span class="signature">(<wbr><span class="parameter" id="toView-param-point"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">point</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  <code>point</code> in camera space: x right, y up, z = depth in front of the
+camera.
+  
+
+</dd>
+
+        <dt id="view" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/view.html">view</a></span><span class="signature">(<wbr><span class="parameter" id="view-param-width"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">width</span>, </span><span class="parameter" id="view-param-height"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">height</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/CameraView-class.html">CameraView</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  The view transform for a <code>width</code> × <code>height</code> viewport, computed once.
+  
+
+</dd>
+
+        <dt id="withDistance" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/withDistance.html">withDistance</a></span><span class="signature">(<wbr><span class="parameter" id="withDistance-param-distance"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">distance</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/OrbitCamera-class.html">OrbitCamera</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Camera at <code>distance</code> from <a href="../geometry_kit_3d/OrbitCamera/target.html">target</a>, kept between <a href="../geometry_kit_3d/OrbitCamera/minDistance.html">minDistance</a> and
+<a href="../geometry_kit_3d/OrbitCamera/maxDistance.html">maxDistance</a> so it never passes through the target.
+  
+
+</dd>
+
+        <dt id="zoom" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/zoom.html">zoom</a></span><span class="signature">(<wbr><span class="parameter" id="zoom-param-factor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">factor</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/OrbitCamera-class.html">OrbitCamera</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Camera moved closer (<code>factor &lt; 1</code>) or further (<code>factor &gt; 1</code>), kept
+between <a href="../geometry_kit_3d/OrbitCamera/minDistance.html">minDistance</a> and <a href="../geometry_kit_3d/OrbitCamera/maxDistance.html">maxDistance</a>.
+  
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/OrbitCamera/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  The equality operator.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">geometry_kit_3d</a></li>
+    <li><a href="../geometry_kit_3d/">geometry_kit_3d</a></li>
+    <li class="self-crumb">OrbitCamera class</li>
+</ol>
+
+    <h5>geometry_kit_3d library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    geometry_kit_3d
+      0.1.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

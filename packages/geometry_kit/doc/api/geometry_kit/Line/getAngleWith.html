@@ -76,7 +76,7 @@
   final a1 = _getAtan2(this);
   final a2 = _getAtan2(other);
 
-  if (a1 != double.nan &amp;&amp; a2 != double.nan) {
+  if (!a1.isNaN &amp;&amp; !a2.isNaN) {
     return a2 - a1;
   }
   return double.nan;
@@ -108,7 +108,7 @@
 <footer>
   <span class="no-break">
     geometry_kit
-      1.2.0
+      1.2.2
   </span>
   
 </footer>

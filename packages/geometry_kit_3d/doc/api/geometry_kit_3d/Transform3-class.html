@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the Transform3 class from the geometry_kit_3d library, for the Dart programming language.">
+  <title>Transform3 class - geometry_kit_3d library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">geometry_kit_3d</a></li>
+    <li><a href="../geometry_kit_3d/">geometry_kit_3d.dart</a></li>
+    <li class="self-crumb">Transform3 class</li>
+  </ol>
+  <div class="self-name">Transform3</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="geometry_kit_3d&#47;geometry_kit_3d-library-sidebar.html"
+    data-below-sidebar="geometry_kit_3d&#47;Transform3-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">Transform3</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>An immutable placement: uniform <a href="../geometry_kit_3d/Transform3/scale.html">scale</a>, then <a href="../geometry_kit_3d/Transform3/rotation.html">rotation</a>, then
+<a href="../geometry_kit_3d/Transform3/position.html">position</a>.</p>
+<p>Solids bake transforms into their own fields, so a box rotated twice
+cannot say how far it was turned. Keep the solid in local space and its
+placement in a <a href="../geometry_kit_3d/Transform3-class.html">Transform3</a> when you need the pose itself, for example
+to draw a gizmo along the object's axes or to show its rotation.</p>
+<pre class="language-dart"><code class="language-dart">final t = Transform3(
+  position: const Point3(2, 0, 0),
+  rotation: Quaternion.fromAxisAngle(Point3.unitY, 90),
+);
+final placed = t.applyTo(Box.cube(center: Point3.zero, size: 1));
+print(t.apply(Point3.unitX)); // ≈ Point3(2, 0, -1)
+</code></pre>
+</section>
+
+
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="Transform3.new" class="callable">
+          <span class="name"><a href="../geometry_kit_3d/Transform3/Transform3.html">Transform3</a></span><span class="signature">({<span class="parameter" id="param-position"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">position</span> = <span class="default-value">Point3.zero</span>, </span><span class="parameter" id="param-rotation"><span class="type-annotation"><a href="../geometry_kit_3d/Quaternion-class.html">Quaternion</a></span> <span class="parameter-name">rotation</span> = <span class="default-value">Quaternion.identity</span>, </span><span class="parameter" id="param-scale"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">scale</span> = <span class="default-value">1</span></span>})</span>
+        </dt>
+        <dd>
+          Creates a transform. Defaults to the identity.
+            <div class="constructor-modifier features">const</div>
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="hashCode" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="inverse" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/inverse.html">inverse</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit_3d/Transform3-class.html">Transform3</a></span>
+  
+
+</dt>
+<dd>
+  The transform that undoes this one.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="position" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/position.html">position</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>
+  
+
+</dt>
+<dd>
+  Where the local origin ends up.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="rotation" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/rotation.html">rotation</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit_3d/Quaternion-class.html">Quaternion</a></span>
+  
+
+</dt>
+<dd>
+  Orientation, applied after <a href="../geometry_kit_3d/Transform3/scale.html">scale</a>.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="scale" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/scale.html">scale</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Uniform scale about the local origin; positive.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="apply" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/apply.html">apply</a></span><span class="signature">(<wbr><span class="parameter" id="apply-param-local"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">local</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  <code>local</code> moved into world space.
+  
+
+</dd>
+
+        <dt id="applyDirection" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/applyDirection.html">applyDirection</a></span><span class="signature">(<wbr><span class="parameter" id="applyDirection-param-local"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">local</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Direction <code>local</code> turned into world space, without scale or position.
+  
+
+</dd>
+
+        <dt id="applyTo" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/applyTo.html">applyTo</a></span><span class="signature">(<wbr><span class="parameter" id="applyTo-param-solid"><span class="type-annotation"><a href="../geometry_kit_3d/Solid-class.html">Solid</a></span> <span class="parameter-name">solid</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Solid-class.html">Solid</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  <code>solid</code> (given in local space) placed in world space.
+  
+
+</dd>
+
+        <dt id="copyWith" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/copyWith.html">copyWith</a></span><span class="signature">(<wbr>{<span class="parameter" id="copyWith-param-position"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a>?</span> <span class="parameter-name">position</span>, </span><span class="parameter" id="copyWith-param-rotation"><span class="type-annotation"><a href="../geometry_kit_3d/Quaternion-class.html">Quaternion</a>?</span> <span class="parameter-name">rotation</span>, </span><span class="parameter" id="copyWith-param-scale"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a>?</span> <span class="parameter-name">scale</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Transform3-class.html">Transform3</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Copy with the given fields replaced.
+  
+
+</dd>
+
+        <dt id="isCloseTo" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/isCloseTo.html">isCloseTo</a></span><span class="signature">(<wbr><span class="parameter" id="isCloseTo-param-other"><span class="type-annotation"><a href="../geometry_kit_3d/Transform3-class.html">Transform3</a></span> <span class="parameter-name">other</span>, [</span><span class="parameter" id="isCloseTo-param-epsilon"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">epsilon</span> = <span class="default-value">1e-9</span></span>])
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Whether this and <code>other</code> place things the same within <code>epsilon</code>.
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="rotated" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/rotated.html">rotated</a></span><span class="signature">(<wbr><span class="parameter" id="rotated-param-axis"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">axis</span>, </span><span class="parameter" id="rotated-param-deg"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">deg</span>, {</span><span class="parameter" id="rotated-param-pivot"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a>?</span> <span class="parameter-name">pivot</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Transform3-class.html">Transform3</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Turned by <code>deg</code> degrees around world <code>axis</code> through <code>pivot</code>.
+  
+
+</dd>
+
+        <dt id="scaled" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/scaled.html">scaled</a></span><span class="signature">(<wbr><span class="parameter" id="scaled-param-factor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">factor</span>, {</span><span class="parameter" id="scaled-param-pivot"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a>?</span> <span class="parameter-name">pivot</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Transform3-class.html">Transform3</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Scaled by <code>factor</code> about <code>pivot</code>, which defaults to <a href="../geometry_kit_3d/Transform3/position.html">position</a>.
+  
+
+</dd>
+
+        <dt id="toString" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  A string representation of this object.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="translated" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/translated.html">translated</a></span><span class="signature">(<wbr><span class="parameter" id="translated-param-offset"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">offset</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Transform3-class.html">Transform3</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Moved by <code>offset</code> in world space.
+  
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator *" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/operator_multiply.html">operator *</a></span><span class="signature">(<wbr><span class="parameter" id="*-param-o"><span class="type-annotation"><a href="../geometry_kit_3d/Transform3-class.html">Transform3</a></span> <span class="parameter-name">o</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Transform3-class.html">Transform3</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Composition: <code>(a * b).apply(p) == a.apply(b.apply(p))</code>.
+  
+
+</dd>
+
+        <dt id="operator ==" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Transform3/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  The equality operator.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  <section class="summary offset-anchor" id="constants">
+    <h2>Constants</h2>
+    <dl class="properties">
+        <dt id="identity" class="constant">
+    <span class="name "><a href="../geometry_kit_3d/Transform3/identity-constant.html">identity</a></span>
+  <span class="signature">&#8594; const <a href="../geometry_kit_3d/Transform3-class.html">Transform3</a></span>
+  
+
+</dt>
+<dd>
+  The transform that changes nothing.
+  
+
+</dd>
+
+    </dl>
+  </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">geometry_kit_3d</a></li>
+    <li><a href="../geometry_kit_3d/">geometry_kit_3d</a></li>
+    <li class="self-crumb">Transform3 class</li>
+</ol>
+
+    <h5>geometry_kit_3d library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    geometry_kit_3d
+      0.1.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

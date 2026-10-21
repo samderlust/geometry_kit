@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the intersectRay method from the RevolvedSolid class, for the Dart programming language.">
+  <title>intersectRay method - RevolvedSolid class - geometry_kit_3d library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">geometry_kit_3d</a></li>
+    <li><a href="../../geometry_kit_3d/">geometry_kit_3d.dart</a></li>
+    <li><a href="../../geometry_kit_3d/RevolvedSolid-class.html">RevolvedSolid</a></li>
+    <li class="self-crumb">intersectRay method</li>
+  </ol>
+  <div class="self-name">intersectRay</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="geometry_kit_3d&#47;RevolvedSolid-class-sidebar.html"
+    data-below-sidebar="">
+    <div>
+<h1><span class="kind-method">intersectRay</span> method 
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+  <div>
+    <ol class="annotation-list">
+        <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
+    </ol>
+  </div>
+<span class="returntype"><a href="../../geometry_kit_3d/RayHit-class.html">RayHit</a>?</span>
+<span class="name ">intersectRay</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="intersectRay-param-ray"><span class="type-annotation"><a href="../../geometry_kit_3d/Ray3-class.html">Ray3</a></span> <span class="parameter-name">ray</span></span></li>
+</ol>)
+
+      <div class="features"><span class="feature">override</span></div>
+
+    </section>
+    
+<section class="desc markdown">
+  <p>First place <code>ray</code> enters the surface, or <code>null</code> when it misses.</p>
+<p>A ray starting inside the solid reports where it exits.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">@override
+RayHit? intersectRay(Ray3 ray) {
+  final e1 = _e1, e2 = _e2;
+  final d0 = ray.origin - origin;
+  &#47;&#47; Ray in local coordinates: (a, b) radial plane, h along the axis.
+  final oa = d0.dot(e1), ob = d0.dot(e2), oh = d0.dot(axis);
+  final da = ray.direction.dot(e1),
+      db = ray.direction.dot(e2),
+      dh = ray.direction.dot(axis);
+  const eps = 1e-9;
+  final m = _cw;
+  var bestT = double.infinity;
+  Point? bestNormal;
+
+  void consider(double t, int edge) {
+    if (t &lt; eps || t &gt;= bestT) return;
+    final a = m[edge], b = m[(edge + 1) % m.length];
+    final n = Point(-(b.y - a.y), b.x - a.x); &#47;&#47; outward for clockwise
+    bestT = t;
+    bestNormal = n.normalized;
+  }
+
+  for (var i = 0; i &lt; m.length; i++) {
+    final p1 = m[i], p2 = m[(i + 1) % m.length];
+    final r1 = p1.x, h1 = p1.y, r2 = p2.x, h2 = p2.y;
+    if (r1 == 0 &amp;&amp; r2 == 0) continue; &#47;&#47; edge on the axis
+    if ((h2 - h1).abs() &lt; 1e-12) {
+      &#47;&#47; Flat ring (disk or annulus) at height h1.
+      if (dh.abs() &lt; 1e-15) continue;
+      final t = (h1 - oh) &#47; dh;
+      final x = oa + da * t, y = ob + db * t;
+      final rho = sqrt(x * x + y * y);
+      if (rho &gt;= min(r1, r2) - eps &amp;&amp; rho &lt;= max(r1, r2) + eps) {
+        consider(t, i);
+      }
+      continue;
+    }
+    &#47;&#47; Frustum: r(h) = c0 + k h.
+    final k = (r2 - r1) &#47; (h2 - h1);
+    final c0 = r1 - k * h1;
+    final rr = c0 + k * oh;
+    final qa = da * da + db * db - k * k * dh * dh;
+    final qb = 2 * (oa * da + ob * db - rr * k * dh);
+    final qc = oa * oa + ob * ob - rr * rr;
+    final roots = &lt;double&gt;[];
+    if (qa.abs() &lt; 1e-14) {
+      if (qb.abs() &gt; 1e-14) roots.add(-qc &#47; qb);
+    } else {
+      final disc = qb * qb - 4 * qa * qc;
+      if (disc &gt;= 0) {
+        final s = sqrt(disc);
+        roots
+          ..add((-qb - s) &#47; (2 * qa))
+          ..add((-qb + s) &#47; (2 * qa));
+      }
+    }
+    for (final t in roots) {
+      final h = oh + dh * t;
+      final s = (h - h1) &#47; (h2 - h1);
+      if (s &lt; -eps || s &gt; 1 + eps) continue;
+      if (c0 + k * h &lt; -eps) continue; &#47;&#47; mirror nappe of the cone
+      consider(t, i);
+    }
+  }
+  if (bestNormal == null) return null;
+  final p = ray.pointAt(bestT);
+  final (_, dir) = _toMeridian(p);
+  final n = (dir * bestNormal!.x + axis * bestNormal!.y).normalized;
+  return RayHit(distance: bestT, point: p, normal: n, solid: this);
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../../index.html">geometry_kit_3d</a></li>
+    <li><a href="../../geometry_kit_3d/">geometry_kit_3d</a></li>
+    <li><a href="../../geometry_kit_3d/RevolvedSolid-class.html">RevolvedSolid</a></li>
+    <li class="self-crumb">intersectRay method</li>
+</ol>
+
+    <h5>RevolvedSolid class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+</div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    geometry_kit_3d
+      0.1.0
+  </span>
+  
+</footer>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

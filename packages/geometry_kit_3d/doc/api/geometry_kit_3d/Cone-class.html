@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the Cone class from the geometry_kit_3d library, for the Dart programming language.">
+  <title>Cone class - geometry_kit_3d library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">geometry_kit_3d</a></li>
+    <li><a href="../geometry_kit_3d/">geometry_kit_3d.dart</a></li>
+    <li class="self-crumb">Cone class</li>
+  </ol>
+  <div class="self-name">Cone</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="geometry_kit_3d&#47;geometry_kit_3d-library-sidebar.html"
+    data-below-sidebar="geometry_kit_3d&#47;Cone-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">Cone</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>A right circular cone with its base disk on <a href="../geometry_kit_3d/Cone/baseCenter.html">baseCenter</a> and its apex
+<a href="../geometry_kit_3d/Cone/height.html">height</a> along <a href="../geometry_kit_3d/Cone/axis.html">axis</a>.</p>
+<pre class="language-dart"><code class="language-dart">final cone = Cone(baseCenter: Point3(0, -1, 0), radius: 1, height: 2);
+print(cone.volume);     // ~2.094
+print(cone.halfAngle);  // ~26.57 (degrees)
+
+final section = cone.slice(Plane.fromPointNormal(Point3.zero, Point3.unitY));
+print(section is CircleSection); // true
+</code></pre>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+  <dt>Inheritance</dt>
+  <dd>
+    <ul class="gt-separated dark clazz-relationships">
+      <li><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></li>
+        <li><a href="../geometry_kit_3d/RevolvedSolid-class.html">RevolvedSolid</a></li>
+      <li>Cone</li>
+    </ul>
+  </dd>
+
+        
+        
+
+
+        
+        
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="Cone.new" class="callable">
+          <span class="name"><a href="../geometry_kit_3d/Cone/Cone.html">Cone</a></span><span class="signature">({<span class="parameter" id="param-baseCenter"><span>required</span> <span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">baseCenter</span>, </span><span class="parameter" id="param-radius"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">radius</span>, </span><span class="parameter" id="param-height"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">height</span>, </span><span class="parameter" id="param-axis"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">axis</span> = <span class="default-value">Point3.unitY</span></span>})</span>
+        </dt>
+        <dd>
+          Creates a cone. <code>axis</code> is normalized; defaults to straight up.
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="apex" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Cone/apex.html">apex</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>
+  
+
+</dt>
+<dd>
+  The tip of the cone.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="axis" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Cone/axis.html">axis</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>
+  
+
+</dt>
+<dd>
+  Unit direction from the base towards the apex.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="baseCenter" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Cone/baseCenter.html">baseCenter</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>
+  
+
+</dt>
+<dd>
+  Centre of the base disk.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="bounds" class="property inherited">
+  <span class="name"><a href="../geometry_kit_3d/RevolvedSolid/bounds.html">bounds</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit_3d/Aabb-class.html">Aabb</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  Axis-aligned bounding box, for broad-phase checks.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="halfAngle" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Cone/halfAngle.html">halfAngle</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Angle between the axis and the side, in degrees.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Cone/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="height" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Cone/height.html">height</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Distance from the base to the apex.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="lateralArea" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Cone/lateralArea.html">lateralArea</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Area of the sloped side.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="meridian" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Cone/meridian.html">meridian</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter">Point</span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  Closed region in <code>(r, h)</code> coordinates, <code>r &gt;= 0</code>, any winding.
+  <div class="features"><span class="feature">no setter</span><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="origin" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Cone/origin.html">origin</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>
+  
+
+</dt>
+<dd>
+  Point on the axis where <code>h = 0</code>.
+  <div class="features"><span class="feature">no setter</span><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="radius" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Cone/radius.html">radius</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Radius of the base disk.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="slantHeight" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Cone/slantHeight.html">slantHeight</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Distance from the apex to the base rim.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="surfaceArea" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Cone/surfaceArea.html">surfaceArea</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Total area of the outer surface.
+  <div class="features"><span class="feature">no setter</span><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="volume" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Cone/volume.html">volume</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Enclosed volume.
+  <div class="features"><span class="feature">no setter</span><span class="feature">override</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="closestPoint" class="callable inherited">
+  <span class="name"><a href="../geometry_kit_3d/RevolvedSolid/closestPoint.html">closestPoint</a></span><span class="signature">(<wbr><span class="parameter" id="closestPoint-param-point"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">point</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Point of this solid (inside or on the surface) closest to <code>point</code>.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="contains" class="callable inherited">
+  <span class="name"><a href="../geometry_kit_3d/RevolvedSolid/contains.html">contains</a></span><span class="signature">(<wbr><span class="parameter" id="contains-param-point"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">point</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Whether <code>point</code> is inside or on the surface.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="distanceTo" class="callable inherited">
+  <span class="name"><a href="../geometry_kit_3d/RevolvedSolid/distanceTo.html">distanceTo</a></span><span class="signature">(<wbr><span class="parameter" id="distanceTo-param-point"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">point</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Shortest distance from <code>point</code> to this solid; 0 when inside.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="intersectRay" class="callable inherited">
+  <span class="name"><a href="../geometry_kit_3d/RevolvedSolid/intersectRay.html">intersectRay</a></span><span class="signature">(<wbr><span class="parameter" id="intersectRay-param-ray"><span class="type-annotation"><a href="../geometry_kit_3d/Ray3-class.html">Ray3</a></span> <span class="parameter-name">ray</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/RayHit-class.html">RayHit</a>?</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  First place <code>ray</code> enters the surface, or <code>null</code> when it misses.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="rotate" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Cone/rotate.html">rotate</a></span><span class="signature">(<wbr><span class="parameter" id="rotate-param-axis"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">axis</span>, </span><span class="parameter" id="rotate-param-deg"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">deg</span>, {</span><span class="parameter" id="rotate-param-pivot"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">pivot</span> = <span class="default-value">Point3.zero</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Cone-class.html">Cone</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Rotate by <code>deg</code> degrees around <code>axis</code> through <code>pivot</code>.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="scale" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Cone/scale.html">scale</a></span><span class="signature">(<wbr><span class="parameter" id="scale-param-factor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">factor</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Cone-class.html">Cone</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Uniform scale about the origin by a positive <code>factor</code>.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="slice" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Cone/slice.html">slice</a></span><span class="signature">(<wbr><span class="parameter" id="slice-param-plane"><span class="type-annotation"><a href="../geometry_kit_3d/Plane-class.html">Plane</a></span> <span class="parameter-name">plane</span>, {</span><span class="parameter" id="slice-param-samples"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">samples</span> = <span class="default-value">256</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/CrossSection-class.html">CrossSection</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Cross-section of this cone with <code>plane</code>.
+  
+
+</dd>
+
+        <dt id="toMesh" class="callable inherited">
+  <span class="name"><a href="../geometry_kit_3d/RevolvedSolid/toMesh.html">toMesh</a></span><span class="signature">(<wbr>{<span class="parameter" id="toMesh-param-segments"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">segments</span> = <span class="default-value">32</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Mesh-class.html">Mesh</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Triangle mesh of the surface. Curved solids use <code>segments</code> slices
+around their circumference; flat-faced solids ignore it.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toString" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Cone/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  A string representation of this object.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="translate" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Cone/translate.html">translate</a></span><span class="signature">(<wbr>{<span class="parameter" id="translate-param-x"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">x</span> = <span class="default-value">0</span>, </span><span class="parameter" id="translate-param-y"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">y</span> = <span class="default-value">0</span>, </span><span class="parameter" id="translate-param-z"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">z</span> = <span class="default-value">0</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Cone-class.html">Cone</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Translate by <code>x</code>, <code>y</code> and <code>z</code>.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Cone/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  The equality operator.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">geometry_kit_3d</a></li>
+    <li><a href="../geometry_kit_3d/">geometry_kit_3d</a></li>
+    <li class="self-crumb">Cone class</li>
+</ol>
+
+    <h5>geometry_kit_3d library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    geometry_kit_3d
+      0.1.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

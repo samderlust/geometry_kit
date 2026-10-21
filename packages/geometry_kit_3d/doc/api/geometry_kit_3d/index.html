@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="geometry_kit_3d library API docs, for the Dart programming language.">
+  <title>geometry_kit_3d library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">geometry_kit_3d</a></li>
+    <li class="self-crumb">geometry_kit_3d.dart</li>
+  </ol>
+  <div class="self-name">geometry_kit_3d</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar=""
+    data-below-sidebar="geometry_kit_3d&#47;geometry_kit_3d-library-sidebar.html">
+  
+    <div>
+      
+
+      <h1>
+        <span class="kind-library">geometry_kit_3d</span>
+        library 
+ 
+
+      </h1>
+    </div>
+
+    
+<section class="desc markdown">
+  <p>Immutable 3D solids built on <a href="https://pub.dev/packages/geometry_kit"><code>geometry_kit</code></a>.</p>
+<p>Solids report volume, surface area and bounds, answer ray and
+containment queries, slice into 2D cross-sections, and export triangle
+meshes. Prisms and solids of revolution are built straight from
+geometry_kit 2D shapes.</p>
+<p>Coordinates are right-handed with Y up. Angles at the API are degrees.</p>
+</section>
+
+
+    <section class="summary offset-anchor" id="classes">
+      <h2>Classes</h2>
+      <dl>
+          <dt id="Aabb">
+  <span class="name "><a href="../geometry_kit_3d/Aabb-class.html">Aabb</a></span> 
+
+</dt>
+<dd>
+  An axis-aligned bounding box from <a href="../geometry_kit_3d/Aabb/min.html">min</a> to <a href="../geometry_kit_3d/Aabb/max.html">max</a>.
+</dd>
+
+          <dt id="Box">
+  <span class="name "><a href="../geometry_kit_3d/Box-class.html">Box</a></span> 
+
+</dt>
+<dd>
+  A rectangular box (cuboid) with any orientation.
+</dd>
+
+          <dt id="CameraView">
+  <span class="name "><a href="../geometry_kit_3d/CameraView-class.html">CameraView</a></span> 
+
+</dt>
+<dd>
+  An <a href="../geometry_kit_3d/OrbitCamera-class.html">OrbitCamera</a>'s view transform for one viewport, with the camera axes
+computed once. Get one from <a href="../geometry_kit_3d/OrbitCamera/view.html">OrbitCamera.view</a>.
+</dd>
+
+          <dt id="CircleSection">
+  <span class="name "><a href="../geometry_kit_3d/CircleSection-class.html">CircleSection</a></span> 
+
+</dt>
+<dd>
+  A circular section, such as a plane perpendicular to a cone's axis.
+</dd>
+
+          <dt id="Cone">
+  <span class="name "><a href="../geometry_kit_3d/Cone-class.html">Cone</a></span> 
+
+</dt>
+<dd>
+  A right circular cone with its base disk on <a href="../geometry_kit_3d/Cone/baseCenter.html">baseCenter</a> and its apex
+<a href="../geometry_kit_3d/Cone/height.html">height</a> along <a href="../geometry_kit_3d/Cone/axis.html">axis</a>.
+</dd>
+
+          <dt id="CrossSection">
+  <span class="name "><a href="../geometry_kit_3d/CrossSection-class.html">CrossSection</a></span> 
+
+</dt>
+<dd>
+  The flat region where a plane cuts a solid.
+</dd>
+
+          <dt id="Cylinder">
+  <span class="name "><a href="../geometry_kit_3d/Cylinder-class.html">Cylinder</a></span> 
+
+</dt>
+<dd>
+  A right circular cylinder standing on <a href="../geometry_kit_3d/Cylinder/baseCenter.html">baseCenter</a> along <a href="../geometry_kit_3d/Cylinder/axis.html">axis</a>.
+</dd>
+
+          <dt id="EllipseSection">
+  <span class="name "><a href="../geometry_kit_3d/EllipseSection-class.html">EllipseSection</a></span> 
+
+</dt>
+<dd>
+  An elliptical section. Its major axis lies along the frame's x axis.
+</dd>
+
+          <dt id="EmptySection">
+  <span class="name "><a href="../geometry_kit_3d/EmptySection-class.html">EmptySection</a></span> 
+
+</dt>
+<dd>
+  The plane does not cut the solid.
+</dd>
+
+          <dt id="HyperbolaSection">
+  <span class="name "><a href="../geometry_kit_3d/HyperbolaSection-class.html">HyperbolaSection</a></span> 
+
+</dt>
+<dd>
+  A hyperbolic section, closed by a straight cut (such as a cone's base).
+</dd>
+
+          <dt id="Mesh">
+  <span class="name "><a href="../geometry_kit_3d/Mesh-class.html">Mesh</a></span> 
+
+</dt>
+<dd>
+  An immutable triangle mesh.
+</dd>
+
+          <dt id="MeshBuilder">
+  <span class="name "><a href="../geometry_kit_3d/MeshBuilder-class.html">MeshBuilder</a></span> 
+
+</dt>
+<dd>
+  Incremental mesh construction used by the solids in this package.
+</dd>
+
+          <dt id="OrbitCamera">
+  <span class="name "><a href="../geometry_kit_3d/OrbitCamera-class.html">OrbitCamera</a></span> 
+
+</dt>
+<dd>
+  A perspective camera that circles a <a href="../geometry_kit_3d/OrbitCamera/target.html">target</a> point.
+</dd>
+
+          <dt id="ParabolaSection">
+  <span class="name "><a href="../geometry_kit_3d/ParabolaSection-class.html">ParabolaSection</a></span> 
+
+</dt>
+<dd>
+  A parabolic section, closed by a straight cut (such as a cone's base).
+</dd>
+
+          <dt id="Plane">
+  <span class="name "><a href="../geometry_kit_3d/Plane-class.html">Plane</a></span> 
+
+</dt>
+<dd>
+  An infinite plane: every point <code>p</code> with <code>normal · p == constant</code>.
+</dd>
+
+          <dt id="PlaneFrame">
+  <span class="name "><a href="../geometry_kit_3d/PlaneFrame-class.html">PlaneFrame</a></span> 
+
+</dt>
+<dd>
+  A 2D coordinate system embedded in 3D space.
+</dd>
+
+          <dt id="Point3">
+  <span class="name "><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> 
+
+</dt>
+<dd>
+  An immutable 3D point (or vector) with x, y and z coordinates.
+</dd>
+
+          <dt id="Prism">
+  <span class="name "><a href="../geometry_kit_3d/Prism-class.html">Prism</a></span> 
+
+</dt>
+<dd>
+  A right prism: a 2D <a href="../geometry_kit_3d/Prism/base.html">base</a> polygon pushed <a href="../geometry_kit_3d/Prism/height.html">height</a> along its frame's
+normal.
+</dd>
+
+          <dt id="Quaternion">
+  <span class="name "><a href="../geometry_kit_3d/Quaternion-class.html">Quaternion</a></span> 
+
+</dt>
+<dd>
+  An immutable rotation quaternion <code>w + xi + yj + zk</code>.
+</dd>
+
+          <dt id="Ray3">
+  <span class="name "><a href="../geometry_kit_3d/Ray3-class.html">Ray3</a></span> 
+
+</dt>
+<dd>
+  A half-line starting at <a href="../geometry_kit_3d/Ray3/origin.html">origin</a> and going along <a href="../geometry_kit_3d/Ray3/direction.html">direction</a>.
+</dd>
+
+          <dt id="RayHit">
+  <span class="name "><a href="../geometry_kit_3d/RayHit-class.html">RayHit</a></span> 
+
+</dt>
+<dd>
+  Where a ray hit a solid.
+</dd>
+
+          <dt id="RevolvedSolid">
+  <span class="name "><a href="../geometry_kit_3d/RevolvedSolid-class.html">RevolvedSolid</a></span> 
+
+</dt>
+<dd>
+  Base class for solids made by spinning a 2D region around an axis.
+</dd>
+
+          <dt id="Segment3">
+  <span class="name "><a href="../geometry_kit_3d/Segment3-class.html">Segment3</a></span> 
+
+</dt>
+<dd>
+  A straight line segment between <a href="../geometry_kit_3d/Segment3/a.html">a</a> and <a href="../geometry_kit_3d/Segment3/b.html">b</a>.
+</dd>
+
+          <dt id="Solid">
+  <span class="name "><a href="../geometry_kit_3d/Solid-class.html">Solid</a></span> 
+
+</dt>
+<dd>
+  Base interface for all 3D solids.
+</dd>
+
+          <dt id="SolidOfRevolution">
+  <span class="name "><a href="../geometry_kit_3d/SolidOfRevolution-class.html">SolidOfRevolution</a></span> 
+
+</dt>
+<dd>
+  A solid made by spinning a 2D <a href="../geometry_kit_3d/SolidOfRevolution/profile.html">profile</a> around an axis (a lathe).
+</dd>
+
+          <dt id="Sphere">
+  <span class="name "><a href="../geometry_kit_3d/Sphere-class.html">Sphere</a></span> 
+
+</dt>
+<dd>
+  A sphere defined by its <a href="../geometry_kit_3d/Sphere/center.html">center</a> and <a href="../geometry_kit_3d/Sphere/radius.html">radius</a>.
+</dd>
+
+          <dt id="Transform3">
+  <span class="name "><a href="../geometry_kit_3d/Transform3-class.html">Transform3</a></span> 
+
+</dt>
+<dd>
+  An immutable placement: uniform <a href="../geometry_kit_3d/Transform3/scale.html">scale</a>, then <a href="../geometry_kit_3d/Transform3/rotation.html">rotation</a>, then
+<a href="../geometry_kit_3d/Transform3/position.html">position</a>.
+</dd>
+
+      </dl>
+    </section>
+
+
+
+
+
+
+
+    <section class="summary offset-anchor" id="functions">
+      <h2>Functions</h2>
+      <dl class="callables">
+          <dt id="nearestHit" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/nearestHit.html">nearestHit</a></span><span class="signature">(<wbr><span class="parameter" id="nearestHit-param-ray"><span class="type-annotation"><a href="../geometry_kit_3d/Ray3-class.html">Ray3</a></span> <span class="parameter-name">ray</span>, </span><span class="parameter" id="nearestHit-param-solids"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Iterable-class.html">Iterable</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../geometry_kit_3d/Solid-class.html">Solid</a></span>&gt;</span></span> <span class="parameter-name">solids</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/RayHit-class.html">RayHit</a>?</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Picks the nearest hit of <code>ray</code> among <code>solids</code>, or <code>null</code> if none is hit.
+  
+
+</dd>
+
+      </dl>
+    </section>
+
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">geometry_kit_3d</a></li>
+    <li class="self-crumb">geometry_kit_3d.dart</li>
+</ol>
+
+    <h5><span class="package-name">geometry_kit_3d</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="../geometry_kit_3d/">geometry_kit_3d</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+    <h5>geometry_kit_3d library</h5>
+  </div><!--/sidebar-offcanvas-right-->
+</main>
+<footer>
+  <span class="no-break">
+    geometry_kit_3d
+      0.1.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

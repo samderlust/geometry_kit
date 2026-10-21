@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the Mesh class from the geometry_kit_3d library, for the Dart programming language.">
+  <title>Mesh class - geometry_kit_3d library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">geometry_kit_3d</a></li>
+    <li><a href="../geometry_kit_3d/">geometry_kit_3d.dart</a></li>
+    <li class="self-crumb">Mesh class</li>
+  </ol>
+  <div class="self-name">Mesh</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="geometry_kit_3d&#47;geometry_kit_3d-library-sidebar.html"
+    data-below-sidebar="geometry_kit_3d&#47;Mesh-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">Mesh</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>An immutable triangle mesh.</p>
+<p>Triangles are stored as index triples into <a href="../geometry_kit_3d/Mesh/positions.html">positions</a>. Every solid in
+this package produces meshes whose triangles wind counter-clockwise when
+seen from outside, so face normals point outward.</p>
+<p>Feed <a href="../geometry_kit_3d/Mesh/positionsFloat32.html">positionsFloat32</a> / <a href="../geometry_kit_3d/Mesh/indicesUint32.html">indicesUint32</a> to a GPU renderer, or export
+with <a href="../geometry_kit_3d/Mesh/toObj.html">toObj</a> / <a href="../geometry_kit_3d/Mesh/toStl.html">toStl</a> for Blender, slicers and 3D printers.</p>
+</section>
+
+
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="Mesh.new" class="callable">
+          <span class="name"><a href="../geometry_kit_3d/Mesh/Mesh.html">Mesh</a></span><span class="signature">(<span class="parameter" id="param-positions"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>&gt;</span></span> <span class="parameter-name">positions</span>, </span><span class="parameter" id="param-indices"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span> <span class="parameter-name">indices</span></span>)</span>
+        </dt>
+        <dd>
+          Creates a mesh. <code>indices</code> length must be a multiple of 3.
+        </dd>
+        <dt id="Mesh.merge" class="callable">
+          <span class="name"><a href="../geometry_kit_3d/Mesh/Mesh.merge.html">Mesh.merge</a></span><span class="signature">(<span class="parameter" id="merge-param-meshes"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Iterable-class.html">Iterable</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../geometry_kit_3d/Mesh-class.html">Mesh</a></span>&gt;</span></span> <span class="parameter-name">meshes</span></span>)</span>
+        </dt>
+        <dd>
+          Merges several meshes into one.
+            <div class="constructor-modifier features">factory</div>
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="bounds" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/bounds.html">bounds</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit_3d/Aabb-class.html">Aabb</a></span>
+  
+
+</dt>
+<dd>
+  Bounding box of all vertices.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="indices" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/indices.html">indices</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  Triangle vertex indices, three per triangle.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="indicesUint32" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/indicesUint32.html">indicesUint32</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-typed_data/Uint32List-class.html">Uint32List</a></span>
+  
+
+</dt>
+<dd>
+  Indices packed for GPU index buffers.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="positions" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/positions.html">positions</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  Vertex positions.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="positionsFloat32" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/positionsFloat32.html">positionsFloat32</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-typed_data/Float32List-class.html">Float32List</a></span>
+  
+
+</dt>
+<dd>
+  Positions packed as <code>x, y, z, x, y, z, …</code> for GPU vertex buffers.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="surfaceArea" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/surfaceArea.html">surfaceArea</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Total surface area.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="triangleCount" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/triangleCount.html">triangleCount</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  Number of triangles.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="vertexCount" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/vertexCount.html">vertexCount</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  Number of vertices.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="volume" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/volume.html">volume</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+  
+
+</dt>
+<dd>
+  Enclosed volume, assuming a closed mesh with outward-facing triangles.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="faceNormal" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/faceNormal.html">faceNormal</a></span><span class="signature">(<wbr><span class="parameter" id="faceNormal-param-i"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">i</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Outward unit normal of triangle <code>i</code> (zero for degenerate triangles).
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="rotate" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/rotate.html">rotate</a></span><span class="signature">(<wbr><span class="parameter" id="rotate-param-axis"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">axis</span>, </span><span class="parameter" id="rotate-param-deg"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">deg</span>, {</span><span class="parameter" id="rotate-param-pivot"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span> <span class="parameter-name">pivot</span> = <span class="default-value">Point3.zero</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Mesh-class.html">Mesh</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Mesh rotated by <code>deg</code> degrees around <code>axis</code> through <code>pivot</code>.
+  
+
+</dd>
+
+        <dt id="scale" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/scale.html">scale</a></span><span class="signature">(<wbr><span class="parameter" id="scale-param-factor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">factor</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Mesh-class.html">Mesh</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Mesh scaled about the origin. A negative <code>factor</code> also flips winding
+so normals keep pointing outward.
+  
+
+</dd>
+
+        <dt id="toObj" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/toObj.html">toObj</a></span><span class="signature">(<wbr>{<span class="parameter" id="toObj-param-name"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span> = <span class="default-value">&#39;mesh&#39;</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Wavefront OBJ text (positions and faces, 1-based indices).
+  
+
+</dd>
+
+        <dt id="toStl" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/toStl.html">toStl</a></span><span class="signature">(<wbr>{<span class="parameter" id="toStl-param-name"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span> = <span class="default-value">&#39;mesh&#39;</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  ASCII STL text, the common input format for 3D-printing slicers.
+  
+
+</dd>
+
+        <dt id="toString" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  A string representation of this object.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="translate" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/translate.html">translate</a></span><span class="signature">(<wbr>{<span class="parameter" id="translate-param-x"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">x</span> = <span class="default-value">0</span>, </span><span class="parameter" id="translate-param-y"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">y</span> = <span class="default-value">0</span>, </span><span class="parameter" id="translate-param-z"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">z</span> = <span class="default-value">0</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../geometry_kit_3d/Mesh-class.html">Mesh</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Mesh with every vertex moved by <code>x</code>, <code>y</code>, <code>z</code>.
+  
+
+</dd>
+
+        <dt id="triangle" class="callable">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/triangle.html">triangle</a></span><span class="signature">(<wbr><span class="parameter" id="triangle-param-i"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">i</span></span>)
+    <span class="returntype parameter">&#8594; (<span class="field"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>, </span><span class="field"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span>, </span><span class="field"><span class="type-annotation"><a href="../geometry_kit_3d/Point3-class.html">Point3</a></span></span>)</span>
+  </span>
+  
+
+</dt>
+<dd>
+  The three corners of triangle <code>i</code>.
+  
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section class="summary offset-anchor" id="static-properties">
+    <h2>Static Properties</h2>
+    <dl class="properties">
+        <dt id="empty" class="property">
+  <span class="name"><a href="../geometry_kit_3d/Mesh/empty.html">empty</a></span>
+  <span class="signature">&#8594; <a href="../geometry_kit_3d/Mesh-class.html">Mesh</a></span>
+  
+
+</dt>
+<dd>
+  A mesh with no triangles.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">geometry_kit_3d</a></li>
+    <li><a href="../geometry_kit_3d/">geometry_kit_3d</a></li>
+    <li class="self-crumb">Mesh class</li>
+</ol>
+
+    <h5>geometry_kit_3d library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    geometry_kit_3d
+      0.1.0
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="geometry_kit_3d API docs, for the Dart programming language.">
+  <title>geometry_kit_3d - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://github.com/samderlust/geometry_kit/tree/main/packages/geometry_kit_3d">geometry_kit_3d package</a></li>
+  </ol>
+  <div class="self-name">geometry_kit_3d</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="geometry_kit_3d">geometry_kit_3d</h1>
+<p>Immutable 3D solids for Dart, built on <a href="../geometry_Kit"><code>geometry_kit</code></a>.</p>
+<p>Solids know their own volume, surface area and bounds, answer ray and
+containment queries, slice into 2D cross-sections, and export triangle meshes
+(OBJ, STL, or packed buffers for a GPU). Prisms and solids of revolution are
+built straight from geometry_kit 2D shapes. Pure Dart: runs in Flutter, on a
+server, or in a CLI.</p>
+<p>For rendering in Flutter, see <code>GeoScene</code> in
+<a href="../geometry_kit_widgets"><code>geometry_kit_widgets</code></a>.</p>
+<h2 id="conventions">Conventions</h2>
+<ul>
+<li>Right-handed coordinates, <strong>Y up</strong>.</li>
+<li>Angles at the API are <strong>degrees</strong> (matching geometry_kit's <code>rotate(deg)</code>).</li>
+<li>Everything is immutable: <code>translate</code>, <code>scale</code> and <code>rotate</code> return new solids.</li>
+</ul>
+<h2 id="solids">Solids</h2>
+<table>
+<thead>
+<tr>
+<th>Solid</th>
+<th>Built from</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Sphere</code></td>
+<td>centre, radius</td>
+</tr>
+<tr>
+<td><code>Box</code></td>
+<td>centre, width × height × depth, <code>Quaternion</code> rotation</td>
+</tr>
+<tr>
+<td><code>Cylinder</code></td>
+<td>base centre, axis, radius, height</td>
+</tr>
+<tr>
+<td><code>Cone</code></td>
+<td>base centre, axis, radius, height</td>
+</tr>
+<tr>
+<td><code>Prism</code></td>
+<td>a 2D <code>Polygon</code> extruded along a <code>PlaneFrame</code></td>
+</tr>
+<tr>
+<td><code>SolidOfRevolution</code></td>
+<td>a 2D profile (<code>List&lt;Point&gt;</code>) spun around an axis</td>
+</tr>
+</tbody>
+</table>
+<p>Every solid implements <code>Solid</code>:</p>
+<pre class="language-dart"><code class="language-dart">abstract interface class Solid {
+  double get volume;
+  double get surfaceArea;
+  Aabb get bounds;
+  bool contains(Point3 point);
+  Point3 closestPoint(Point3 point);
+  double distanceTo(Point3 point);
+  RayHit? intersectRay(Ray3 ray);
+  Solid translate({double x, double y, double z});
+  Solid scale(double factor);
+  Solid rotate(Point3 axis, double deg, {Point3 pivot});
+  Mesh toMesh({int segments});
+}
+</code></pre>
+<p><code>Cylinder</code>, <code>Cone</code> and <code>SolidOfRevolution</code> share one exact implementation
+(<code>RevolvedSolid</code>): ray hits, containment and closest points are solved from the
+2D profile, not from a mesh.</p>
+<h2 id="examples">Examples</h2>
+<h3 id="slice-a-cone">Slice a cone</h3>
+<pre class="language-dart"><code class="language-dart">final cone = Cone(baseCenter: Point3(0, -1, 0), radius: 1, height: 2);
+final plane = Plane.fromPointNormal(
+  Point3.zero,
+  Point3.unitY.rotate(Point3.unitZ, 30),
+);
+
+final label = switch (cone.slice(plane)) {
+  CircleSection(:final circle) =&gt; 'Circle r=${circle.radius}',
+  EllipseSection(:final ellipse) =&gt; 'Ellipse ${ellipse.radiusX} × ${ellipse.radiusY}',
+  ParabolaSection() =&gt; 'Parabola',
+  HyperbolaSection() =&gt; 'Hyperbola',
+  EmptySection() =&gt; 'No intersection',
+};
+</code></pre>
+<p>Sections are geometry_kit 2D shapes in a frame lying in the plane:
+<code>section.toPolygon()</code> keeps working in 2D, <code>section.toPoints3()</code> maps the
+outline back to 3D.</p>
+<h3 id="extrude-a-floor-plan">Extrude a floor plan</h3>
+<pre class="language-dart"><code class="language-dart">final plan = Polygon([
+  Point(0, 0), Point(6, 0), Point(6, 3),
+  Point(3.5, 3), Point(3.5, 5), Point(0, 5),
+]);
+final room = Prism.extrude(plan, height: 2.7);
+
+print(plan.area);         // 25.0 m²   (2D API)
+print(room.volume);       // 67.5 m³
+print(room.lateralArea);  // 59.4 m² of wall
+</code></pre>
+<p>With the default <code>PlaneFrame.ground</code>, 2D x maps to 3D x and 2D y to 3D −z, so
+the plan looks like its drawing when seen from above.</p>
+<h3 id="revolve-a-spline">Revolve a spline</h3>
+<pre class="language-dart"><code class="language-dart">final profile = Spline([
+  Point(0.55, 0), Point(0.85, 0.7), Point(0.32, 1.5), Point(0.5, 1.9),
+]);
+final vase = SolidOfRevolution(profile.sample(48));
+print(vase.volume); // in dm³ = litres when units are decimetres
+
+final mesh = vase.toMesh(segments: 48);
+File('vase.stl').writeAsStringSync(mesh.toStl(name: 'vase'));
+</code></pre>
+<h3 id="pick-and-collide">Pick and collide</h3>
+<pre class="language-dart"><code class="language-dart">const camera = OrbitCamera(yaw: 30, pitch: 25, distance: 8);
+final ray = camera.rayThrough(Point(tapX, tapY), width, height);
+final hit = nearestHit(ray, solids);          // RayHit? with distance, point, normal
+
+final drone = Sphere(center: dronePosition, radius: 0.3);
+final touching = solids.where(drone.intersects); // exact, after a bounds check
+</code></pre>
+<p><code>Box.intersectsBox</code> runs a separating-axis test for two oriented boxes.</p>
+<h3 id="keep-a-pose-with-transform3">Keep a pose with Transform3</h3>
+<p>Transforms on a solid are baked into its fields, so a box rotated twice
+cannot tell you how far it was turned. Keep the solid in local space and
+its placement in a <code>Transform3</code> (position, rotation, uniform scale) when you
+need the pose itself, for example in an editor:</p>
+<pre class="language-dart"><code class="language-dart">final crate = Box.cube(center: Point3.zero, size: 1); // local space
+var pose = const Transform3(position: Point3(0, 0.5, 0));
+
+pose = pose.rotated(Point3.unitY, 30).translated(const Point3(1, 0, 0));
+final placed = pose.applyTo(crate);        // the solid in world space
+final (:axis, :degrees) = pose.rotation.toAxisAngle(); // 30° about +Y
+
+// Drag along the x axis: closest point on the axis to the pointer ray.
+final onAxis = ray.closestPointOnLine(pose.position, Point3.unitX);
+</code></pre>
+<h2 id="math-types">Math types</h2>
+<p><code>Point3</code> (also used as a vector), <code>Quaternion</code>, <code>Transform3</code>, <code>Ray3</code>,
+<code>Segment3</code>, <code>Plane</code>, <code>PlaneFrame</code>, <code>Aabb</code>, <code>Mesh</code>, <code>MeshBuilder</code>,
+<code>OrbitCamera</code>.</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="geometry_kit_3d">
+  <span class="name"><a href="geometry_kit_3d/">geometry_kit_3d</a></span> 
+
+</dt>
+<dd>Immutable 3D solids built on <a href="https://pub.dev/packages/geometry_kit"><code>geometry_kit</code></a>.
+</dd>
+
+        </dl>
+      </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="https://github.com/samderlust/geometry_kit/tree/main/packages/geometry_kit_3d">geometry_kit_3d package</a></li>
+</ol>
+
+    <h5 class="hidden-xs"><span class="package-name">geometry_kit_3d</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="geometry_kit_3d/">geometry_kit_3d</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+</main>
+<footer>
+  <span class="no-break">
+    geometry_kit_3d
+      0.1.0
+  </span>
+  
+</footer>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
