@@ -68,16 +68,20 @@ File('vase.stl').writeAsStringSync(mesh.toStl(name: 'vase'));''';
         scene: Stack(
           children: [
             Positioned.fill(
-              child: GeoScene(
+              child: ZoomScene(
                 camera: const OrbitCamera(yaw: 25, pitch: 22, distance: 5.6),
-                children: [
-                  ...p.grid3(extent: 1.5, step: 0.5, y: -0.95),
-                  GeoSolid(
-                    vase,
-                    segments: _segments.round(),
-                    style: ShapeStyle(fillColor: p.teal, strokeColor: null),
-                  ),
-                ],
+                builder: (camera, onCameraChanged) => GeoScene(
+                  camera: camera,
+                  onCameraChanged: onCameraChanged,
+                  children: [
+                    ...p.grid3(extent: 1.5, step: 0.5, y: -0.95),
+                    GeoSolid(
+                      vase,
+                      segments: _segments.round(),
+                      style: ShapeStyle(fillColor: p.teal, strokeColor: null),
+                    ),
+                  ],
+                ),
               ),
             ),
             Positioned(

@@ -89,22 +89,26 @@ print(mesh.triangleCount);''';
       demo: DemoPanel(
         label: '$_name · ${mesh.triangleCount} triangles',
         hint: 'drag to orbit',
-        scene: GeoScene(
+        scene: ZoomScene(
           camera: const OrbitCamera(yaw: 30, pitch: 22, distance: 6.5),
-          children: [
-            ...p.grid3(extent: 2, step: 0.5, y: -1.6),
-            GeoSolid(
-              solid,
-              segments: seg,
-              style: ShapeStyle(
-                fillColor: p.accent,
-                strokeColor: _edges
-                    ? Color.lerp(p.accent, Colors.black, 0.5)
-                    : null,
+          builder: (camera, onCameraChanged) => GeoScene(
+            camera: camera,
+            onCameraChanged: onCameraChanged,
+            children: [
+              ...p.grid3(extent: 2, step: 0.5, y: -1.6),
+              GeoSolid(
+                solid,
+                segments: seg,
+                style: ShapeStyle(
+                  fillColor: p.accent,
+                  strokeColor: _edges
+                      ? Color.lerp(p.accent, Colors.black, 0.5)
+                      : null,
+                ),
               ),
-            ),
-            if (_bounds) ...aabbEdges(solid.bounds, p.amber),
-          ],
+              if (_bounds) ...aabbEdges(solid.bounds, p.amber),
+            ],
+          ),
         ),
         controls: [
           Align(

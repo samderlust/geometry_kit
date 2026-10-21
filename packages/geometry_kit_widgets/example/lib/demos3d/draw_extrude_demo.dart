@@ -70,25 +70,29 @@ print(room.volume);      // m³   (3D)''';
             ? 'Add ${3 - _points.length} more corner(s)'
             : 'Prism.extrude(plan)',
         hint: 'drag to orbit',
-        scene: GeoScene(
+        scene: ZoomScene(
           camera: const OrbitCamera(yaw: 25, pitch: 38, distance: 15),
-          children: [
-            ...p.grid3(extent: _half, step: 1),
-            for (final q in _points)
-              GeoPath3([
-                PlaneFrame.ground.toWorld(q),
-                PlaneFrame.ground.toWorld(q).translate(y: 0.15),
-              ], style: ShapeStyle.stroked(p.amber, width: 3)),
-            if (room != null)
-              GeoSolid(
-                room,
-                style: ShapeStyle(
-                  fillColor: p.teal,
-                  opacity: 0.85,
-                  strokeColor: Color.lerp(p.teal, Colors.black, 0.5),
+          builder: (camera, onCameraChanged) => GeoScene(
+            camera: camera,
+            onCameraChanged: onCameraChanged,
+            children: [
+              ...p.grid3(extent: _half, step: 1),
+              for (final q in _points)
+                GeoPath3([
+                  PlaneFrame.ground.toWorld(q),
+                  PlaneFrame.ground.toWorld(q).translate(y: 0.15),
+                ], style: ShapeStyle.stroked(p.amber, width: 3)),
+              if (room != null)
+                GeoSolid(
+                  room,
+                  style: ShapeStyle(
+                    fillColor: p.teal,
+                    opacity: 0.85,
+                    strokeColor: Color.lerp(p.teal, Colors.black, 0.5),
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
         controls: [
           LayoutBuilder(

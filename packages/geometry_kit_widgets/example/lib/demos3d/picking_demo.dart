@@ -94,59 +94,63 @@ GeoScene(
           demo: DemoPanel(
             label: 'Ray3 · Aabb',
             hint: 'tap · drag objects · orbit',
-            scene: GeoScene(
+            scene: ZoomScene(
               camera: const OrbitCamera(
                 yaw: 30,
                 pitch: 32,
                 distance: 7.8,
                 target: Point3(0, -0.4, 0),
               ),
-              onTap: pick,
-              onHover: pick,
-              onDragSolid: (node, delta) => setState(() {
-                _objects[node.id!] = _objects[node.id!]!.translate(
-                  x: delta.x,
-                  z: delta.z,
-                );
-              }),
-              children: [
-                ...p.grid3(extent: 2.5, step: 0.5, y: -1),
-                GeoPath3(
-                  const [Point3(-2.5, -0.5, -0.8), Point3(2.5, -0.5, -0.8)],
-                  overlay: false,
-                  style: ShapeStyle(
-                    strokeColor: p.accent.withValues(alpha: 0.5),
-                    dashPattern: const DashPattern([2, 4]),
-                  ),
-                ),
-                for (final e in _objects.entries)
-                  GeoSolid(
-                    e.value,
-                    id: e.key,
-                    segments: 24,
+              builder: (camera, onCameraChanged) => GeoScene(
+                camera: camera,
+                onCameraChanged: onCameraChanged,
+                onTap: pick,
+                onHover: pick,
+                onDragSolid: (node, delta) => setState(() {
+                  _objects[node.id!] = _objects[node.id!]!.translate(
+                    x: delta.x,
+                    z: delta.z,
+                  );
+                }),
+                children: [
+                  ...p.grid3(extent: 2.5, step: 0.5, y: -1),
+                  GeoPath3(
+                    const [Point3(-2.5, -0.5, -0.8), Point3(2.5, -0.5, -0.8)],
+                    overlay: false,
                     style: ShapeStyle(
-                      fillColor: _hit?.node.id == e.key
-                          ? p.amber
-                          : (_round.contains(e.key) ? p.teal : p.muted),
-                      strokeColor: _round.contains(e.key)
-                          ? null
-                          : Color.lerp(p.muted, Colors.black, 0.4),
+                      strokeColor: p.accent.withValues(alpha: 0.5),
+                      dashPattern: const DashPattern([2, 4]),
                     ),
                   ),
-                GeoSolid(
-                  drone,
-                  pickable: false,
-                  segments: 20,
-                  style: ShapeStyle(
-                    fillColor: touching.isEmpty ? p.accent : p.danger,
-                    strokeColor: null,
+                  for (final e in _objects.entries)
+                    GeoSolid(
+                      e.value,
+                      id: e.key,
+                      segments: 24,
+                      style: ShapeStyle(
+                        fillColor: _hit?.node.id == e.key
+                            ? p.amber
+                            : (_round.contains(e.key) ? p.teal : p.muted),
+                        strokeColor: _round.contains(e.key)
+                            ? null
+                            : Color.lerp(p.muted, Colors.black, 0.4),
+                      ),
+                    ),
+                  GeoSolid(
+                    drone,
+                    pickable: false,
+                    segments: 20,
+                    style: ShapeStyle(
+                      fillColor: touching.isEmpty ? p.accent : p.danger,
+                      strokeColor: null,
+                    ),
                   ),
-                ),
-                if (_bounds)
-                  for (final s in [..._objects.values, drone])
-                    ...aabbEdges(s.bounds, p.fg.withValues(alpha: 0.45)),
-                if (hit != null) ..._crosshair(hit, p.fg),
-              ],
+                  if (_bounds)
+                    for (final s in [..._objects.values, drone])
+                      ...aabbEdges(s.bounds, p.fg.withValues(alpha: 0.45)),
+                  if (hit != null) ..._crosshair(hit, p.fg),
+                ],
+              ),
             ),
             controls: [
               DemoToggle(

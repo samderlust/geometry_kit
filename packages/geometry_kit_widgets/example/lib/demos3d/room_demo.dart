@@ -72,49 +72,53 @@ print(room.volume); // 67.5 m³  (air volume for HVAC sizing)''';
       demo: DemoPanel(
         label: 'Prism.extrude(plan)',
         hint: 'ceiling hidden · drag to orbit',
-        scene: GeoScene(
+        scene: ZoomScene(
           camera: const OrbitCamera(
             yaw: 32,
             pitch: 36,
             distance: 15,
             target: Point3(0, 1, 0),
           ),
-          children: [
-            ...p.grid3(extent: 4.5, step: 1),
-            GeoPath3(
-              [for (final q in v) f.toWorld(q)],
-              closed: true,
-              overlay: false,
-              style: ShapeStyle(
-                fillColor: p.muted.withValues(alpha: 0.18),
-                strokeColor: null,
+          builder: (camera, onCameraChanged) => GeoScene(
+            camera: camera,
+            onCameraChanged: onCameraChanged,
+            children: [
+              ...p.grid3(extent: 4.5, step: 1),
+              GeoPath3(
+                [for (final q in v) f.toWorld(q)],
+                closed: true,
+                overlay: false,
+                style: ShapeStyle(
+                  fillColor: p.muted.withValues(alpha: 0.18),
+                  strokeColor: null,
+                ),
               ),
-            ),
-            GeoSolid(
-              OpenTopPrism(room),
-              pickable: false,
-              style: ShapeStyle(
-                fillColor: p.accent,
-                opacity: 0.24,
-                strokeColor: p.accent.withValues(alpha: 0.8),
+              GeoSolid(
+                OpenTopPrism(room),
+                pickable: false,
+                style: ShapeStyle(
+                  fillColor: p.accent,
+                  opacity: 0.24,
+                  strokeColor: p.accent.withValues(alpha: 0.8),
+                ),
               ),
-            ),
-            GeoPath3(
-              [for (final q in v) f.toWorld(q)],
-              closed: true,
-              style: ShapeStyle.stroked(p.accent, width: 2),
-            ),
-            GeoPath3([
-              corner,
-              corner.translate(y: _height),
-            ], style: ShapeStyle.stroked(p.amber, width: 2)),
-            GeoLabel3(
-              corner.translate(y: _height + 0.4),
-              '${_height.toStringAsFixed(2)} m',
-              style: p.label3(p.amber),
-            ),
-            ...labels,
-          ],
+              GeoPath3(
+                [for (final q in v) f.toWorld(q)],
+                closed: true,
+                style: ShapeStyle.stroked(p.accent, width: 2),
+              ),
+              GeoPath3([
+                corner,
+                corner.translate(y: _height),
+              ], style: ShapeStyle.stroked(p.amber, width: 2)),
+              GeoLabel3(
+                corner.translate(y: _height + 0.4),
+                '${_height.toStringAsFixed(2)} m',
+                style: p.label3(p.amber),
+              ),
+              ...labels,
+            ],
+          ),
         ),
         controls: [
           DemoSlider(

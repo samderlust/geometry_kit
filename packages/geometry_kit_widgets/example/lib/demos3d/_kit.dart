@@ -499,3 +499,91 @@ List<GeoPath3> aabbEdges(Aabb b, Color color) {
       ),
   ];
 }
+
+/// Builds the [GeoScene] for a demo panel.
+typedef SceneBuilder =
+    Widget Function(
+      OrbitCamera camera,
+      ValueChanged<OrbitCamera> onCameraChanged,
+    );
+
+/// Hosts a [GeoScene] with zoom in, zoom out and reset buttons.
+///
+/// Keeps the camera as state and hands it to [builder], so the buttons and
+/// the scene's own drag and pinch gestures move the same camera.
+class ZoomScene extends StatefulWidget {
+  /// Starting camera; reset returns here.
+  final OrbitCamera camera;
+
+  /// Builds the scene from the current camera.
+  final SceneBuilder builder;
+
+  const ZoomScene({super.key, required this.camera, required this.builder});
+
+  @override
+  State<ZoomScene> createState() => _ZoomSceneState();
+}
+
+class _ZoomSceneState extends State<ZoomScene> {
+  late OrbitCamera _initial = _withLimits(widget.camera);
+  late OrbitCamera _camera = _initial;
+
+  // Zoom range relative to the starting distance.
+  static OrbitCamera _withLimits(OrbitCamera c) =>
+      c.copyWith(minDistance: c.distance * 0.15, maxDistance: c.distance * 4);
+
+  @override
+  void didUpdateWidget(ZoomScene old) {
+    super.didUpdateWidget(old);
+    if (old.camera != widget.camera) {
+      _initial = _withLimits(widget.camera);
+      _camera = _initial;
+    }
+  }
+
+  void _set(OrbitCamera c) => setState(() => _camera = c);
+
+  @override
+  Widget build(BuildContext context) {
+    final p = DemoPalette.of(context);
+    Widget button(IconData icon, String tip, VoidCallback onTap) => IconButton(
+      icon: Icon(icon, size: 18),
+      tooltip: tip,
+      color: p.fg,
+      visualDensity: VisualDensity.compact,
+      onPressed: onTap,
+    );
+    return Stack(
+      children: [
+        Positioned.fill(child: widget.builder(_camera, _set)),
+        Positioned(
+          right: 8,
+          bottom: 8,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: p.surface.withValues(alpha: 0.92),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: p.line),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                button(Icons.add, 'Zoom in', () => _set(_camera.zoom(0.8))),
+                button(
+                  Icons.remove,
+                  'Zoom out',
+                  () => _set(_camera.zoom(1.25)),
+                ),
+                button(
+                  Icons.center_focus_strong_outlined,
+                  'Reset view',
+                  () => _set(_initial),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

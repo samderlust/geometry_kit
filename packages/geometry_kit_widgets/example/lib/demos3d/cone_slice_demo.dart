@@ -74,49 +74,53 @@ print(section.toPolygon().area);  // geometry_kit 2D Polygon''';
       demo: DemoPanel(
         label: 'Cone ∩ plane',
         hint: 'drag to orbit',
-        scene: GeoScene(
+        scene: ZoomScene(
           camera: const OrbitCamera(
             yaw: -40,
             pitch: 22,
             distance: 5.6,
             target: Point3(0, -0.05, 0),
           ),
-          children: [
-            ...p.grid3(extent: 2, step: 0.5, y: -1),
-            GeoPath3(
-              const [Point3(0, 1.5, 0), Point3(0, -1, 0)],
-              style: ShapeStyle(
-                strokeColor: p.muted,
-                dashPattern: const DashPattern([3, 4]),
-              ),
-              overlay: false,
-            ),
-            GeoSolid(
-              _cone,
-              segments: 48,
-              pickable: false,
-              style: ShapeStyle(fillColor: p.accent, opacity: 0.22),
-            ),
-            GeoPath3(
-              quad,
-              closed: true,
-              style: ShapeStyle(
-                fillColor: p.fg.withValues(alpha: 0.05),
-                strokeColor: p.fg.withValues(alpha: 0.4),
-                dashPattern: const DashPattern([5, 4]),
-              ),
-            ),
-            if (!section.isEmpty)
+          builder: (camera, onCameraChanged) => GeoScene(
+            camera: camera,
+            onCameraChanged: onCameraChanged,
+            children: [
+              ...p.grid3(extent: 2, step: 0.5, y: -1),
               GeoPath3(
-                section.toPoints3(),
+                const [Point3(0, 1.5, 0), Point3(0, -1, 0)],
+                style: ShapeStyle(
+                  strokeColor: p.muted,
+                  dashPattern: const DashPattern([3, 4]),
+                ),
+                overlay: false,
+              ),
+              GeoSolid(
+                _cone,
+                segments: 48,
+                pickable: false,
+                style: ShapeStyle(fillColor: p.accent, opacity: 0.22),
+              ),
+              GeoPath3(
+                quad,
                 closed: true,
                 style: ShapeStyle(
-                  fillColor: p.amber.withValues(alpha: 0.55),
-                  strokeColor: p.amber,
-                  strokeWidth: 2.2,
+                  fillColor: p.fg.withValues(alpha: 0.05),
+                  strokeColor: p.fg.withValues(alpha: 0.4),
+                  dashPattern: const DashPattern([5, 4]),
                 ),
               ),
-          ],
+              if (!section.isEmpty)
+                GeoPath3(
+                  section.toPoints3(),
+                  closed: true,
+                  style: ShapeStyle(
+                    fillColor: p.amber.withValues(alpha: 0.55),
+                    strokeColor: p.amber,
+                    strokeWidth: 2.2,
+                  ),
+                ),
+            ],
+          ),
         ),
         controls: [
           DemoSlider(

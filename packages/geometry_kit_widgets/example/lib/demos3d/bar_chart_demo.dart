@@ -83,50 +83,54 @@ class _BarChartDemoState extends State<BarChartDemo> {
       demo: DemoPanel(
         label: 'GeoScene · ${_bars.length} boxes',
         hint: 'tap a bar · drag to orbit',
-        scene: GeoScene(
+        scene: ZoomScene(
           camera: const OrbitCamera(
             yaw: -35,
             pitch: 26,
             distance: 8.2,
             target: Point3(0, -0.2, 0),
           ),
-          onHover: pick,
-          onTap: pick,
-          children: [
-            ...p.grid3(extent: 2.7, step: 0.45, y: -1),
-            for (final b in _bars)
-              GeoSolid(
-                b.box,
-                id: b.id,
-                style: ShapeStyle(
-                  fillColor: b == hovered
-                      ? Color.lerp(colors[b.series], Colors.white, 0.4)
-                      : colors[b.series],
-                  strokeColor: null,
+          builder: (camera, onCameraChanged) => GeoScene(
+            camera: camera,
+            onCameraChanged: onCameraChanged,
+            onHover: pick,
+            onTap: pick,
+            children: [
+              ...p.grid3(extent: 2.7, step: 0.45, y: -1),
+              for (final b in _bars)
+                GeoSolid(
+                  b.box,
+                  id: b.id,
+                  style: ShapeStyle(
+                    fillColor: b == hovered
+                        ? Color.lerp(colors[b.series], Colors.white, 0.4)
+                        : colors[b.series],
+                    strokeColor: null,
+                  ),
                 ),
-              ),
-            for (final (i, m) in _months.indexed)
-              GeoLabel3(
-                Point3(i * 0.9 - 2.25, -1, 1.75),
-                m,
-                style: p.label3(p.muted, weight: FontWeight.w500),
-              ),
-            for (final (i, n) in _names.indexed)
-              GeoLabel3(
-                Point3(-3.0, -1, i * 0.9 - 0.9),
-                n,
-                alignment: Alignment.centerLeft,
-                style: p.label3(colors[i]),
-              ),
-            if (hovered != null)
-              GeoLabel3(
-                hovered.box.bounds.center.translate(
-                  y: hovered.box.height / 2 + 0.25,
+              for (final (i, m) in _months.indexed)
+                GeoLabel3(
+                  Point3(i * 0.9 - 2.25, -1, 1.75),
+                  m,
+                  style: p.label3(p.muted, weight: FontWeight.w500),
                 ),
-                '${hovered.value}k',
-                style: p.label3(p.fg, size: 13, weight: FontWeight.w700),
-              ),
-          ],
+              for (final (i, n) in _names.indexed)
+                GeoLabel3(
+                  Point3(-3.0, -1, i * 0.9 - 0.9),
+                  n,
+                  alignment: Alignment.centerLeft,
+                  style: p.label3(colors[i]),
+                ),
+              if (hovered != null)
+                GeoLabel3(
+                  hovered.box.bounds.center.translate(
+                    y: hovered.box.height / 2 + 0.25,
+                  ),
+                  '${hovered.value}k',
+                  style: p.label3(p.fg, size: 13, weight: FontWeight.w700),
+                ),
+            ],
+          ),
         ),
         readouts: [
           Readout(
