@@ -60,6 +60,29 @@ class Quaternion {
     return v + t * w + q.cross(t);
   }
 
+  /// The rotation as an axis and an angle in degrees, the inverse of
+  /// [Quaternion.fromAxisAngle].
+  ///
+  /// The angle is in `[0, 180]`: q and -q are the same rotation, so the
+  /// shorter way round is returned. The identity gives [Point3.unitY] and 0.
+  ///
+  /// ```dart
+  /// final (:axis, :degrees) = q.toAxisAngle();
+  /// final turned = solid.rotate(axis, degrees);
+  /// ```
+  ({Point3 axis, double degrees}) toAxisAngle() {
+    var q = normalized;
+    if (q.w < 0) q = Quaternion(-q.w, -q.x, -q.y, -q.z);
+    // |v| = sin(half angle). Taken from the vector part, not sqrt(1 - w²),
+    // which cancels to 0 for small angles.
+    final v = sqrt(q.x * q.x + q.y * q.y + q.z * q.z);
+    if (v == 0) return (axis: Point3.unitY, degrees: 0.0);
+    return (
+      axis: Point3(q.x / v, q.y / v, q.z / v),
+      degrees: 2 * atan2(v, q.w) * 180 / pi,
+    );
+  }
+
   /// Composition: `(a * b).rotate(v) == a.rotate(b.rotate(v))`.
   Quaternion operator *(Quaternion o) => Quaternion(
         w * o.w - x * o.x - y * o.y - z * o.z,

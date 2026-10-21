@@ -5,6 +5,9 @@ Initial release.
 ### Math
 
 - `Point3`, `Quaternion`, `Ray3`, `Segment3`, `Plane`, `PlaneFrame`, `Aabb`.
+- `Transform3`: position, rotation and uniform scale, with `apply`,
+  `inverse`, composition and `applyTo(Solid)`.
+- `Quaternion.toAxisAngle()`; `Ray3.closestPointOnLine` for axis dragging.
 
 ### Solids
 
