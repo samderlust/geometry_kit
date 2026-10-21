@@ -3,7 +3,8 @@
 Initial release.
 
 - `EditorNode`: a solid in local space plus a `Transform3` placement,
-  style, an optional `SolidGradient`, `locked` and `hidden`.
+  style, an optional `SolidGradient` (`gradient`), `locked` and `hidden`.
+  `copyWith(gradient: null)` removes the gradient; leaving it out keeps it.
 - `Document`: immutable, ordered nodes keyed by id; `put`, `update`,
   `updateAll`, `translate`, `removeAll`.
 - `EditorController`: selection, active tool, snapshot undo/redo with a
@@ -17,4 +18,5 @@ Initial release.
   transforms, so dragging never re-triangulates), routes each gesture to
   the tool that claimed it, orbits on empty space, and handles undo/redo,
   select all, delete, arrow nudge and Escape shortcuts. Mid-drag only Escape
-  (cancel) is honoured.
+  (cancel) is honoured. Node gradients are drawn as they are; `nodeStyle`
+  styles fill colour and edges.

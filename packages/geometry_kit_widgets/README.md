@@ -339,7 +339,7 @@ GeoScene(
 
 | Node        | Draws                                                        |
 | ----------- | ------------------------------------------------------------ |
-| `GeoSolid`  | Any `Solid`, shaded by the scene light; edges from `strokeColor` |
+| `GeoSolid`  | Any `Solid`, shaded by the scene light; edges from `strokeColor`; optional `gradient` |
 | `GeoPath3`  | A 3D polyline (on top of solids, or underneath with `overlay: false`) |
 | `GeoLabel3` | Text pinned to a 3D point                                   |
 | `GeoHandle` | A fixed-size dot or square at a 3D point, drawn on top and picked on screen |
@@ -348,11 +348,26 @@ Give a `GeoSolid` a `transform` (`Transform3`) to place a local-space solid:
 the mesh is cached once and moved at paint time, so animating or dragging it
 never re-triangulates.
 
+### Gradients on solids
+
 Give a `GeoSolid` a `gradient` to colour it with a `SolidGradient` instead of
-`fillColor`. Gradients are laid across the solid's local bounding box, so
-they move and turn with it. An `Anchor3` is a point in that box, -1 to 1 per
-axis (x left→right, y bottom→top, z back→front); start and end anchors pick
-the side the gradient starts from:
+`fillColor`. The gradient is laid across the solid's **local** bounding box,
+so it moves, turns and scales with the solid's `transform`. Opacity and edge
+outlines still come from `style`.
+
+Positions are `Anchor3`s: points in that box, -1 to 1 on each axis.
+
+| Axis | -1 | 1 |
+| ---- | -- | - |
+| `x`  | left | right |
+| `y`  | bottom | top |
+| `z`  | back | front |
+
+Constants cover the usual spots: `Anchor3.center`, `.top`, `.bottom`,
+`.left`, `.right`, `.front`, `.back`, `.topLeftFront`, `.bottomRightBack`.
+
+**Linear**: from `start` to `end`. The two anchors pick the side the
+gradient starts from; swap them (or use `reversed`) to flip it.
 
 ```dart
 GeoSolid(
@@ -361,11 +376,34 @@ GeoSolid(
     start: Anchor3.topLeftFront,
     end: Anchor3.bottomRightBack,
     colors: [Colors.teal, Colors.orange, Colors.purple],
+    stops: [0, 0.4, 1], // optional; evenly spread when left out
   ),
 )
-// SolidGradient.radial(center: Anchor3.top, radius: 2, colors: [...])
-// gradient.reversed runs it the other way.
 ```
+
+**Radial**: outward from `center`, reaching the last colour at `radius`
+(in anchor units). Both are optional: the centre defaults to the top, and
+without a radius the gradient reaches right across the solid.
+
+```dart
+GeoSolid(
+  const Sphere(center: Point3.zero, radius: 1),
+  gradient: const SolidGradient.radial(
+    center: Anchor3.top,
+    colors: [Colors.amber, Colors.deepPurple],
+  ),
+)
+```
+
+Keep a radial centre off the middle of a ball: every point on a sphere is
+the same distance from its middle, so it would come out one colour.
+
+Colours are set at each mesh vertex and blended across triangles. A
+two-colour linear gradient that spans the box is exact as is. Radial
+gradients, three or more colours, or ends inside the box bend within a
+face, so those solids are drawn on a finer mesh, with up to 16 times the
+triangles on big flat faces (see `SolidGradient.needsRefinement` and
+`SceneMesh.refined`).
 
 Gestures: drag to orbit, pinch or scroll to zoom. `onTap` / `onHover` report a
 `SceneHit` (the node plus distance, point and normal). Set `onDragSolid` and
@@ -400,7 +438,8 @@ sliders and a network/Flutter-logo/gradient source picker), and tap +
 hover interactivity (per-`Geo*` callbacks plus a canvas demo where
 tapping a shape reorders it to the top of the paint stack).
 The 3D tab covers a solids tour, cone slice, bar chart, room,
-draw-and-extrude, picking & contact, vase export and the editor demo; each
+draw-and-extrude, picking & contact, vase export and the editor demo (with
+solid, linear and radial fills for the selection); each
 shows the live scene, its controls and the code that builds it.
 
 ```bash

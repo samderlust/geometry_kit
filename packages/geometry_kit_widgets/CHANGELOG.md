@@ -36,13 +36,31 @@ Adds 3D scenes for `geometry_kit_3d` solids on top of 0.2.0.
   `enableOrbit: false` the page scrolls as before.
 - `GeoHandle` scene node: a fixed-size dot or square at a 3D point, drawn
   on top and picked on screen.
-- `GeoSolid.gradient` takes a `SolidGradient` (`.linear` from a start to an
-  end `Anchor3`, or `.radial` from a centre, the top by default), laid
-  across the solid's local bounds so it moves and turns with the solid. `Anchor3` names points in
-  the bounding box from -1 to 1 per axis (`Anchor3.top`, `.left`,
-  `.topLeftFront`, ...), which picks the side the gradient starts from.
-  Colours are set per vertex and shaded by the light; big flat faces are
-  split (`SceneMesh.refined`) so multi-stop gradients stay smooth.
+
+### Solid gradients
+
+- `GeoSolid.gradient` takes a `SolidGradient`, used in place of
+  `ShapeStyle.fillColor`. It is laid across the solid's local bounding box,
+  so it moves, turns and scales with `GeoSolid.transform`.
+  `ShapeStyle.opacity` and edge outlines still apply.
+- `Anchor3` names a point in that box, -1 to 1 per axis (x left→right,
+  y bottom→top, z back→front), with constants such as `Anchor3.top`,
+  `.left`, `.front` and `.topLeftFront`. `Anchor3.resolve` and
+  `Anchor3.of` convert to and from local points.
+- `SolidGradient.linear(start:, end:)` runs from one anchor to another
+  (top to bottom by default), so the anchors pick the side it starts from.
+  `SolidGradient.radial(center:, radius:)` runs outward from a point: the
+  top by default, with `radius` reaching right across the solid when left
+  out (`RadialSolidGradient.effectiveRadius`). Both take `colors` and
+  optional `stops`; `reversed` runs either the other way.
+- Colours are worked out per vertex and shaded per face. Gradients that
+  bend within a face (radial, three or more colours, or ends inside the
+  box; see `SolidGradient.needsRefinement`) draw on `SceneMesh.refined`,
+  which splits big faces at most twice while keeping normals and sharp
+  edges. A two-colour linear gradient across the box is exact as is and
+  adds no triangles.
+- `SceneMesh.vertexColors` keeps the last gradient's colours, so orbiting
+  or dragging a solid does not recompute them.
 
 ### Fixes
 
