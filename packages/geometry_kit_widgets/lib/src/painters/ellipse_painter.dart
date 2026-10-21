@@ -4,12 +4,22 @@ import 'package:geometry_kit/geometry_kit.dart';
 import '../coord/coordinate_mapper.dart';
 import '../style/shape_style.dart';
 import '../util/paint_helpers.dart';
+import '../util/shape_path.dart';
 
+/// [CustomPainter] that draws an [Ellipse] using fill + stroke from [style].
+///
+/// Backs [GeoEllipse]. Path construction is shared via [shapeToPath].
 class EllipsePainter extends CustomPainter {
+  /// The geometry ellipse to paint.
   final Ellipse ellipse;
+
+  /// Resolved style applied to the ellipse.
   final ShapeStyle style;
+
+  /// Mapper from geometry coordinates to canvas coordinates.
   final CoordinateMapper mapper;
 
+  /// Creates an ellipse painter.
   const EllipsePainter({
     required this.ellipse,
     required this.style,
@@ -19,14 +29,7 @@ class EllipsePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (!style.isVisible) return;
-    final center = mapper.toCanvas(ellipse.center.x, ellipse.center.y);
-    final rect = Rect.fromCenter(
-      center: center,
-      width: ellipse.radiusX * 2,
-      height: ellipse.radiusY * 2,
-    );
-    final path = Path()..addOval(rect);
-    paintShapePath(canvas, path, style);
+    paintShapePath(canvas, shapeToPath(ellipse, mapper), style);
   }
 
   @override

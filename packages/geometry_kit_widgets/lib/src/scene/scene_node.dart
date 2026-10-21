@@ -15,7 +15,8 @@ sealed class SceneNode {
 /// [ShapeStyle.fillColor] is the base colour, shaded by the scene light.
 /// [ShapeStyle.opacity] below 1 makes the solid see-through.
 /// [ShapeStyle.strokeColor] outlines the solid's sharp edges (box corners,
-/// cylinder rims), not every triangle.
+/// cylinder rims), not every triangle. Gradients and paint builders apply
+/// to flat 2D shapes and [GeoPath3] only; solids use the solid colours.
 ///
 /// ```dart
 /// GeoSolid(

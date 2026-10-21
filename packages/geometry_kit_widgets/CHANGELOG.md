@@ -1,4 +1,10 @@
-## 0.2.0
+## 0.3.0
+
+Adds 3D scenes for `geometry_kit_3d` solids on top of 0.2.0.
+
+> Note: 0.2.0 was published from sources that had not reached the
+> repository; they are restored here, so everything listed under 0.2.0 is
+> still included.
 
 ### 3D scenes
 
@@ -19,9 +25,8 @@
 - `GeoScene.interaction`: a `SceneInteraction` gets raw pointer events
   before the camera and can claim a gesture; a claimed gesture wins the
   arena, so neither the camera nor an enclosing scroll view reacts. A second
-  finger cancels the claim. `onDragSolid` is
-  built on it and now drags on a camera-facing plane at low pitch instead of
-  flinging the solid.
+  finger cancels the claim. `onDragSolid` is built on it and drags on a
+  camera-facing plane at low pitch instead of flinging the solid.
 - `GeoSolid.transform` (`Transform3`): the mesh is cached for the local
   solid and placed at paint time, so moving a solid does not
   re-triangulate it or flood the mesh cache. `GeoSolid.worldSolid` gives the
@@ -34,6 +39,120 @@
 - Fill and stroke colours with their own alpha are no longer forced opaque:
   the colour's alpha is now multiplied by `ShapeStyle.opacity` instead of
   replaced by it.
+
+## 0.2.0
+
+Bundles three internal milestones (decorative styling, theme merge +
+animation, widget clipping) into one published release on top of 0.1.1.
+
+### Breaking
+
+- `ShapeStyle.strokeWidth`, `opacity`, `strokeCap`, `strokeJoin` are now
+  nullable (`double?` / `StrokeCap?` / `StrokeJoin?`). Constructor defaults
+  are unchanged (`1.0` / `1.0` / `StrokeCap.butt` / `StrokeJoin.miter`), so
+  most call sites compile unmodified. Code that reads these fields
+  unconditionally (e.g. `style.strokeWidth.toString()`) must adopt
+  `style.strokeWidth ?? 1.0` for the equivalent fallback. Painters inside
+  the package already do this.
+- `ShapeStyleTheme.resolve(context, fallback)` is now
+  `resolve(context, explicit, {fallback})`. When `explicit` is non-null the
+  resolver returns `explicit.merge(ambient)` — fields the override leaves
+  `null` fall back to the ambient theme rather than fully replacing it. When
+  `explicit` is `null`, the ambient theme (or the optional `fallback`) is
+  returned, matching the previous behaviour. All built-in `Geo*` widgets
+  switched from `style ?? ShapeStyleTheme.resolve(context, const ShapeStyle())`
+  to `ShapeStyleTheme.resolve(context, style)`.
+
+### Added
+
+- **Decorative styling**
+  - `ShapeStyle.fillGradient` and `ShapeStyle.strokeGradient` — accept any
+    Flutter `Gradient` (linear, radial, sweep). Gradients win over solid
+    colors when both are set on the same channel. Resolved against the
+    painted shape's axis-aligned bounding rect at paint time.
+  - `ShapeStyle.gradientFilled(Gradient)` convenience constructor.
+  - `PaintBuilder` typedef + `ShapeStyle.fillPaintBuilder` /
+    `ShapeStyle.strokePaintBuilder` — escape hatch for advanced Skia
+    features (`MaskFilter`, `ImageFilter`, `BlendMode`, custom shaders)
+    without expanding the primary style surface.
+- **Theme merge + animation**
+  - `ShapeStyle.merge(ShapeStyle? base)` — field-level fallback. Used by
+    `ShapeStyleTheme.resolve` so a child override and an ambient theme
+    combine per-field instead of all-or-nothing.
+  - `ShapeStyle.lerp(a, b, t)` static method. Smoothly interpolates colors
+    and the `strokeWidth` / `opacity` scalars; gradients, dash patterns,
+    enum fields, and `PaintBuilder`s snap at `t >= 0.5`.
+  - `ShapeStyleTween` — `Tween<ShapeStyle?>` driving `ShapeStyle.lerp`.
+  - `AnimatedShapeStyle` widget — sibling of `AnimatedDefaultTextStyle`.
+    Animates a `ShapeStyle` over a `Duration` and supplies the interpolated
+    value to descendants through `ShapeStyleTheme`.
+- **Widget clipping**
+  - `shapeToPath(Shape, CoordinateMapper)` — top-level helper that returns
+    the canvas-space `Path` for any supported `geometry_kit` shape
+    (`Circle`, `Ellipse`, `Rectangle`, `Triangle`, `Quadrilateral`,
+    `Polygon`, `Line`). Uses the same path bodies the painters render;
+    throws `UnsupportedError` for unhandled shape types.
+  - `ShapeClipper` — `CustomClipper<Path>` wrapping a shape for direct use
+    with Flutter's `ClipPath`. Accepts any `geometry_kit` `Shape` plus a
+    `CoordinateMapper` (defaults to `identity`).
+  - `ShapeWidget` — host widget that composes a shape outline, an optional
+    clipped child, and an optional `ShapeStyle` overlay. Stroke draws above
+    the clipped child so clip-edge anti-aliasing does not eat the outline.
+- **Tap + hover interactivity**
+  - `GeoCircle`, `GeoEllipse`, `GeoRectangle`, `GeoTriangle`,
+    `GeoQuadrilateral`, `GeoPolygon` gain optional `onTap` and
+    `onHoverChanged` parameters. Hit-test is shape-precise via
+    `shapeToPath(...).contains(localPosition)` — pointer events outside
+    the shape outline are ignored even when they land in the host widget
+    rect.
+  - `StyledShape` gains matching `onTap` / `onHoverChanged`. `GeometryCanvas`
+    walks shapes top-down on each pointer event and dispatches to the
+    first hit; the topmost (last-painted) shape wins both tap and hover.
+  - Hover supports both mouse pointers (via `MouseRegion`) and
+    stylus/touch hover (via `Listener.onPointerHover`). `GeoLine` does
+    not expose interaction in v1 (zero-area path makes shape-precise
+    hit-test degenerate; reach for a `Geo*` filled shape or
+    `GestureDetector` if line interaction is needed).
+- **Examples**
+  - Solar system demo upgraded with radial-gradient sun, gradient-shaded
+    planets (sun-tracking day/night highlight), pulsing halo via
+    `MaskFilter.blur`, and live sliders for orbit speed and planet scale.
+  - Clipping demo gains a "ShapeWidget" section (gradient circle, text in
+    triangle, pentagon over grid) plus an interactive image-clip
+    playground (vertex-count + rotation sliders, source picker for network
+    photo / Flutter logo / gradient).
+
+### Changed
+
+- `ShapeStyle.opacity` now applies only to solid colors — encode alpha into
+  gradient color stops directly.
+- Painters refactored to share path construction via the new `shapeToPath`
+  helper. Behaviour identical; rectangle's `cornerRadius` branch stays in
+  `RectanglePainter` since corner radius is a widget-level concept, not a
+  field on `geo.Rectangle`. `LinePainter` retains its own path build.
+
+### Notes
+
+- `GeoLine` does not support `strokeGradient` (zero-area bounds make shader
+  resolution degenerate). Asserted in debug, ignored in release. `GeoLine`
+  does support `strokePaintBuilder` for blur / mask effects.
+- `PaintBuilder` equality is by function identity. Use top-level or
+  `static` builders when value-equality matters for `shouldRepaint`.
+- Field-level theme merging only kicks in when an override explicitly sets
+  fields to `null` (the constructor's non-null defaults otherwise win).
+  Use the raw constructor — not `copyWith` — to write `null` into a field,
+  since `copyWith` cannot transition a value to null.
+- `ShapeWidget` does not auto-fit a shape to widget bounds. Geometry
+  coordinates must already match the rendered widget space, or be
+  transformed via `mapper`. Sizing happens through the optional `size`
+  parameter or the parent's bounded constraints.
+- Clipping a `Line` is degenerate (zero-area path); `ShapeClipper`
+  documents the case rather than asserting.
+- Hit-test arena: `Geo*` widgets and `GeometryCanvas` use opaque
+  `GestureDetector`s. Taps inside the host widget rect but outside the
+  shape outline are still consumed (no callback fires) — siblings under
+  the widget rect won't see those taps. Set the widget's size tightly
+  to the shape if pass-through is needed.
 
 ## 0.1.1
 
