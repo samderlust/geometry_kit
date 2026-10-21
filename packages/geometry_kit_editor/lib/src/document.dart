@@ -30,6 +30,9 @@ class EditorNode {
   /// Fill and edge style.
   final ShapeStyle style;
 
+  /// Colours the node in place of [ShapeStyle.fillColor] when set.
+  final SolidGradient? gradient;
+
   /// Locked nodes can be selected but not moved or deleted.
   final bool locked;
 
@@ -42,6 +45,7 @@ class EditorNode {
     required this.solid,
     this.transform = Transform3.identity,
     this.style = const ShapeStyle.filled(Color(0xFF90A4AE)),
+    this.gradient,
     this.locked = false,
     this.hidden = false,
   });
@@ -49,11 +53,13 @@ class EditorNode {
   /// The solid placed in world space.
   Solid get worldSolid => transform.applyTo(solid);
 
-  /// Copy with the given fields replaced.
+  /// Copy with the given fields replaced. Pass `gradient: null` to remove
+  /// the gradient; leave it out to keep it.
   EditorNode copyWith({
     Solid? solid,
     Transform3? transform,
     ShapeStyle? style,
+    Object? gradient = _keep,
     bool? locked,
     bool? hidden,
   }) => EditorNode(
@@ -61,6 +67,9 @@ class EditorNode {
     solid: solid ?? this.solid,
     transform: transform ?? this.transform,
     style: style ?? this.style,
+    gradient: identical(gradient, _keep)
+        ? this.gradient
+        : gradient as SolidGradient?,
     locked: locked ?? this.locked,
     hidden: hidden ?? this.hidden,
   );
@@ -73,15 +82,20 @@ class EditorNode {
           other.solid == solid &&
           other.transform == transform &&
           other.style == style &&
+          other.gradient == gradient &&
           other.locked == locked &&
           other.hidden == hidden);
 
   @override
-  int get hashCode => Object.hash(id, solid, transform, style, locked, hidden);
+  int get hashCode =>
+      Object.hash(id, solid, transform, style, gradient, locked, hidden);
 
   @override
   String toString() => 'EditorNode($id, ${solid.runtimeType})';
 }
+
+/// Marks a [EditorNode.copyWith] argument that was left out.
+const Object _keep = Object();
 
 /// An immutable, ordered set of [EditorNode]s keyed by id.
 ///

@@ -3,7 +3,7 @@
 Initial release.
 
 - `EditorNode`: a solid in local space plus a `Transform3` placement,
-  style, `locked` and `hidden`.
+  style, an optional `SolidGradient`, `locked` and `hidden`.
 - `Document`: immutable, ordered nodes keyed by id; `put`, `update`,
   `updateAll`, `translate`, `removeAll`.
 - `EditorController`: selection, active tool, snapshot undo/redo with a

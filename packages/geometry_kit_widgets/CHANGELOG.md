@@ -36,6 +36,13 @@ Adds 3D scenes for `geometry_kit_3d` solids on top of 0.2.0.
   `enableOrbit: false` the page scrolls as before.
 - `GeoHandle` scene node: a fixed-size dot or square at a 3D point, drawn
   on top and picked on screen.
+- `GeoSolid.gradient` takes a `SolidGradient` (`.linear` from a start to an
+  end `Anchor3`, or `.radial` from a centre, the top by default), laid
+  across the solid's local bounds so it moves and turns with the solid. `Anchor3` names points in
+  the bounding box from -1 to 1 per axis (`Anchor3.top`, `.left`,
+  `.topLeftFront`, ...), which picks the side the gradient starts from.
+  Colours are set per vertex and shaded by the light; big flat faces are
+  split (`SceneMesh.refined`) so multi-stop gradients stay smooth.
 
 ### Fixes
 

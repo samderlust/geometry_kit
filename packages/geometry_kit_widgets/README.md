@@ -348,6 +348,25 @@ Give a `GeoSolid` a `transform` (`Transform3`) to place a local-space solid:
 the mesh is cached once and moved at paint time, so animating or dragging it
 never re-triangulates.
 
+Give a `GeoSolid` a `gradient` to colour it with a `SolidGradient` instead of
+`fillColor`. Gradients are laid across the solid's local bounding box, so
+they move and turn with it. An `Anchor3` is a point in that box, -1 to 1 per
+axis (x left→right, y bottom→top, z back→front); start and end anchors pick
+the side the gradient starts from:
+
+```dart
+GeoSolid(
+  Box.cube(center: Point3.zero, size: 1),
+  gradient: const SolidGradient.linear(
+    start: Anchor3.topLeftFront,
+    end: Anchor3.bottomRightBack,
+    colors: [Colors.teal, Colors.orange, Colors.purple],
+  ),
+)
+// SolidGradient.radial(center: Anchor3.top, radius: 2, colors: [...])
+// gradient.reversed runs it the other way.
+```
+
 Gestures: drag to orbit, pinch or scroll to zoom. `onTap` / `onHover` report a
 `SceneHit` (the node plus distance, point and normal). Set `onDragSolid` and
 dragging a solid moves it on the horizontal plane instead of orbiting.
