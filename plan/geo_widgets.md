@@ -2,6 +2,10 @@
 
 A roadmap for `geometry_kit_widgets`, a companion Flutter package that wraps `geometry_kit` shapes into declarative, customizable, interactive Flutter widgets backed by `CustomPainter`.
 
+> **Status (v0.4.0):** Phases 1–3 shipped. Phase 4 (polish) is next. Sections
+> below describe the API as built; notes marked *Shipped as* record where the
+> implementation departed from the original sketch.
+
 ---
 
 ## 1. Goals & Non-Goals
@@ -17,7 +21,7 @@ A roadmap for `geometry_kit_widgets`, a companion Flutter package that wraps `ge
 ### Non-Goals
 
 - Animation engine or tweening (users compose with Flutter's existing animation system).
-- 3D rendering (scoped to 2D shapes; 3D widgets can follow as `geometry_kit_3d_widgets`).
+- ~~3D rendering~~ — *Shipped as* `GeoScene` in this package (v0.3.0) rather than a separate `geometry_kit_3d_widgets`; out of scope for this plan.
 - SVG export or rasterization.
 - Replacing general-purpose drawing packages like `flutter_svg` or `flame`.
 
@@ -77,6 +81,8 @@ geometry_kit_widgets/
 ├── example/
 └── pubspec.yaml
 ```
+
+*Shipped as* (v0.4.0): the seven curve painters are one `painters/geometry_painter.dart`. Additions not in the tree above: `util/shape_path.dart` (`shapeToPath`), `util/shape_hit_test.dart` (path cache + hit-test), `util/arc_sector.dart`, `util/paint_helpers.dart`, `debug/geo_debug_overlay.dart`, `canvas/geo_grid.dart`, `widgets/geo_shape_container.dart` + `widgets/shape_pointer_region.dart` (shared paint / tap / hover / drag plumbing), `widgets/shape_widget.dart` + `widgets/shape_clipper.dart`, `style/animated_shape_style.dart`, and `scene/` (3D).
 
 ### 2.1.1 Naming convention
 
@@ -266,38 +272,46 @@ The `.fromGeometry` constructor is the canonical implementation; the primary con
 | `GeoTriangle`        | `Triangle`                        |                                          |
 | `GeoQuadrilateral`   | `Quadrilateral`                   | Dedicated — parity with core             |
 | `GeoPolygon`         | `Polygon`                         | Generic n-gon                            |
-| `GeoLine`            | `Line` / `Segment`                | Supports arrows via `arrowHead` param    |
-| `GeoRay`             | `Ray`                             | Drawn clipped to widget bounds           |
-| `GeoArc`             | `Arc`                             | Supports sector fill                     |
-| `GeoRing`            | `Ring`                            |                                          |
-| `GeoCapsule`         | `Capsule`                         |                                          |
-| `GeoBezierCurve`     | `QuadraticBezier` / `CubicBezier` | `degree` param selects type              |
-| `GeoSpline`          | `Spline`                          | Optionally shows control points          |
-| `GeoPolyline`        | `Polyline`                        | Optionally shows vertices                |
+| `GeoLine`            | `Line`                            | Tap/hover/drag by distance (v0.4). Arrow heads not built yet |
+| `GeoRay`             | `Ray`                             | Cut where it leaves the widget           |
+| `GeoArc`             | `Arc`                             | `sector: true` draws the pie slice       |
+| `GeoRing`            | `Ring`                            | Even-odd path; hole stays empty          |
+| `GeoCapsule`         | `Capsule`                         | Any orientation                          |
+| `GeoBezierCurve`     | `QuadraticBezier` / `CubicBezier` | `.quadratic` / `.cubic` / `.fromGeometry` (no `degree` param) |
+| `GeoSpline`          | `Spline`                          | Control points via `debugOverlay`        |
+| `GeoPolyline`        | `Polyline`                        | Vertices via `debugOverlay`              |
+
+Closed shapes fill + stroke. Open curves (`Line`, `Polyline`, `Arc`, Beziers,
+`Spline`, `Ray`) stroke only, falling back to `fillColor` when no stroke color
+is set.
 
 ### 4.3 Shared optional parameters (all widgets)
 
+*Shipped as* (v0.4.0) — every `Geo*` widget and `StyledShape`:
+
 ```dart
-// Debug / authoring aids
-final bool showBoundingBox;       // draws the AABB in a muted color
-final bool showCenter;            // draws a crosshair at the centroid
-final bool showVertices;          // draws dots at key points (polygon corners, etc.)
-final bool showDimensions;        // draws length/radius labels
+// Debug / authoring aids — one config object instead of four bools
+final GeoDebugOverlay? debugOverlay;   // showBoundingBox, showCenter,
+                                       // showVertices, showDimensions, color
 
 // Interaction
 final VoidCallback? onTap;
-final VoidCallback? onDoubleTap;
-final ValueChanged<bool>? onHover;           // bool = isHovering
-final ValueChanged<Offset>? onPanUpdate;    // drag offset delta
+final ValueChanged<bool>? onHoverChanged;   // bool = isHovering
+final VoidCallback? onDragStart;
+final ValueChanged<Offset>? onDragUpdate;   // per-frame delta, geometry space
+final ValueChanged<Offset>? onDragEnd;      // total, geometry space
 ```
 
-Debug parameters default to `false` and are invaluable during development.
+`GeoDebugOverlay()` turns on bounding box, center and vertices;
+`GeoDebugOverlay.all` adds dimension labels. `onDoubleTap` was not built.
 
 ---
 
 ## 5. Painter Layer
 
-Each `_XxxPainter` is a `CustomPainter` subclass that is **not** exported publicly. Users interact only with widgets, never painters directly. This keeps the internal implementation free to change.
+Each `XxxPainter` is a `CustomPainter` subclass that is **not** exported from the barrel. Users interact only with widgets, never painters directly. This keeps the internal implementation free to change.
+
+*Shipped as:* the Phase 1 shapes keep one painter each. The Phase 2 curves share one generic `GeometryPainter` over `paintGeometry`, which builds the path with `shapeToPath` and picks fill + stroke (closed) or stroke only (open). `GeometryCanvas` uses `paintGeometry` for every shape instead of a per-type dispatch chain. Debug overlays are a separate `GeoDebugOverlayPainter` installed as the `CustomPaint.foregroundPainter`, so no shape painter knows about them.
 
 ### 5.1 Painter responsibilities
 
@@ -356,6 +370,8 @@ class _CirclePainter extends CustomPainter {
 
 `Polygon`/`Spline`/`Polyline` `==` walks all vertices each frame. For shapes with > ~32 control points, painters cache `hashCode` or accept a `revision` int and compare that instead. Helper: `bool _shapeChanged(Shape a, Shape b)` in `util/`.
 
+*Shipped as* (v0.4.0): painters already compare geometry with `identical`, so `==` never runs per frame. The measured cost was rebuilding paths on every hover hit-test, so paths are memoised per geometry instance instead (`cachedShapePath` in `util/shape_hit_test.dart`: an `Expando` keyed by the geometry, invalidated when mapper or size changes). The same entry caches flattened samples (for curve hit-tests) and tight bounds (`Path.getBounds` includes Bezier control points).
+
 ### 5.4 `RepaintBoundary`
 
 `GeoCanvas` (and individual widgets when nested in scrollables) wrap the `CustomPaint` in a `RepaintBoundary`. Without it a hover anywhere in the parent tree forces a full canvas repaint.
@@ -367,6 +383,8 @@ class _CirclePainter extends CustomPainter {
 ### 6.1 Hit testing via geometry
 
 All interaction is backed by the geometry class's `contains(Point)` method, so hit-test accuracy matches the mathematical shape exactly — not a bounding box approximation.
+
+*Shipped as:* `hitTestShape` tests the canvas-space path rather than calling `contains` (not every geometry type has one, and the path already includes the mapper). Closed shapes use `Path.contains` (even-odd for `Ring`). Open curves have no interior, so they test distance to the flattened curve against `strokeWidth / 2 + 4px`. The sketch below is the original idea.
 
 ```dart
 // Inside GeoCircle's build method:
@@ -401,26 +419,23 @@ MouseRegion(
 
 ### 6.3 Drag
 
-Widget tracks `_dragOffset` in state. **Do not rebuild geometry per frame** — `Polygon.translate` allocates new vertex list each tick (GC pressure on long drags). Instead apply `canvas.translate(dx, dy)` in the painter, leaving geometry immutable:
+*Shipped as* (v0.4.0) — preview, then commit. **Do not rebuild geometry per frame**: `ShapePointerRegion` keeps the drag offset in state, and `GeoShapeContainer` wraps the `CustomPaint` (and its debug overlay) in a `Transform.translate` inside the clip. `GeometryCanvas` does the same with `canvas.save(); canvas.translate(...)` around the dragged shape. Geometry stays immutable.
 
-```dart
-// In _CirclePainter.paint
-canvas.save();
-canvas.translate(dragOffset.dx, dragOffset.dy);
-// ... draw at original geometry coords ...
-canvas.restore();
-```
+- A drag starts only if the pan-down position hits the shape (hit-test is on the shape at rest, with the drag offset subtracted).
+- `onDragStart()` — drag began.
+- `onDragUpdate(Offset delta)` — per-frame delta in **geometry space** (`CoordinateMapper.vectorFromCanvas` applies the Y flip). Informational: the widget already draws the drag, so moving geometry here too doubles it.
+- `onDragEnd(Offset total)` — total displacement in geometry space. The preview offset resets to zero in the same frame, so the owner commits by translating its geometry.
+- `GeometryCanvas` drags the topmost draggable shape under the pointer; shapes are tracked by paint index during the drag.
 
-Hit testing for the dragged shape subtracts `_dragOffset` from local pointer position before calling `contains()`. Widget exposes:
-
-- `onPanUpdate(Offset delta)` — per-frame delta (matches Flutter's `DragUpdateDetails.delta`).
-- `onDragEnd(Offset totalOffset)` — accumulated translation since drag start; parent uses this to mutate its model.
+Pointer routing: `ShapeHitFilter` rejects positions off the shape at render hit-test time, so pointers there reach widgets behind (stacked `Geo*` widgets, scroll views). On the shape, `ShapeDragGestureRecognizer` (a pan that accepts after half the touch slop, `DragStartBehavior.down`) beats a scroll view's drag recognizer, so the shape moves instead of the page and stays under the finger. Verified on the iOS simulator in the example app.
 
 ### 6.4 `HitTestBehavior`
 
 - Filled shapes → `HitTestBehavior.opaque` (whole bounds catches taps).
 - Stroke-only shapes → `HitTestBehavior.translucent` (taps inside hollow interior pass through to widgets below).
 - Default: `translucent`. Override via `hitTestBehavior` param.
+
+*Shipped as:* no `hitTestBehavior` param. A render-level filter makes every widget behave like `translucent` off the shape and `opaque` on it, which is what both cases above wanted.
 
 ---
 
@@ -433,13 +448,19 @@ The flagship widget. Renders an arbitrary list of styled shapes onto a single `C
 ```dart
 @immutable
 class StyledShape {
-  final Shape shape;        // any geometry_kit Shape subclass
+  final Object shape;       // any geometry shapeToPath supports
   final ShapeStyle style;
-  final String? id;         // optional identifier for hit-test callbacks
-
-  const StyledShape(this.shape, {required this.style, this.id});
+  final String? id;
+  final VoidCallback? onTap;
+  final ValueChanged<bool>? onHoverChanged;
+  final VoidCallback? onDragStart;
+  final ValueChanged<Offset>? onDragUpdate;
+  final ValueChanged<Offset>? onDragEnd;
+  final GeoDebugOverlay? debugOverlay;   // overrides the canvas-wide one
 }
 ```
+
+*Shipped as:* `shape` is `Object`, not `Shape` (breaking in v0.4.0). Most curve types in `geometry_kit` (`Arc`, `Ring`, `Ray`, Beziers, `Spline`, `Polyline`, and `Line`) do not implement `Shape`, and making them do so would mean inventing `area`/`rotate` for open and infinite curves in the core. `ArcSector` (widgets package) wraps an `Arc` to get the closed slice. Callbacks live on each `StyledShape` instead of canvas-level `onShapeTap(id)`.
 
 ### 7.2 `GeometryCanvas`
 
@@ -469,6 +490,8 @@ GeometryCanvas(
 )
 ```
 
+*Shipped as:* `GeometryCanvas(size, shapes, mapper, backgroundColor, clipBehavior, grid, debugOverlay)`. Per-shape callbacks on `StyledShape` replace `onShapeTap` / `onShapeHover`; `grid: GeoGrid(...)` replaces `showGrid`.
+
 ### 7.3 Hit testing in `GeometryCanvas`
 
 Shapes are hit-tested in **reverse paint order** (top-most shape wins):
@@ -489,17 +512,22 @@ onTapUp: (details) {
 
 ### 7.4 Optional grid & axes
 
+*Shipped as* (v0.4.0) — one config object; the origin comes from the canvas `CoordinateMapper` rather than a separate `origin` param:
+
 ```dart
 GeometryCanvas(
-  showGrid: true,
-  gridSpacing: 20,
-  gridColor: Colors.grey.withOpacity(0.2),
-  showAxes: true,
-  axisColor: Colors.grey,
-  origin: Offset(200, 150), // where (0,0) maps to in widget space
-  ...
+  size: const Size(400, 300),
+  mapper: CoordinateMapper.centered(const Size(400, 300)),
+  grid: const GeoGrid(
+    spacing: 20,          // geometry units
+    majorEvery: 5,        // every 5th line in majorColor
+    showAxes: true,       // axes through the geometry origin
+  ),
+  shapes: [...],
 )
 ```
+
+Painted after `backgroundColor`, before shapes. Lines sit at whole multiples of `spacing` in geometry space. Axis tick labels are not built.
 
 The grid + axes combo makes `GeometryCanvas` a great educational and debugging tool.
 
@@ -575,7 +603,7 @@ No special animation API needed — the widget just rebuilds cheaply because `Cu
 
 ## 11. Phased Rollout
 
-### Phase 1 — Core shapes + locked API surface (v0.1.0)
+### Phase 1 — Core shapes + locked API surface (v0.1.0) ✅
 
 Locked-now items (breaking to add later):
 
@@ -594,7 +622,7 @@ Shape widgets:
 - Widget + golden tests
 - CI guard: `geometry_kit` has no Flutter dep
 
-### Phase 2 — Curves & interaction (v0.2.0)
+### Phase 2 — Curves & interaction (v0.2.0 interaction, v0.4.0 curves) ✅
 
 - `GeoArc`, `GeoRing`, `GeoCapsule`
 - `GeoBezierCurve`, `GeoSpline`, `GeoPolyline`
@@ -602,14 +630,21 @@ Shape widgets:
 - Tap + hover interactivity on all widgets
 - `GeometryCanvas` hit testing + `onShapeTap`
 
-### Phase 3 — Advanced (v0.3.0)
+### Phase 3 — Advanced (v0.4.0) ✅
+
+> v0.3.0 shipped 3D scenes (`GeoScene`) instead, so phase 2's curves and phase 3
+> landed together in v0.4.0. Performance shipped as per-instance path
+> memoisation (an `Expando` keyed by geometry identity) rather than
+> hashCode caching: painters already compare geometry by identity, and the
+> real cost was rebuilding paths on every hover hit-test.
+
 
 - Drag support on all widgets and `GeometryCanvas` (canvas.translate strategy)
 - Grid + axes on `GeometryCanvas`
 - Debug overlay params (`showBoundingBox`, `showCenter`, `showVertices`, `showDimensions`)
 - Performance: hashCode caching for large polygons/splines
 
-### Phase 4 — Polish (v0.4.0+)
+### Phase 4 — Polish (v0.5.0+)
 
 - Tooltip support on hover
 - Export `GeometryCanvas` to `ui.Image` (for screenshot/share)
@@ -629,11 +664,21 @@ Shape widgets:
 5. **HitTestBehavior** — `translucent` default, `opaque` for filled-only convenience constructor.
 6. **Color opacity** — `withValues(alpha: x)` (Flutter 3.27+).
 
+### Resolved (v0.4.0)
+
+7. **Curve geometry in `StyledShape`** — field typed `Object`; unsupported types assert in debug and are skipped in release.
+8. **Open-curve hit-test** — distance to the flattened curve, `strokeWidth / 2 + 4px`; `GeoLine` gained tap/hover/drag.
+9. **Drag model** — preview-then-commit; deltas and totals in geometry space.
+10. **Pointer routing** — off-shape pointers pass through (render hit-test filter); on-shape drags beat scroll views (early-accepting pan recognizer).
+11. **Debug overlays** — one `GeoDebugOverlay` config object (not four bools), drawn as a foreground painter.
+12. **Perf** — per-instance path memoisation instead of `hashCode` caching.
+
 ### Still open
 
 1. **`SizedBox` vs `LayoutBuilder`** — explicit `Size` or fill-available? Plan offers both (`size` param + `GeoCircle.expand()` constructor).
 2. **Responsiveness** — logical pixels (absolute) vs normalized (0–1 of widget size)? Offer via `CoordinateSpace` enum if demand emerges; default absolute.
-3. **Dash path performance** — `PathMetrics` is CPU-bound. Benchmark in Phase 1; isolate offload only if measured cost > 1 frame on long polylines.
+3. **Dash path performance** — `PathMetrics` is CPU-bound. Benchmark in Phase 1; isolate offload only if measured cost > 1 frame on long polylines. Still not benchmarked.
+4. **`GeoLine` arrow heads** — in the catalog, not built.
 
 ---
 
@@ -647,25 +692,38 @@ Shape widgets:
 | API sprawl from too many widget params          | Enforce `ShapeStyle` for all visual params; keep widgets thin                             |
 | Golden test flakiness across platforms          | Run goldens on a pinned Linux CI environment only                                         |
 | Coordinate confusion (Y-up vs Y-down)           | Default Y-down with clear docs; `CoordinateMapper` as escape hatch                        |
-| Vertex `==` cost on large polygons              | Cache `hashCode` or expose `revision` int; painters compare cheap field first             |
-| Drag rebuilds geometry per frame                | Apply `canvas.translate` in painter; geometry stays immutable                             |
+| Vertex `==` cost on large polygons              | Painters compare by `identical`; paths memoised per instance (v0.4.0)                     |
+| Drag rebuilds geometry per frame                | Drag offset drawn via `Transform.translate` / `canvas.translate`; geometry stays immutable (v0.4.0) |
+| `Path.getBounds` loose on curves                | Tight bounds from flattened samples for overlays (v0.4.0)                                 |
 | Nested-tree forced repaint on hover             | Wrap `CustomPaint` in `RepaintBoundary` in widget + canvas                                |
 
 ---
 
 ## 14. Success Criteria
 
-v0.1.0 ships when:
+v0.1.0 (shipped):
 
-- [ ] All Phase 1 widgets implemented with painter + widget layers.
-- [ ] `ShapeStyle` covers fill, stroke, opacity, dash, cap, join.
-- [ ] `ShapeStyleTheme` resolves defaults via `ShapeStyle.of(context)`.
-- [ ] `CoordinateMapper` (identity, yUp, centered) wired through every widget.
-- [ ] `GeometryCanvas` renders a list of mixed shapes correctly.
-- [ ] `Geo*` naming applied consistently; no `*Widget` suffix in public API.
-- [ ] Widget tests and golden tests pass on CI.
-- [ ] `Semantics(label: ...)` present on every interactive widget.
-- [ ] `RepaintBoundary` wraps every `CustomPaint`.
-- [ ] `README.md` has a working quick-start example.
-- [ ] `geometry_kit` has zero Flutter dependencies (enforced by CI script).
-- [ ] Published to pub.dev as `geometry_kit_widgets`.
+- [x] All Phase 1 widgets implemented with painter + widget layers.
+- [x] `ShapeStyle` covers fill, stroke, opacity, dash, cap, join.
+- [x] `ShapeStyleTheme` resolves defaults (`ShapeStyleTheme.of` / `resolve`).
+- [x] `CoordinateMapper` (identity, yUp, centered) wired through every widget.
+- [x] `GeometryCanvas` renders a list of mixed shapes correctly.
+- [x] `Geo*` naming applied consistently; no `*Widget` suffix in public API.
+- [ ] Widget tests and golden tests pass on CI. (Widget tests yes; no goldens yet.)
+- [x] `Semantics(label: ...)` present on every interactive widget.
+- [x] `RepaintBoundary` wraps every `CustomPaint`.
+- [x] `README.md` has a working quick-start example.
+- [ ] `geometry_kit` has zero Flutter dependencies (true today; CI script not added).
+- [x] Published to pub.dev as `geometry_kit_widgets`.
+
+v0.4.0 (Phases 2–3):
+
+- [x] Seven curve widgets, each with flat + `.fromGeometry` constructors.
+- [x] `shapeToPath` and `GeometryCanvas` support every curve type; `ArcSector` for slices.
+- [x] Tap / hover / drag on all 14 widgets and on `StyledShape`.
+- [x] `GeoGrid` on `GeometryCanvas`; `GeoDebugOverlay` everywhere.
+- [x] Tests in `test/curves_and_interaction_test.dart`.
+- [x] Example app demo page for curves, drag, grid and overlays (`example/lib/demos/curves_demo.dart`).
+- [ ] Published to pub.dev (with a `geometry_kit_editor` release for its `^0.4.0` constraint).
+
+v0.5.0 (Phase 4): tooltips, `ui.Image` export, dark presets, semantic geometry descriptions.
