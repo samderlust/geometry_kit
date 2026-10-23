@@ -72,3 +72,36 @@ void paintShapePath(Canvas canvas, Path path, ShapeStyle style) {
     canvas.drawPath(out, resolved);
   }
 }
+
+/// Strokes an open curve [path] (line, arc, Bezier, spline, polyline, ray).
+///
+/// Open curves have no interior, so nothing is filled: the stroke uses
+/// `strokeGradient`, then `strokeColor`, then falls back to `fillColor`
+/// (as `GeoLine` does) so a fill-only theme still shows the curve. A zero
+/// or null `strokeWidth` draws a 1px hairline instead of nothing.
+/// Honours [ShapeStyle.dashPattern] and [ShapeStyle.strokePaintBuilder].
+void paintOpenPath(Canvas canvas, Path path, ShapeStyle style) {
+  final color = style.strokeColor ?? style.fillColor;
+  final gradient = style.strokeGradient;
+  if (color == null && gradient == null) return;
+  final rawWidth = style.strokeWidth ?? 1.0;
+  final opacity = style.opacity ?? 1.0;
+
+  final paint = Paint()
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = rawWidth > 0 ? rawWidth : 1.0
+    ..strokeCap = style.strokeCap ?? StrokeCap.butt
+    ..strokeJoin = style.strokeJoin ?? StrokeJoin.miter;
+  final needsBounds = gradient != null || style.strokePaintBuilder != null;
+  final bounds = needsBounds ? path.getBounds() : Rect.zero;
+  if (gradient != null) {
+    paint.shader = gradient.createShader(bounds);
+  } else {
+    paint.color = color!.withValues(alpha: color.a * opacity);
+  }
+  final resolved = style.strokePaintBuilder?.call(paint, bounds) ?? paint;
+  final out = style.dashPattern != null
+      ? buildDashedPath(path, style.dashPattern!)
+      : path;
+  canvas.drawPath(out, resolved);
+}

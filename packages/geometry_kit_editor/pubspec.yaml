@@ -26,7 +26,7 @@ dependencies:
   flutter:
     sdk: flutter
   geometry_kit_3d: ^0.1.0
-  geometry_kit_widgets: ^0.3.0
+  geometry_kit_widgets: ^0.4.0
 
 dev_dependencies:
   flutter_lints: ^6.0.0

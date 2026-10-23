@@ -57,6 +57,13 @@ class CoordinateMapper {
   /// Maps a canvas-space [Offset] to geometry space.
   Offset offsetFromCanvas(Offset canvas) => fromCanvas(canvas.dx, canvas.dy);
 
+  /// Maps a canvas-space displacement (e.g. a drag delta) to geometry space.
+  ///
+  /// Unlike [offsetFromCanvas] the origin is ignored — only the Y flip
+  /// applies.
+  Offset vectorFromCanvas(Offset delta) =>
+      yUp ? Offset(delta.dx, -delta.dy) : delta;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

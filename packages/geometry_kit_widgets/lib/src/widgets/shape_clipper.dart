@@ -5,7 +5,7 @@ import '../coord/coordinate_mapper.dart';
 import '../util/shape_path.dart';
 
 /// A [CustomClipper] that clips its host widget to the outline of a
-/// [geo.Shape].
+/// geometry shape (any type [shapeToPath] supports).
 ///
 /// Use directly with [ClipPath] to clip any subtree to a geometry shape:
 ///
@@ -24,7 +24,7 @@ import '../util/shape_path.dart';
 /// area and avoid wrapping a `Line` shape with a clipper.
 class ShapeClipper extends CustomClipper<Path> {
   /// The geometric shape whose outline is used as the clip path.
-  final geo.Shape shape;
+  final Object shape;
 
   /// Mapper from geometry coordinates to canvas coordinates. Defaults to
   /// [CoordinateMapper.identity] — geometry coords match canvas coords 1:1.

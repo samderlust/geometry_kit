@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:geometry_kit/geometry_kit.dart' as geo;
 
 import '../coord/coordinate_mapper.dart';
+import '../debug/geo_debug_overlay.dart';
 import '../painters/rectangle_painter.dart';
 import '../style/shape_style.dart';
 import '../style/shape_style_theme.dart';
@@ -46,6 +47,27 @@ class GeoRectangle extends StatelessWidget {
   /// Fires with `true` on hover entry, `false` on exit.
   final ValueChanged<bool>? onHoverChanged;
 
+  /// Fires when a drag that starts inside the shape begins.
+  ///
+  /// Setting any drag callback makes the shape draggable. While the drag is
+  /// in flight the widget draws the shape displaced by the pointer; no
+  /// geometry is rebuilt per frame.
+  final VoidCallback? onDragStart;
+
+  /// Fires per drag frame with the pointer delta in geometry space (the
+  /// [mapper]'s Y flip applied). Informational — the widget already draws
+  /// the drag; do not also move the geometry here.
+  final ValueChanged<Offset>? onDragUpdate;
+
+  /// Fires when the drag ends with the total displacement in geometry
+  /// space. The drawn offset then resets, so commit the move here by
+  /// translating the geometry.
+  final ValueChanged<Offset>? onDragEnd;
+
+  /// Optional authoring aids (bounding box, center, vertices, dimensions)
+  /// drawn above the shape.
+  final GeoDebugOverlay? debugOverlay;
+
   /// Creates a rectangle widget with explicit position and size.
   GeoRectangle({
     super.key,
@@ -61,6 +83,10 @@ class GeoRectangle extends StatelessWidget {
     this.semanticLabel,
     this.onTap,
     this.onHoverChanged,
+    this.onDragStart,
+    this.onDragUpdate,
+    this.onDragEnd,
+    this.debugOverlay,
   }) : rectangle = geo.Rectangle(x: x, y: y, width: width, height: height);
 
   /// Creates a rectangle widget from an existing [geo.Rectangle] geometry.
@@ -75,6 +101,10 @@ class GeoRectangle extends StatelessWidget {
     this.semanticLabel,
     this.onTap,
     this.onHoverChanged,
+    this.onDragStart,
+    this.onDragUpdate,
+    this.onDragEnd,
+    this.debugOverlay,
   });
 
   @override
@@ -84,9 +114,17 @@ class GeoRectangle extends StatelessWidget {
       size: size,
       clipBehavior: clipBehavior,
       semanticLabel: semanticLabel,
-      interactionPathBuilder: () => _hitPath(),
+      geometry: rectangle,
+      mapper: mapper,
+      debugOverlay: debugOverlay,
+      hitTest: cornerRadius == Radius.zero
+          ? null
+          : (p) => _hitPath().contains(p),
       onTap: onTap,
       onHoverChanged: onHoverChanged,
+      onDragStart: onDragStart,
+      onDragUpdate: onDragUpdate,
+      onDragEnd: onDragEnd,
       painter: RectanglePainter(
         rectangle: rectangle,
         style: resolved,

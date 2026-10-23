@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:geometry_kit/geometry_kit.dart' as geo;
 
 import '../coord/coordinate_mapper.dart';
 import '../style/shape_style.dart';
@@ -32,7 +31,7 @@ import 'shape_clipper.dart';
 /// space (or be transformed via [mapper]).
 class ShapeWidget extends StatelessWidget {
   /// Shape used both for outline rendering and for clipping [child].
-  final geo.Shape shape;
+  final Object shape;
 
   /// Optional explicit size. When null, the widget expands to its parent's
   /// constraints; the parent must therefore be bounded.
@@ -84,7 +83,7 @@ class ShapeWidget extends StatelessWidget {
 }
 
 class _ShapeOverlayPainter extends CustomPainter {
-  final geo.Shape shape;
+  final Object shape;
   final CoordinateMapper mapper;
   final ShapeStyle style;
 

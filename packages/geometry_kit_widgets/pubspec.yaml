@@ -1,6 +1,6 @@
 name: geometry_kit_widgets
-description: Flutter widgets for geometry_kit shapes — CustomPainter-backed, styled, themable, and composable. Includes circle, ellipse, rectangle, triangle, polygon, line, a multi-shape canvas, and a 3D scene for geometry_kit_3d solids.
-version: 0.3.0
+description: Flutter widgets for geometry_kit shapes — CustomPainter-backed, styled, themable, and composable. Includes closed shapes, arcs, rings, capsules, Bezier curves, splines, polylines and rays with tap, hover and drag, a multi-shape canvas with grid and debug overlays, and a 3D scene for geometry_kit_3d solids.
+version: 0.4.0
 
 homepage: https://github.com/samderlust/geometry_kit/tree/main/packages/geometry_kit_widgets
 repository: https://github.com/samderlust/geometry_kit
@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  geometry_kit: ^1.0.0
+  geometry_kit: ^1.2.3
   geometry_kit_3d: ^0.1.0
 
 dev_dependencies:

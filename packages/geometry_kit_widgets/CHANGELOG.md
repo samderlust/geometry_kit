@@ -1,3 +1,62 @@
+## 0.4.0
+
+Curve widgets, drag, grid and debug overlays (roadmap phases 2 and 3).
+
+### Breaking
+
+- `StyledShape.shape`, `ShapeWidget.shape` and `ShapeClipper.shape` are now
+  typed `Object` instead of `Shape`: most curve types in `geometry_kit`
+  (`Arc`, `Ring`, `Ray`, the Beziers, `Spline`, `Polyline`, and `Line`) do
+  not implement `Shape`. Code that read `.shape` as a `Shape` needs a cast.
+- Requires `geometry_kit` 1.2.3.
+
+### Curve widgets
+
+- `GeoArc` (open arc, or the pie slice with `sector: true`), `GeoRing`
+  (hole stays empty), `GeoCapsule`, `GeoBezierCurve` (`.quadratic`,
+  `.cubic`, `.fromGeometry`), `GeoSpline`, `GeoPolyline`, `GeoRay` (cut at
+  the widget edge).
+- `ArcSector` wraps an `Arc` to paint or hit-test the closed slice, e.g. in
+  a `GeometryCanvas`.
+- `shapeToPath` builds paths for all of them; it takes an optional `size`
+  to cut a `Ray`.
+- `GeometryCanvas` paints every supported type, `Line` included (it used to
+  skip lines). Open curves are stroked only, falling back to `fillColor`
+  like `GeoLine`.
+
+### Interaction
+
+- Open curves hit-test by distance: within half the stroke width plus 4px.
+  `GeoLine` now takes `onTap` / `onHoverChanged`.
+- Drag on every `Geo*` widget and on `StyledShape`: `onDragStart`,
+  `onDragUpdate`, `onDragEnd`. Only drags that start on the shape move it.
+  The shape is drawn displaced while dragging; `onDragEnd` reports the
+  total in geometry space for the owner to commit. `GeometryCanvas` drags
+  the topmost draggable shape.
+- `CoordinateMapper.vectorFromCanvas` maps a canvas delta to geometry
+  space.
+- Pointers that miss the shape now pass through: `Geo*` widgets and
+  `GeometryCanvas` filter at hit-test time, so a widget stacked on top no
+  longer swallows taps meant for a shape below it, and the area around a
+  shape scrolls an enclosing list. (Previously the whole widget rect was
+  opaque.)
+- A drag that starts on a shape wins over an enclosing scroll view, and the
+  shape tracks the finger from touch-down.
+
+### Authoring aids
+
+- `GeometryCanvas.grid` (`GeoGrid`): grid lines at multiples of `spacing`
+  in geometry space, optional major lines, and the axes.
+- `GeoDebugOverlay` on every `Geo*` widget, `StyledShape` and
+  `GeometryCanvas`: tight bounding box, center crosshair, vertices (Bezier
+  control points with handles), dimension labels.
+
+### Performance
+
+- Paths are memoised per geometry instance (and mapper / size), so hover
+  hit-testing no longer rebuilds a polygon or spline path on every pointer
+  move.
+
 ## 0.3.0
 
 Adds 3D scenes for `geometry_kit_3d` solids on top of 0.2.0.
