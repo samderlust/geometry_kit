@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../interface/geometry.dart';
 import 'circle.dart';
 import 'line.dart';
 import 'point.dart';
@@ -8,7 +9,7 @@ import 'point.dart';
 ///
 /// A ray starts at [origin] and extends infinitely in the
 /// direction of [direction]. Unlike [Line], a ray has no endpoint.
-class Ray {
+class Ray implements Geometry {
   /// The starting point of the ray
   final Point origin;
 

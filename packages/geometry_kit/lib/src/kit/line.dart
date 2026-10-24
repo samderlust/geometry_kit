@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../interface/geometry.dart';
 import 'point.dart';
 import 'units.dart';
 
@@ -13,7 +14,7 @@ import 'units.dart';
 /// print(line.length);   // 5.0
 /// print(line.midPoint);  // Point(2, 1.5)
 /// ```
-class Line {
+class Line implements Geometry {
   /// First endpoint.
   final Point a;
 

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../interface/geometry.dart';
 import 'point.dart';
 import 'units.dart';
 
@@ -7,7 +8,7 @@ import 'units.dart';
 ///
 /// Angles are in radians. The arc sweeps counter-clockwise
 /// from [startAngle] to [endAngle].
-class Arc {
+class Arc implements Geometry {
   /// Center point of the arc's circle
   final Point center;
 

@@ -1,9 +1,12 @@
-/// Base interface for all 2D geometric shapes.
+import 'geometry.dart';
+
+/// Base interface for all closed 2D shapes.
 ///
 /// All shapes must provide [area], [perimeter], and transform methods
 /// ([translate], [scale], [rotate]). Transform methods return new instances
-/// (shapes are immutable).
-abstract interface class Shape {
+/// (shapes are immutable). Open curves (`Line`, `Arc`, `Ray`, …) are
+/// [Geometry] but not [Shape].
+abstract interface class Shape implements Geometry {
   /// Area of this shape.
   double get area;
 

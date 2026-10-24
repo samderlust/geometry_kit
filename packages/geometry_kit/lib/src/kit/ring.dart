@@ -1,12 +1,13 @@
 import 'dart:math';
 
+import '../interface/geometry.dart';
 import 'point.dart';
 
 /// A ring (annulus) defined by two concentric circles.
 ///
 /// The ring is the region between [innerRadius] and [outerRadius]
 /// centered at [center].
-class Ring {
+class Ring implements Geometry {
   /// Center point of the ring
   final Point center;
 

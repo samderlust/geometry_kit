@@ -1,3 +1,4 @@
+export './src/interface/geometry.dart';
 export './src/interface/shape.dart';
 export './src/kit/angle_utils.dart';
 export './src/kit/arc.dart';

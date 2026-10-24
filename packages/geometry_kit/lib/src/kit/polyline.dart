@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../interface/geometry.dart';
 import 'line.dart';
 import 'point.dart';
 import 'rectangle.dart';
@@ -8,7 +9,7 @@ import 'rectangle.dart';
 ///
 /// Unlike [Polygon], a polyline is not closed — the last point
 /// does not connect back to the first.
-class Polyline {
+class Polyline implements Geometry {
   /// Ordered list of points forming the path
   final List<Point> points;
 

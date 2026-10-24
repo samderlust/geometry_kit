@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../interface/geometry.dart';
 import 'point.dart';
 import 'rectangle.dart';
 
@@ -7,7 +8,7 @@ import 'rectangle.dart';
 ///
 /// The curve starts at [start], is pulled toward [control],
 /// and ends at [end].
-class QuadraticBezier {
+class QuadraticBezier implements Geometry {
   /// Start point of the curve
   final Point start;
 
@@ -119,7 +120,7 @@ class QuadraticBezier {
 ///
 /// The curve starts at [start], is pulled toward [control1] and [control2],
 /// and ends at [end].
-class CubicBezier {
+class CubicBezier implements Geometry {
   /// Start point of the curve
   final Point start;
 

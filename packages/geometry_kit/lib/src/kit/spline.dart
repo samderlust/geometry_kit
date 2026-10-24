@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../interface/geometry.dart';
 import 'line.dart';
 import 'point.dart';
 
@@ -7,7 +8,7 @@ import 'point.dart';
 ///
 /// Produces a smooth curve that passes through every control point.
 /// Uses centripetal parameterization (alpha = 0.5) for best results.
-class Spline {
+class Spline implements Geometry {
   /// The control points the spline passes through
   final List<Point> controlPoints;
 
