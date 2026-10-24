@@ -8,6 +8,9 @@
   drawable" that can also be moved without a type switch (used by
   `geometry_kit_widgets` 0.4.0).
 - **feat:** `Spline.translate`, the one 2D type that lacked it.
+- **fix:** `Triangle` and `Polygon` now have value `==` and `hashCode`
+  (vertices compared in order), like every other type. They used identity,
+  so two triangles with the same vertices compared unequal.
 - **test:** first tests for the package (`test/geometry_test.dart`).
 - Non-breaking: `Shape` already required `translate`, and every curve already
   had it except `Spline`.

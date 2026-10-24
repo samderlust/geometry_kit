@@ -290,4 +290,13 @@ class Triangle implements Shape {
       c.translate(x, y),
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Triangle && other.a == a && other.b == b && other.c == c;
+  }
+
+  @override
+  int get hashCode => a.hashCode ^ b.hashCode ^ c.hashCode;
 }

@@ -55,11 +55,37 @@ void main() {
     });
 
     test('translate by zero is equal', () {
-      // Triangle and Polygon have no value equality (identity ==), so a
-      // copy never compares equal; skip them.
-      for (final g in all.where((g) => g is! Triangle && g is! Polygon)) {
+      for (final g in all) {
         expect(g.translate(), g, reason: '${g.runtimeType}');
       }
+    });
+
+    test('Triangle and Polygon compare by vertices, in order', () {
+      Triangle tri() => Triangle(
+            const Point(0, 0),
+            const Point(4, 0),
+            const Point(0, 3),
+          );
+      expect(tri(), tri());
+      expect(tri().hashCode, tri().hashCode);
+      expect(
+        tri(),
+        isNot(
+            Triangle(const Point(4, 0), const Point(0, 3), const Point(0, 0))),
+      );
+
+      Polygon poly() => Polygon(const [Point(0, 0), Point(4, 0), Point(2, 3)]);
+      expect(poly(), poly());
+      expect(poly().hashCode, poly().hashCode);
+      expect(
+        poly(),
+        isNot(Polygon(const [Point(0, 0), Point(4, 0), Point(2, 4)])),
+      );
+      expect(
+        poly(),
+        isNot(Polygon(
+            const [Point(0, 0), Point(4, 0), Point(2, 3), Point(1, 1)])),
+      );
     });
 
     test('Spline.translate moves every control point', () {
