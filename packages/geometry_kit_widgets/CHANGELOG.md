@@ -33,7 +33,13 @@ Curve widgets, drag, grid and debug overlays (roadmap phases 2 and 3).
 - Drag on every `Geo*` widget and on `StyledShape`: `onDragStart`,
   `onDragUpdate`, `onDragEnd`. Only drags that start on the shape move it.
   The shape is drawn displaced while dragging; `onDragEnd` reports the
-  total in geometry space for the owner to commit. `GeometryCanvas` drags
+  total in geometry space for the owner to commit. A cancelled pointer (an
+  incoming call, a system gesture) drops the drag without `onDragEnd`.
+- `GeometryCanvas` follows a drag by `StyledShape.id` (or the geometry
+  instance) if the list is reordered mid-drag, and ends it without
+  `onDragEnd` if the shape leaves the list. Only pointers that go down on a
+  draggable shape start a canvas pan, so swipes from tap-only shapes still
+  scroll. Hover is tested where the dragged shape is drawn. `GeometryCanvas` drags
   the topmost draggable shape.
 - `CoordinateMapper.vectorFromCanvas` maps a canvas delta to geometry
   space.

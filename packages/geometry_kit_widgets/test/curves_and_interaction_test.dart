@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geometry_kit/geometry_kit.dart';
@@ -599,6 +600,280 @@ void main() {
       await tester.tapAt(const Offset(150, 150));
       expect(behind, 1);
     });
+  });
+
+  group('review regressions', () {
+    Finder canvasPaint() => find.descendant(
+      of: find.byType(GeometryCanvas),
+      matching: find.byType(CustomPaint),
+    );
+    // The canvas painter is private; read its drag index dynamically.
+    int? dragIndexOf(WidgetTester tester) =>
+        (tester.widget<CustomPaint>(canvasPaint()).painter as dynamic).dragIndex
+            as int?;
+
+    testWidgets('a swipe from a tap-only canvas shape scrolls the list', (
+      tester,
+    ) async {
+      final controller = ScrollController();
+      addTearDown(controller.dispose);
+      Offset? dragged;
+      await tester.pumpWidget(
+        _host(
+          SizedBox(
+            width: 200,
+            height: 300,
+            child: ListView(
+              controller: controller,
+              children: [
+                GeometryCanvas(
+                  size: const Size(200, 200),
+                  shapes: [
+                    StyledShape(
+                      const Circle(center: Point(40, 40), radius: 20),
+                      style: const ShapeStyle.filled(_blue),
+                      onDragEnd: (d) => dragged = d,
+                    ),
+                    StyledShape(
+                      const Rectangle(x: 100, y: 100, width: 80, height: 80),
+                      style: const ShapeStyle.filled(_blue),
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 600),
+              ],
+            ),
+          ),
+        ),
+      );
+      await tester.dragFrom(const Offset(140, 140), const Offset(0, -80));
+      await tester.pump();
+      expect(controller.offset, greaterThan(0));
+      expect(dragged, isNull);
+
+      controller.jumpTo(0);
+      await tester.pump();
+      await tester.dragFrom(const Offset(40, 40), const Offset(0, -80));
+      await tester.pump();
+      expect(dragged, isNotNull);
+      expect(controller.offset, 0);
+    });
+
+    testWidgets('a canvas drag follows its shape when the list reorders', (
+      tester,
+    ) async {
+      var order = ['a', 'b'];
+      final ended = <String>[];
+      late StateSetter rebuild;
+      await tester.pumpWidget(
+        _host(
+          StatefulBuilder(
+            builder: (context, setState) {
+              rebuild = setState;
+              StyledShape shape(String id) => StyledShape(
+                id == 'a'
+                    ? const Circle(center: Point(40, 40), radius: 20)
+                    : const Circle(center: Point(140, 140), radius: 20),
+                id: id,
+                style: const ShapeStyle.filled(_blue),
+                onDragUpdate: (_) {
+                  // Bring the other shape to the front mid-drag.
+                  if (id == 'a' && order.first == 'a') {
+                    rebuild(() => order = ['b', 'a']);
+                  }
+                },
+                onDragEnd: (_) => ended.add(id),
+              );
+              return GeometryCanvas(
+                size: const Size(200, 200),
+                shapes: order.map(shape).toList(),
+              );
+            },
+          ),
+        ),
+      );
+      final gesture = await tester.startGesture(const Offset(40, 40));
+      await gesture.moveBy(const Offset(20, 0));
+      await tester.pump();
+      await gesture.moveBy(const Offset(20, 0));
+      await tester.pump();
+      expect(order, ['b', 'a']);
+      expect(dragIndexOf(tester), 1); // still 'a', now at index 1
+      await gesture.up();
+      await tester.pump();
+      expect(ended, ['a']);
+    });
+
+    testWidgets('a canvas drag ends without commit when its shape leaves', (
+      tester,
+    ) async {
+      var shapes = <String>['a'];
+      final ended = <String>[];
+      late StateSetter rebuild;
+      await tester.pumpWidget(
+        _host(
+          StatefulBuilder(
+            builder: (context, setState) {
+              rebuild = setState;
+              return GeometryCanvas(
+                size: const Size(200, 200),
+                shapes: [
+                  for (final id in shapes)
+                    StyledShape(
+                      const Circle(center: Point(40, 40), radius: 20),
+                      id: id,
+                      style: const ShapeStyle.filled(_blue),
+                      onDragEnd: (_) => ended.add(id),
+                    ),
+                ],
+              );
+            },
+          ),
+        ),
+      );
+      final gesture = await tester.startGesture(const Offset(40, 40));
+      await gesture.moveBy(const Offset(30, 0));
+      await tester.pump();
+      rebuild(() => shapes = []);
+      await tester.pump();
+      expect(dragIndexOf(tester), isNull);
+      await gesture.up();
+      await tester.pump();
+      expect(ended, isEmpty);
+    });
+
+    testWidgets('a cancelled pointer does not commit the drag', (tester) async {
+      Offset? widgetTotal;
+      await tester.pumpWidget(
+        _host(
+          GeoCircle.fromGeometry(
+            circle: const Circle(center: Point(50, 50), radius: 20),
+            size: const Size(200, 200),
+            onDragEnd: (t) => widgetTotal = t,
+          ),
+        ),
+      );
+      var gesture = await tester.startGesture(const Offset(50, 50));
+      await gesture.moveBy(const Offset(30, 0));
+      await tester.pump();
+      await gesture.cancel();
+      await tester.pump();
+      expect(widgetTotal, isNull);
+      final preview = tester.widget<Transform>(
+        find.descendant(
+          of: find.byType(GeoCircle),
+          matching: find.byType(Transform),
+        ),
+      );
+      expect(preview.transform.getTranslation().x, 0);
+
+      Offset? canvasTotal;
+      await tester.pumpWidget(
+        _host(
+          GeometryCanvas(
+            size: const Size(200, 200),
+            shapes: [
+              StyledShape(
+                const Circle(center: Point(50, 50), radius: 20),
+                style: const ShapeStyle.filled(_blue),
+                onDragEnd: (t) => canvasTotal = t,
+              ),
+            ],
+          ),
+        ),
+      );
+      gesture = await tester.startGesture(const Offset(50, 50));
+      await gesture.moveBy(const Offset(30, 0));
+      await tester.pump();
+      await gesture.cancel();
+      await tester.pump();
+      expect(canvasTotal, isNull);
+      expect(dragIndexOf(tester), isNull);
+    });
+
+    testWidgets('hover stays on during a canvas mouse drag', (tester) async {
+      final events = <bool>[];
+      await tester.pumpWidget(
+        _host(
+          GeometryCanvas(
+            size: const Size(300, 200),
+            shapes: [
+              StyledShape(
+                const Circle(center: Point(50, 50), radius: 20),
+                style: const ShapeStyle.filled(_blue),
+                onHoverChanged: events.add,
+                onDragEnd: (_) {},
+              ),
+            ],
+          ),
+        ),
+      );
+      final mouse = await tester.createGesture(kind: PointerDeviceKind.mouse);
+      await mouse.addPointer(location: const Offset(150, 150));
+      addTearDown(mouse.removePointer);
+      await mouse.moveTo(const Offset(50, 50));
+      await tester.pump();
+      await mouse.down(const Offset(50, 50));
+      await tester.pump();
+      for (var i = 0; i < 10; i++) {
+        await mouse.moveBy(const Offset(10, 0));
+        await tester.pump();
+      }
+      // The cursor never left the (moving) shape.
+      expect(events, [true]);
+      await mouse.up();
+      await tester.pump();
+    });
+
+    for (final kind in [PointerDeviceKind.stylus, PointerDeviceKind.mouse]) {
+      testWidgets('hover exit fires for $kind on widgets and canvas', (
+        tester,
+      ) async {
+        final widgetEvents = <bool>[];
+        await tester.pumpWidget(
+          _host(
+            GeoCircle.fromGeometry(
+              circle: const Circle(center: Point(50, 50), radius: 20),
+              size: const Size(100, 100),
+              onHoverChanged: widgetEvents.add,
+            ),
+          ),
+        );
+        final pointer = await tester.createGesture(kind: kind);
+        await pointer.addPointer(location: const Offset(95, 95));
+        addTearDown(pointer.removePointer);
+        await tester.pump();
+        await pointer.moveTo(const Offset(50, 50));
+        await tester.pump();
+        await pointer.moveTo(const Offset(5, 5));
+        await tester.pump();
+        expect(widgetEvents, [true, false]);
+
+        final canvasEvents = <bool>[];
+        await tester.pumpWidget(
+          _host(
+            GeometryCanvas(
+              size: const Size(100, 100),
+              shapes: [
+                StyledShape(
+                  const Circle(center: Point(50, 50), radius: 20),
+                  style: const ShapeStyle.filled(_blue),
+                  onHoverChanged: canvasEvents.add,
+                ),
+              ],
+            ),
+          ),
+        );
+        await pointer.moveTo(const Offset(95, 95));
+        await tester.pump();
+        await pointer.moveTo(const Offset(50, 50));
+        await tester.pump();
+        await pointer.moveTo(const Offset(5, 5));
+        await tester.pump();
+        expect(canvasEvents, [true, false]);
+      });
+    }
   });
 
   group('GeometryCanvas curves', () {

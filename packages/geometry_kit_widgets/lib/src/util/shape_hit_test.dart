@@ -115,10 +115,6 @@ bool hitTestShape(
   final entry = _entry(shape, mapper, size);
   if (!isOpenGeometry(shape)) return entry.path.contains(position);
   for (final contour in entry.samples) {
-    if (contour.length == 1 &&
-        (contour.first - position).distance <= tolerance) {
-      return true;
-    }
     for (var i = 1; i < contour.length; i++) {
       if (_distanceToSegment(position, contour[i - 1], contour[i]) <=
           tolerance) {

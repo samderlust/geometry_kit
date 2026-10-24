@@ -22,7 +22,10 @@ import 'styled_shape.dart';
 ///
 /// Dragging a shape draws it displaced by the pointer until the drag ends;
 /// `StyledShape.onDragEnd` then reports the total so the owner can replace
-/// the shape with a translated copy.
+/// the shape with a translated copy. A cancelled pointer drops the drag
+/// without `onDragEnd`. The drag follows its shape by `StyledShape.id` (or
+/// geometry instance, when there is no id) if the list is reordered, and
+/// ends if that shape leaves the list.
 ///
 /// [grid] paints grid lines and axes under the shapes; [debugOverlay]
 /// draws authoring aids over every shape (a shape's own
@@ -89,36 +92,61 @@ class GeometryCanvas extends StatefulWidget {
 class _GeometryCanvasState extends State<GeometryCanvas> {
   StyledShape? _hovered;
 
-  /// Shape under the last pan-down, when it is draggable.
-  (int, StyledShape)? _pressed;
+  /// Draggable shape under the last pan-down.
+  StyledShape? _pressed;
 
-  /// Shape being dragged, by paint index, and its callbacks.
-  (int, StyledShape)? _dragging;
+  /// Shape being dragged, its current paint index, and the drag so far.
+  StyledShape? _dragging;
+  int? _dragIndex;
   Offset _dragOffset = Offset.zero;
+
+  /// Last [_topShapeAt] result. The hit filter and the pointer handlers ask
+  /// about the same position for one event; this answers the second time
+  /// without walking every shape again. Cleared whenever shapes or the drag
+  /// change.
+  Offset? _hitPosition;
+  (int, StyledShape)? _hitResult;
 
   bool get _hasInteraction => widget.shapes.any((s) => s.isInteractive);
 
   bool get _hasDrag => widget.shapes.any((s) => s.isDraggable);
 
+  /// Whether [a] and [b] are the same shape across rebuilds: same [id] when
+  /// [a] has one, else the same geometry instance.
+  static bool _sameShape(StyledShape a, StyledShape b) =>
+      a.id != null ? a.id == b.id : identical(a.shape, b.shape);
+
+  void _clearHitCache() {
+    _hitPosition = null;
+    _hitResult = null;
+  }
+
   (int, StyledShape)? _topShapeAt(Offset position) {
+    if (position == _hitPosition) return _hitResult;
+    (int, StyledShape)? result;
     for (var i = widget.shapes.length - 1; i >= 0; i--) {
       final s = widget.shapes[i];
       if (!s.isInteractive) continue;
+      // The dragged shape is drawn displaced; test it where it is drawn.
+      final local = i == _dragIndex ? position - _dragOffset : position;
       try {
         if (hitTestShape(
           s.shape,
           widget.mapper,
-          position,
+          local,
           tolerance: curveHitTolerance(s.style),
           size: widget.size,
         )) {
-          return (i, s);
+          result = (i, s);
+          break;
         }
       } on UnsupportedError {
         continue;
       }
     }
-    return null;
+    _hitPosition = position;
+    _hitResult = result;
+    return result;
   }
 
   void _setHovered(StyledShape? next) {
@@ -137,53 +165,84 @@ class _GeometryCanvasState extends State<GeometryCanvas> {
     _topShapeAt(details.localPosition)?.$2.onTap?.call();
   }
 
+  /// Only pointers that go down on a draggable shape start a pan, so a
+  /// swipe from a tap-only shape still scrolls an enclosing list.
+  bool _canDragFrom(Offset position) =>
+      _topShapeAt(position)?.$2.isDraggable ?? false;
+
   void _onPanDown(DragDownDetails details) {
-    final hit = _topShapeAt(details.localPosition);
-    _pressed = hit != null && hit.$2.isDraggable ? hit : null;
+    _pressed = _topShapeAt(details.localPosition)?.$2;
   }
 
   void _onPanStart(DragStartDetails details) {
     final pressed = _pressed;
     if (pressed == null) return;
+    final index = widget.shapes.indexWhere((s) => _sameShape(pressed, s));
+    if (index < 0) return;
     setState(() {
-      _dragging = pressed;
+      _dragging = widget.shapes[index];
+      _dragIndex = index;
       _dragOffset = Offset.zero;
+      _clearHitCache();
     });
-    pressed.$2.onDragStart?.call();
+    _dragging!.onDragStart?.call();
   }
 
   void _onPanUpdate(DragUpdateDetails details) {
     final dragging = _dragging;
     if (dragging == null) return;
-    setState(() => _dragOffset += details.delta);
-    dragging.$2.onDragUpdate?.call(
-      widget.mapper.vectorFromCanvas(details.delta),
-    );
+    setState(() {
+      _dragOffset += details.delta;
+      _clearHitCache();
+    });
+    dragging.onDragUpdate?.call(widget.mapper.vectorFromCanvas(details.delta));
   }
 
-  void _onPanEnd(DragEndDetails details) {
+  void _onPanEnd(DragEndDetails details) => _endDrag(commit: true);
+
+  /// Ends the drag. A cancelled pointer ([commit] false) drops the move
+  /// without calling `onDragEnd`.
+  void _endDrag({required bool commit}) {
     final dragging = _dragging;
+    _pressed = null;
     if (dragging == null) return;
     final total = widget.mapper.vectorFromCanvas(_dragOffset);
     setState(() {
       _dragging = null;
-      _pressed = null;
+      _dragIndex = null;
       _dragOffset = Offset.zero;
+      _clearHitCache();
     });
-    dragging.$2.onDragEnd?.call(total);
+    if (commit) dragging.onDragEnd?.call(total);
   }
 
   @override
   void didUpdateWidget(covariant GeometryCanvas old) {
     super.didUpdateWidget(old);
+    _clearHitCache();
     if (!_hasInteraction && _hovered != null) {
       _hovered?.onHoverChanged?.call(false);
       _hovered = null;
     }
+    // Follow the dragged shape if the list was reordered; drop the drag if
+    // it is gone or no longer draggable. Callbacks come from the newest
+    // StyledShape, never a stale one.
     final dragging = _dragging;
-    if (dragging != null && dragging.$1 >= widget.shapes.length) {
-      _dragging = null;
-      _dragOffset = Offset.zero;
+    if (dragging != null) {
+      final index = widget.shapes.indexWhere((s) => _sameShape(dragging, s));
+      if (index < 0 || !widget.shapes[index].isDraggable) {
+        _dragging = null;
+        _dragIndex = null;
+        _dragOffset = Offset.zero;
+      } else {
+        _dragging = widget.shapes[index];
+        _dragIndex = index;
+      }
+    }
+    final pressed = _pressed;
+    if (pressed != null) {
+      final index = widget.shapes.indexWhere((s) => _sameShape(pressed, s));
+      _pressed = index < 0 ? null : widget.shapes[index];
     }
   }
 
@@ -203,7 +262,7 @@ class _GeometryCanvasState extends State<GeometryCanvas> {
         backgroundColor: widget.backgroundColor,
         grid: widget.grid,
         debugOverlay: widget.debugOverlay,
-        dragIndex: _dragging?.$1,
+        dragIndex: _dragIndex,
         dragOffset: _dragOffset,
       ),
     );
@@ -214,6 +273,24 @@ class _GeometryCanvasState extends State<GeometryCanvas> {
     if (!_hasInteraction) return paint;
 
     final hasDrag = _hasDrag;
+    Widget tree = ShapeGestureDetector(
+      onTapUp: _onTapUp,
+      panAllowed: hasDrag ? _canDragFrom : null,
+      onPanDown: hasDrag ? _onPanDown : null,
+      onPanStart: hasDrag ? _onPanStart : null,
+      onPanUpdate: hasDrag ? _onPanUpdate : null,
+      onPanEnd: hasDrag ? _onPanEnd : null,
+      child: paint,
+    );
+    if (hasDrag) {
+      // See ShapePointerRegion: the Listener sees a PointerCancelEvent before
+      // the recognizer reports it as onEnd.
+      tree = Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerCancel: (_) => _endDrag(commit: false),
+        child: tree,
+      );
+    }
     // Only interactive shapes take the pointer; elsewhere it falls through
     // to widgets behind the canvas (or an enclosing scroll view).
     return ShapeHitFilter(
@@ -228,14 +305,7 @@ class _GeometryCanvasState extends State<GeometryCanvas> {
             if (e.kind == PointerDeviceKind.mouse) return;
             _onPointerHover(e.localPosition);
           },
-          child: ShapeGestureDetector(
-            onTapUp: _onTapUp,
-            onPanDown: hasDrag ? _onPanDown : null,
-            onPanStart: hasDrag ? _onPanStart : null,
-            onPanUpdate: hasDrag ? _onPanUpdate : null,
-            onPanEnd: hasDrag ? _onPanEnd : null,
-            child: paint,
-          ),
+          child: tree,
         ),
       ),
     );

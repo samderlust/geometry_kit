@@ -73,7 +73,6 @@ class ShapePointerRegion extends StatefulWidget {
 
 class _ShapePointerRegionState extends State<ShapePointerRegion> {
   bool _inside = false;
-  bool _downOnShape = false;
   bool _dragging = false;
   Offset _dragOffset = Offset.zero;
 
@@ -143,12 +142,10 @@ class _ShapePointerRegionState extends State<ShapePointerRegion> {
                 if (_hit(details.localPosition)) widget.onTap!.call();
               }
             : null,
-        onPanDown: hasDrag
-            ? (details) => _downOnShape = _hit(details.localPosition)
-            : null,
+        // ShapeHitFilter keeps off-shape pointers away, so every pan that
+        // starts here started on the shape.
         onPanStart: hasDrag
             ? (_) {
-                if (!_downOnShape) return;
                 _dragging = true;
                 widget.onDragStart?.call();
               }
@@ -163,7 +160,16 @@ class _ShapePointerRegionState extends State<ShapePointerRegion> {
               }
             : null,
         onPanEnd: hasDrag ? (_) => _endDrag(commit: true) : null,
-        onPanCancel: hasDrag ? () => _endDrag(commit: false) : null,
+        child: tree,
+      );
+    }
+    if (hasDrag) {
+      // Once a drag is accepted, a cancelled pointer reaches the recognizer
+      // as onEnd, indistinguishable from a release. The Listener sees the
+      // PointerCancelEvent first and drops the drag, so onEnd is a no-op.
+      tree = Listener(
+        behavior: HitTestBehavior.translucent,
+        onPointerCancel: (_) => _endDrag(commit: false),
         child: tree,
       );
     }
@@ -236,6 +242,11 @@ class ShapeGestureDetector extends StatelessWidget {
   /// See [DragGestureRecognizer.onCancel].
   final GestureDragCancelCallback? onPanCancel;
 
+  /// When set, the pan only tracks pointers that go down where this returns
+  /// true (local position). Other pointers are left to the rest of the
+  /// arena — a tap recognizer, or an enclosing scroll view.
+  final bool Function(Offset localPosition)? panAllowed;
+
   /// Subtree receiving the gestures.
   final Widget child;
 
@@ -248,6 +259,7 @@ class ShapeGestureDetector extends StatelessWidget {
     this.onPanUpdate,
     this.onPanEnd,
     this.onPanCancel,
+    this.panAllowed,
     required this.child,
   });
 
@@ -276,6 +288,7 @@ class ShapeGestureDetector extends StatelessWidget {
                     ShapeDragGestureRecognizer(debugOwner: this)
                       ..dragStartBehavior = DragStartBehavior.down,
                 (r) => r
+                  ..accepts = panAllowed
                   ..onDown = onPanDown
                   ..onStart = onPanStart
                   ..onUpdate = onPanUpdate
@@ -293,6 +306,16 @@ class ShapeGestureDetector extends StatelessWidget {
 class ShapeDragGestureRecognizer extends PanGestureRecognizer {
   /// Creates the recognizer.
   ShapeDragGestureRecognizer({super.debugOwner});
+
+  /// Optional filter on the pointer-down local position; see
+  /// [ShapeGestureDetector.panAllowed].
+  bool Function(Offset localPosition)? accepts;
+
+  @override
+  bool isPointerAllowed(PointerEvent event) =>
+      super.isPointerAllowed(event) &&
+      (event is! PointerDownEvent ||
+          (accepts?.call(event.localPosition) ?? true));
 
   @override
   bool hasSufficientGlobalDistanceToAccept(
