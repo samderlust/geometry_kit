@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../interface/geometry.dart';
 import 'point.dart';
 import 'rectangle.dart';
 
@@ -7,7 +8,7 @@ import 'rectangle.dart';
 ///
 /// The curve starts at [start], is pulled toward [control],
 /// and ends at [end].
-class QuadraticBezier {
+class QuadraticBezier implements Geometry {
   /// Start point of the curve
   final Point start;
 
@@ -90,6 +91,7 @@ class QuadraticBezier {
   }
 
   /// Translate the curve
+  @override
   QuadraticBezier translate({double x = 0, double y = 0}) {
     return QuadraticBezier(
       start: start.translate(x, y),
@@ -108,7 +110,7 @@ class QuadraticBezier {
   }
 
   @override
-  int get hashCode => start.hashCode ^ control.hashCode ^ end.hashCode;
+  int get hashCode => Object.hash(start, control, end);
 
   @override
   String toString() =>
@@ -119,7 +121,7 @@ class QuadraticBezier {
 ///
 /// The curve starts at [start], is pulled toward [control1] and [control2],
 /// and ends at [end].
-class CubicBezier {
+class CubicBezier implements Geometry {
   /// Start point of the curve
   final Point start;
 
@@ -200,6 +202,7 @@ class CubicBezier {
   }
 
   /// Translate the curve
+  @override
   CubicBezier translate({double x = 0, double y = 0}) {
     return CubicBezier(
       start: start.translate(x, y),
@@ -220,8 +223,7 @@ class CubicBezier {
   }
 
   @override
-  int get hashCode =>
-      start.hashCode ^ control1.hashCode ^ control2.hashCode ^ end.hashCode;
+  int get hashCode => Object.hash(start, control1, control2, end);
 
   @override
   String toString() =>

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../interface/geometry.dart';
 import 'point.dart';
 import 'units.dart';
 
@@ -13,7 +14,7 @@ import 'units.dart';
 /// print(line.length);   // 5.0
 /// print(line.midPoint);  // Point(2, 1.5)
 /// ```
-class Line {
+class Line implements Geometry {
   /// First endpoint.
   final Point a;
 
@@ -219,6 +220,7 @@ class Line {
   }
 
   /// Translate the line by [x] horizontally and [y] vertically
+  @override
   Line translate({double x = 0, double y = 0}) {
     return Line(a.translate(x, y), b.translate(x, y));
   }
@@ -241,7 +243,7 @@ class Line {
   }
 
   @override
-  int get hashCode => a.hashCode ^ b.hashCode;
+  int get hashCode => Object.hash(a, b);
 
   @override
   String toString() => 'Line(a: $a, b: $b)';

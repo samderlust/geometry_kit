@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../interface/geometry.dart';
 import 'circle.dart';
 import 'line.dart';
 import 'point.dart';
@@ -8,7 +9,7 @@ import 'point.dart';
 ///
 /// A ray starts at [origin] and extends infinitely in the
 /// direction of [direction]. Unlike [Line], a ray has no endpoint.
-class Ray {
+class Ray implements Geometry {
   /// The starting point of the ray
   final Point origin;
 
@@ -95,6 +96,7 @@ class Ray {
   }
 
   /// Translate the ray origin
+  @override
   Ray translate({double x = 0, double y = 0}) {
     return Ray(origin.translate(x, y), direction);
   }
@@ -111,7 +113,7 @@ class Ray {
   }
 
   @override
-  int get hashCode => origin.hashCode ^ direction.hashCode;
+  int get hashCode => Object.hash(origin, direction);
 
   @override
   String toString() => 'Ray(origin: $origin, direction: $direction)';

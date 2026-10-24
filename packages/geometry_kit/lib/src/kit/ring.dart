@@ -1,12 +1,13 @@
 import 'dart:math';
 
+import '../interface/geometry.dart';
 import 'point.dart';
 
 /// A ring (annulus) defined by two concentric circles.
 ///
 /// The ring is the region between [innerRadius] and [outerRadius]
 /// centered at [center].
-class Ring {
+class Ring implements Geometry {
   /// Center point of the ring
   final Point center;
 
@@ -50,6 +51,7 @@ class Ring {
   }
 
   /// Translate the ring
+  @override
   Ring translate({double x = 0, double y = 0}) {
     return Ring(
       center: Point(center.x + x, center.y + y),
@@ -77,8 +79,7 @@ class Ring {
   }
 
   @override
-  int get hashCode =>
-      center.hashCode ^ innerRadius.hashCode ^ outerRadius.hashCode;
+  int get hashCode => Object.hash(center, innerRadius, outerRadius);
 
   @override
   String toString() =>

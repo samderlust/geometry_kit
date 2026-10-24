@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../interface/geometry.dart';
 import 'line.dart';
 import 'point.dart';
 import 'rectangle.dart';
@@ -8,7 +9,7 @@ import 'rectangle.dart';
 ///
 /// Unlike [Polygon], a polyline is not closed — the last point
 /// does not connect back to the first.
-class Polyline {
+class Polyline implements Geometry {
   /// Ordered list of points forming the path
   final List<Point> points;
 
@@ -108,6 +109,7 @@ class Polyline {
   }
 
   /// Translate the polyline
+  @override
   Polyline translate({double x = 0, double y = 0}) {
     return Polyline(points.map((p) => p.translate(x, y)).toList());
   }
@@ -134,7 +136,7 @@ class Polyline {
   }
 
   @override
-  int get hashCode => points.fold(0, (h, p) => h ^ p.hashCode);
+  int get hashCode => Object.hashAll(points);
 
   @override
   String toString() => 'Polyline(${points.length} points)';

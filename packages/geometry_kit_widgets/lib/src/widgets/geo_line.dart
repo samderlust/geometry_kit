@@ -2,9 +2,11 @@ import 'package:flutter/widgets.dart';
 import 'package:geometry_kit/geometry_kit.dart';
 
 import '../coord/coordinate_mapper.dart';
+import '../debug/geo_debug_overlay.dart';
 import '../painters/line_painter.dart';
 import '../style/shape_style.dart';
 import '../style/shape_style_theme.dart';
+import '../util/shape_hit_test.dart';
 import 'geo_shape_container.dart';
 
 /// A widget that paints a [Line] segment between two points.
@@ -16,10 +18,9 @@ import 'geo_shape_container.dart';
 /// blur / mask effects.
 ///
 /// Two constructors: [GeoLine] from two `Offset`s, or
-/// [GeoLine.fromGeometry] from an existing [Line]. Tap / hover
-/// interaction is **not** exposed — shape-precise hit-test on a
-/// zero-area path is degenerate. Wrap the widget in a `GestureDetector`
-/// or use a filled `Geo*` shape if interaction is needed.
+/// [GeoLine.fromGeometry] from an existing [Line]. Lines have no interior,
+/// so [onTap] / [onHoverChanged] / drag hit when the pointer is within half
+/// the stroke width plus a few pixels of the segment.
 class GeoLine extends StatelessWidget {
   /// The geometry line to paint.
   final Line line;
@@ -39,6 +40,30 @@ class GeoLine extends StatelessWidget {
   /// Optional accessibility label.
   final String? semanticLabel;
 
+  /// Fires when the pointer is released on the line.
+  final VoidCallback? onTap;
+
+  /// Fires with `true` when the pointer moves onto the line, `false` when it
+  /// leaves.
+  final ValueChanged<bool>? onHoverChanged;
+
+  /// Fires when a drag that starts on the line begins.
+  ///
+  /// Setting any drag callback makes the line draggable. While the drag is
+  /// in flight the widget draws the line displaced by the pointer.
+  final VoidCallback? onDragStart;
+
+  /// Fires per drag frame with the pointer delta in geometry space.
+  /// Informational — do not also move the geometry here.
+  final ValueChanged<Offset>? onDragUpdate;
+
+  /// Fires when the drag ends with the total displacement in geometry
+  /// space. Commit the move here by translating the geometry.
+  final ValueChanged<Offset>? onDragEnd;
+
+  /// Optional authoring aids drawn above the line.
+  final GeoDebugOverlay? debugOverlay;
+
   /// Creates a line widget from two endpoint offsets.
   GeoLine({
     super.key,
@@ -49,6 +74,12 @@ class GeoLine extends StatelessWidget {
     this.size = const Size(200, 200),
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
+    this.onTap,
+    this.onHoverChanged,
+    this.onDragStart,
+    this.onDragUpdate,
+    this.onDragEnd,
+    this.debugOverlay,
   }) : line = Line(Point(a.dx, a.dy), Point(b.dx, b.dy));
 
   /// Creates a line widget from an existing [Line] geometry.
@@ -60,6 +91,12 @@ class GeoLine extends StatelessWidget {
     this.size = const Size(200, 200),
     this.clipBehavior = Clip.hardEdge,
     this.semanticLabel,
+    this.onTap,
+    this.onHoverChanged,
+    this.onDragStart,
+    this.onDragUpdate,
+    this.onDragEnd,
+    this.debugOverlay,
   });
 
   @override
@@ -69,6 +106,15 @@ class GeoLine extends StatelessWidget {
       size: size,
       clipBehavior: clipBehavior,
       semanticLabel: semanticLabel,
+      geometry: line,
+      mapper: mapper,
+      debugOverlay: debugOverlay,
+      hitTolerance: curveHitTolerance(resolved),
+      onTap: onTap,
+      onHoverChanged: onHoverChanged,
+      onDragStart: onDragStart,
+      onDragUpdate: onDragUpdate,
+      onDragEnd: onDragEnd,
       painter: LinePainter(line: line, style: resolved, mapper: mapper),
     );
   }

@@ -211,7 +211,7 @@ class Quadrilateral implements Shape {
   }
 
   @override
-  int get hashCode => a.hashCode ^ b.hashCode ^ c.hashCode ^ d.hashCode;
+  int get hashCode => Object.hash(a, b, c, d);
 
   @override
   String toString() => 'Quadrilateral($a, $b, $c, $d)';

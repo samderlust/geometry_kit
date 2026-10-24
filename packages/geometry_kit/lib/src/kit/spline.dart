@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../interface/geometry.dart';
 import 'line.dart';
 import 'point.dart';
 
@@ -7,7 +8,7 @@ import 'point.dart';
 ///
 /// Produces a smooth curve that passes through every control point.
 /// Uses centripetal parameterization (alpha = 0.5) for best results.
-class Spline {
+class Spline implements Geometry {
   /// The control points the spline passes through
   final List<Point> controlPoints;
 
@@ -128,6 +129,13 @@ class Spline {
     return Point(2 * anchor.x - p.x, 2 * anchor.y - p.y);
   }
 
+  /// Returns a copy with every control point moved by [x], [y].
+  @override
+  Spline translate({double x = 0, double y = 0}) => Spline(
+        [for (final p in controlPoints) p.translate(x, y)],
+        alpha: alpha,
+      );
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
@@ -140,7 +148,7 @@ class Spline {
   }
 
   @override
-  int get hashCode => controlPoints.hashCode ^ alpha.hashCode;
+  int get hashCode => Object.hash(Object.hashAll(controlPoints), alpha);
 
   @override
   String toString() =>

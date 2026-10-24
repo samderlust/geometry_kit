@@ -62,19 +62,54 @@ GeometryCanvas(
 
 Both paths use the same painter classes — pick whichever fits the layout.
 
-## Phase 1 widgets
+## Widgets
 
-| Widget               | Geometry        |
-| -------------------- | --------------- |
-| `GeoCircle`          | `Circle`        |
-| `GeoEllipse`         | `Ellipse`       |
-| `GeoRectangle`       | `Rectangle`     |
-| `GeoTriangle`        | `Triangle`      |
-| `GeoQuadrilateral`   | `Quadrilateral` |
-| `GeoPolygon`         | `Polygon`       |
-| `GeoLine`            | `Line`          |
+| Widget             | Geometry                          | Kind   |
+| ------------------ | --------------------------------- | ------ |
+| `GeoCircle`        | `Circle`                          | closed |
+| `GeoEllipse`       | `Ellipse`                         | closed |
+| `GeoRectangle`     | `Rectangle`                       | closed |
+| `GeoTriangle`      | `Triangle`                        | closed |
+| `GeoQuadrilateral` | `Quadrilateral`                   | closed |
+| `GeoPolygon`       | `Polygon`                         | closed |
+| `GeoRing`          | `Ring`                            | closed |
+| `GeoCapsule`       | `Capsule`                         | closed |
+| `GeoArc`           | `Arc` (`sector: true` → closed)   | open   |
+| `GeoLine`          | `Line`                            | open   |
+| `GeoPolyline`      | `Polyline`                        | open   |
+| `GeoBezierCurve`   | `QuadraticBezier` / `CubicBezier` | open   |
+| `GeoSpline`        | `Spline`                          | open   |
+| `GeoRay`           | `Ray` (cut at the widget edge)    | open   |
 
-Each widget exposes two constructors: a flat one (build geometry from primitives) and `.fromGeometry` (pass an existing geometry instance).
+Each widget exposes a flat constructor (build geometry from primitives) and
+`.fromGeometry` (pass an existing geometry instance). `GeoBezierCurve` has
+`.quadratic` and `.cubic` instead of a flat one.
+
+Closed shapes fill and stroke. Open curves are stroked only — a
+`fillColor`-only style strokes in that color — and hit-test within half the
+stroke width plus a few pixels of the curve. `GeoRing` leaves its hole
+empty; `GeoArc(sector: true)` draws the pie slice.
+
+```dart
+GeoBezierCurve.cubic(
+  start: const Offset(10, 150),
+  control1: const Offset(40, 10),
+  control2: const Offset(160, 10),
+  end: const Offset(190, 150),
+  style: const ShapeStyle.stroked(Colors.teal, width: 3),
+)
+
+GeoArc(
+  radius: 60,
+  center: const Offset(100, 100),
+  startDeg: -30,
+  endDeg: 210,
+  sector: true,
+  style: const ShapeStyle.filled(Colors.orange),
+)
+```
+
+In a `GeometryCanvas`, wrap an `Arc` in `ArcSector` to get the slice.
 
 ## Styling
 
@@ -265,12 +300,11 @@ ClipPath(
 
 ## Tap + hover interactivity
 
-Every closed `Geo*` widget (`GeoCircle`, `GeoEllipse`, `GeoRectangle`,
-`GeoTriangle`, `GeoQuadrilateral`, `GeoPolygon`) accepts optional `onTap`
-and `onHoverChanged` callbacks. Hit-test is shape-precise — pointer events
-inside the host widget rect but outside the shape outline are ignored.
-`GeoRectangle.cornerRadius` is honoured (taps in the cut-off corners
-correctly miss).
+Every `Geo*` widget accepts optional `onTap` and `onHoverChanged`
+callbacks. Hit-test is shape-precise — pointer events inside the host
+widget rect but outside the shape are ignored. Closed shapes test
+containment (`GeoRectangle.cornerRadius` is honoured, `GeoRing`'s hole
+misses); open curves test distance to the curve.
 
 ```dart
 GeoCircle(
@@ -314,10 +348,80 @@ GeometryCanvas(
 )
 ```
 
-Hover supports both mouse pointers and stylus / touch hover. `GeoLine`
-does not expose interaction (zero-area path makes shape-precise hit-test
-degenerate); reach for a filled `Geo*` widget or a raw `GestureDetector`
-when line interaction is needed.
+Hover supports both mouse pointers and stylus / touch hover.
+
+Pointers that miss the shape are not hit at all — they reach whatever is
+behind, so `Geo*` widgets can be stacked in a `Stack` and each one still
+gets its own taps and drags. `GeometryCanvas` does the same for pointers
+that miss every interactive shape.
+
+## Drag
+
+Set any of `onDragStart`, `onDragUpdate`, `onDragEnd` to make a shape
+draggable — on every `Geo*` widget and on `StyledShape`. Only drags that
+start on the shape move it; those win over an enclosing scroll view, while
+drags elsewhere still scroll it.
+
+While the drag is in flight the widget draws the shape displaced by the
+pointer; geometry is not rebuilt per frame. When the pointer lifts,
+`onDragEnd` reports the total displacement **in geometry space** (a Y-up
+mapper's flip is applied) and the drawn offset resets — commit the move by
+translating your geometry there:
+
+```dart
+Circle _circle = const Circle(center: Point(80, 80), radius: 30);
+
+GeoCircle.fromGeometry(
+  circle: _circle,
+  style: const ShapeStyle.filled(Colors.indigo),
+  onDragEnd: (d) => setState(() => _circle = _circle.translate(x: d.dx, y: d.dy)),
+)
+```
+
+Every `Geometry` has `translate`, so a canvas of mixed shapes commits drags
+without a type switch: `shape.translate(x: d.dx, y: d.dy)`.
+
+`onDragUpdate` gives per-frame deltas for live readouts. It is
+informational: the widget already draws the drag, so moving the geometry
+there too would double it. `GeometryCanvas` drags the topmost draggable
+shape under the pointer.
+
+## Grid + axes
+
+`GeometryCanvas(grid: GeoGrid(...))` paints grid lines at multiples of
+`spacing` in geometry space, plus the axes through the origin. Lines follow
+the canvas mapper, so a centered mapper puts the axes in the middle:
+
+```dart
+GeometryCanvas(
+  size: const Size(400, 300),
+  mapper: CoordinateMapper.centered(const Size(400, 300)),
+  grid: const GeoGrid(spacing: 20, majorEvery: 5),
+  shapes: [...],
+)
+```
+
+## Debug overlays
+
+`debugOverlay: GeoDebugOverlay(...)` on any `Geo*` widget or `StyledShape`
+(or on `GeometryCanvas` for every shape) draws authoring aids above the
+shape:
+
+| Flag              | Draws                                                                 |
+| ----------------- | --------------------------------------------------------------------- |
+| `showBoundingBox` | dashed tight bounds of the outline                                    |
+| `showCenter`      | crosshair at the center / centroid / midpoint / ray origin            |
+| `showVertices`    | dots at corners, endpoints, polyline points, spline control points; Bezier controls as hollow dots with handle lines |
+| `showDimensions`  | a label: radius, side lengths, width × height, length, sweep angle   |
+
+The first three are on by default; `GeoDebugOverlay.all` adds dimensions.
+
+```dart
+GeoSpline(
+  points: const [Offset(10, 150), Offset(70, 30), Offset(130, 120), Offset(190, 40)],
+  debugOverlay: GeoDebugOverlay.all,
+)
+```
 
 ## 3D scenes
 
@@ -432,6 +536,7 @@ For heavy models, export `solid.toMesh()` to a GPU renderer instead.
 - `Semantics(label: ...)` baked into every widget for accessibility.
 - `RepaintBoundary` wraps every `CustomPaint` to keep nearby state changes from forcing a full repaint.
 - Dash patterns are drawn via shared `PathMetrics` helper — no extra dependency.
+- Paths are memoised per geometry instance, so hover hit-testing on dense polygons and splines does not rebuild them on every pointer move.
 
 ## See also
 
@@ -454,9 +559,8 @@ cd example && flutter run
 
 ## Roadmap
 
-- **Phase 2**: `GeoArc`, `GeoRing`, `GeoCapsule`, `GeoBezierCurve`, `GeoSpline`, `GeoPolyline`, `GeoRay`. (Tap/hover interactivity + `GeometryCanvas` hit-testing already shipped in 0.2.0.)
-- **Phase 3**: drag, grid + axes overlay, debug parameters (`showBoundingBox`, `showCenter`, `showVertices`).
-- **Phase 4**: tooltips, image export, dark mode presets.
+- **Done in 0.4.0**: curve widgets (`GeoArc`, `GeoRing`, `GeoCapsule`, `GeoBezierCurve`, `GeoSpline`, `GeoPolyline`, `GeoRay`), drag on every widget and `GeometryCanvas`, grid + axes, debug overlays, path memoisation.
+- **Next (0.5.0)**: tooltips on hover, `GeometryCanvas` export to `ui.Image`, dark mode style presets, semantic descriptions of shape geometry.
 - **Deferred** (gated on demand): multi-ancestor `ShapeStyleTheme` merge
   chain, `ShapeStyleResolver` builder for context-driven theming, shader
   cache for animated gradient grids. See `plan/decorative_styling.md`.

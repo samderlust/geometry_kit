@@ -306,4 +306,18 @@ class Polygon implements Shape {
     final newVertices = vertices.map((p) => p.translate(x, y)).toList();
     return Polygon(newVertices);
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! Polygon) return false;
+    if (vertices.length != other.vertices.length) return false;
+    for (int i = 0; i < vertices.length; i++) {
+      if (vertices[i] != other.vertices[i]) return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode => Object.hashAll(vertices);
 }

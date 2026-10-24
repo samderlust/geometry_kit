@@ -4,6 +4,7 @@ import 'demos/canvas_demo.dart';
 import 'demos/circle_demo.dart';
 import 'demos/clipping_demo.dart';
 import 'demos/coordinate_mapper_demo.dart';
+import 'demos/curves_demo.dart';
 import 'demos/ellipse_demo.dart';
 import 'demos/interaction_demo.dart';
 import 'demos/line_demo.dart';
@@ -72,6 +73,11 @@ final _demos = <_Demo>[
     (_) => const PolygonDemo(),
   ),
   _Demo('GeoLine', 'Line segments + dashes', (_) => const LineDemo()),
+  _Demo(
+    'Curves, drag & grid',
+    'Arc, ring, capsule, Bezier, spline, ray; drag; GeoGrid; debug overlays',
+    (_) => const CurvesDemo(),
+  ),
   _Demo('GeometryCanvas', 'Multi-shape rendering', (_) => const CanvasDemo()),
   _Demo('ShapeStyleTheme', 'Inherited default style', (_) => const StyleDemo()),
   _Demo(

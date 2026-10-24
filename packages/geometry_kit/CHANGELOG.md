@@ -1,3 +1,26 @@
+## 1.3.0
+
+- **feat:** `Geometry`, an interface implemented by every 2D type, with one
+  member: `translate({x, y})`. `Shape` now implements it, so every closed
+  shape is a `Geometry`. `Line`, `Polyline`, `Arc`, `Ray`, `Ring`,
+  `QuadraticBezier`, `CubicBezier` and `Spline` implement it directly, each
+  returning its own type. This gives dependents one type for "anything
+  drawable" that can also be moved without a type switch (used by
+  `geometry_kit_widgets` 0.4.0).
+- **feat:** `Spline.translate`, the one 2D type that lacked it.
+- **fix:** `Triangle` and `Polygon` now have value `==` and `hashCode`
+  (vertices compared in order), like every other type. They used identity,
+  so two triangles with the same vertices compared unequal.
+- **fix:** `Spline.hashCode` hashed the control-point list's identity, so
+  two equal splines had different hashes (broken in `Set` / `Map` keys). It
+  now hashes the points.
+- **perf:** every type hashes with `Object.hash` / `Object.hashAll` instead
+  of XOR, which ignored order and cancelled repeated parts (`Point(1, 2)`
+  and `Point(2, 1)` collided). Hash values change; `==` does not.
+- **test:** first tests for the package (`test/geometry_test.dart`).
+- Non-breaking: `Shape` already required `translate`, and every curve already
+  had it except `Spline`.
+
 ## 1.2.3
 
 - **docs:** README shows a rendered image of the 2D shapes, also listed

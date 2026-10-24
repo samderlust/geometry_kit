@@ -141,8 +141,7 @@ class Ellipse implements Shape {
   }
 
   @override
-  int get hashCode =>
-      center.hashCode ^ radiusX.hashCode ^ radiusY.hashCode;
+  int get hashCode => Object.hash(center, radiusX, radiusY);
 
   @override
   String toString() =>

@@ -105,7 +105,7 @@ class Point {
   }
 
   @override
-  int get hashCode => x.hashCode ^ y.hashCode;
+  int get hashCode => Object.hash(x, y);
 
   /// Subtract [other] from this point (vector subtraction).
   Point operator -(Point other) => Point(x - other.x, y - other.y);

@@ -155,7 +155,7 @@ class Circle implements Shape {
   }
 
   @override
-  int get hashCode => radius.hashCode ^ center.hashCode;
+  int get hashCode => Object.hash(radius, center);
 
   /// Rotate the circle by [deg] degrees.
   ///

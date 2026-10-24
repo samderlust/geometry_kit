@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../interface/geometry.dart';
 import 'point.dart';
 import 'units.dart';
 
@@ -7,7 +8,7 @@ import 'units.dart';
 ///
 /// Angles are in radians. The arc sweeps counter-clockwise
 /// from [startAngle] to [endAngle].
-class Arc {
+class Arc implements Geometry {
   /// Center point of the arc's circle
   final Point center;
 
@@ -97,6 +98,7 @@ class Arc {
   double get sectorArea => 0.5 * radius * radius * sweepAngle;
 
   /// Translate the arc
+  @override
   Arc translate({double x = 0, double y = 0}) {
     return Arc(
       center: Point(center.x + x, center.y + y),
@@ -127,11 +129,7 @@ class Arc {
   }
 
   @override
-  int get hashCode =>
-      center.hashCode ^
-      radius.hashCode ^
-      startAngle.hashCode ^
-      endAngle.hashCode;
+  int get hashCode => Object.hash(center, radius, startAngle, endAngle);
 
   @override
   String toString() =>
