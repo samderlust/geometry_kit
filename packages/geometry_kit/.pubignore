@@ -5,9 +5,8 @@ build/
 pubspec.lock
 docs/
 
-# Not needed by package users. Anchored with a leading `/` so `kit/`
-# doesn't also drop lib/src/kit/.
+# Not needed by package users. Anchored with a leading `/` so they only
+# match at the package root.
 /doc/api/
 /flutter_example/
-/kit/
 /*.iml
