@@ -95,7 +95,7 @@ class GeoDebugOverlay {
 /// is cut to the canvas.
 void paintDebugOverlay(
   Canvas canvas,
-  Object shape,
+  geo.Geometry shape,
   CoordinateMapper mapper,
   GeoDebugOverlay overlay, {
   Size? size,
@@ -170,7 +170,7 @@ void paintDebugOverlay(
 /// the foreground painter of their shape.
 class GeoDebugOverlayPainter extends CustomPainter {
   /// The geometry being annotated.
-  final Object shape;
+  final geo.Geometry shape;
 
   /// Mapper from geometry coordinates to canvas coordinates.
   final CoordinateMapper mapper;
@@ -202,7 +202,7 @@ typedef _KeyPoints = ({
   List<(geo.Point, geo.Point)> handles,
 });
 
-_KeyPoints _keyPoints(Object shape) {
+_KeyPoints _keyPoints(geo.Geometry shape) {
   List<geo.Point> vertices = const [];
   List<geo.Point> controls = const [];
   List<(geo.Point, geo.Point)> handles = const [];
@@ -247,7 +247,7 @@ _KeyPoints _keyPoints(Object shape) {
 }
 
 /// Geometry-space center, or `null` to use the center of the bounds.
-geo.Point? _center(Object shape) => switch (shape) {
+geo.Point? _center(geo.Geometry shape) => switch (shape) {
   geo.Circle c => c.center,
   geo.Ellipse e => e.center,
   geo.Rectangle r => r.center,
@@ -266,7 +266,7 @@ geo.Point? _center(Object shape) => switch (shape) {
   _ => null,
 };
 
-String? _dimensions(Object shape, Path path) {
+String? _dimensions(geo.Geometry shape, Path path) {
   String deg(double rad) => '${_fmt(rad * 180 / math.pi)}°';
   return switch (shape) {
     geo.Circle c => 'r = ${_fmt(c.radius)}',

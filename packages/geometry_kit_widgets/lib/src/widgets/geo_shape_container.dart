@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:geometry_kit/geometry_kit.dart' show Geometry;
 
 import '../coord/coordinate_mapper.dart';
 import '../debug/geo_debug_overlay.dart';
@@ -24,7 +25,7 @@ class GeoShapeContainer extends StatelessWidget {
   final Size size;
   final Clip clipBehavior;
   final String? semanticLabel;
-  final Object geometry;
+  final Geometry geometry;
   final CoordinateMapper mapper;
   final GeoDebugOverlay? debugOverlay;
   final bool Function(Offset position)? hitTest;

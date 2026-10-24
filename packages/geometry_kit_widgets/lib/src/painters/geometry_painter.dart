@@ -1,4 +1,5 @@
 import 'package:flutter/rendering.dart';
+import 'package:geometry_kit/geometry_kit.dart' show Geometry;
 
 import '../coord/coordinate_mapper.dart';
 import '../style/shape_style.dart';
@@ -11,7 +12,7 @@ import '../util/shape_hit_test.dart';
 /// curves through [paintOpenPath] (stroke only).
 void paintGeometry(
   Canvas canvas,
-  Object shape,
+  Geometry shape,
   ShapeStyle style,
   CoordinateMapper mapper, {
   Size? size,
@@ -32,7 +33,7 @@ void paintGeometry(
 /// the geometry instance, style or mapper changes.
 class GeometryPainter extends CustomPainter {
   /// The geometry to paint.
-  final Object shape;
+  final Geometry shape;
 
   /// Resolved style.
   final ShapeStyle style;

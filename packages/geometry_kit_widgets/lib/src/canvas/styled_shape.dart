@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
+import 'package:geometry_kit/geometry_kit.dart' show Geometry;
 
 import '../debug/geo_debug_overlay.dart';
 import '../style/shape_style.dart';
@@ -13,15 +14,16 @@ import '../style/shape_style.dart';
 /// topmost shape under the pointer wins).
 @immutable
 class StyledShape {
-  /// The geometry: any type `shapeToPath` supports — the closed `Shape`s
+  /// The geometry: any `geometry_kit` [Geometry] — the closed `Shape`s
   /// (`Circle`, `Ellipse`, `Rectangle`, `Triangle`, `Quadrilateral`,
-  /// `Polygon`, `Capsule`), `Ring`, `ArcSector`, and the open curves
-  /// (`Line`, `Polyline`, `Arc`, `QuadraticBezier`, `CubicBezier`,
-  /// `Spline`, `Ray`).
+  /// `Polygon`, `Capsule`), `Ring`, and the open curves (`Line`,
+  /// `Polyline`, `Arc`, `QuadraticBezier`, `CubicBezier`, `Spline`, `Ray`)
+  /// — or this package's `ArcSector`.
   ///
-  /// Typed [Object] because most curve types in `geometry_kit` do not
-  /// implement `Shape`. An unsupported type asserts in debug builds.
-  final Object shape;
+  /// Typed [Geometry] rather than `Shape` because the curves are not
+  /// shapes (no area, possibly unbounded). A `Geometry` from another package
+  /// that `shapeToPath` does not know is skipped, with a debug warning.
+  final Geometry shape;
 
   /// Style applied when painting [shape]. Open curves are stroked only.
   final ShapeStyle style;

@@ -1,3 +1,9 @@
+## 0.2.0
+
+- Requires `geometry_kit_widgets` 0.4 (was 0.3). No API changes in this
+  package; the major-for-0.x bump is because the widgets release is breaking
+  and apps pinned to `^0.1.0` should not be moved onto it.
+
 ## 0.1.0
 
 Initial release.

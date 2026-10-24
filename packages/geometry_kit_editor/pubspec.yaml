@@ -1,6 +1,6 @@
 name: geometry_kit_editor
 description: Interactive editing for geometry_kit scenes — selection, drag to move, undo and redo on an immutable document, with a tool API for handles and gizmos.
-version: 0.1.0
+version: 0.2.0
 
 homepage: https://github.com/samderlust/geometry_kit/tree/main/packages/geometry_kit_editor
 repository: https://github.com/samderlust/geometry_kit

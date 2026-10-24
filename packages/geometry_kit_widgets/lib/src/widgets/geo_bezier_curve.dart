@@ -18,7 +18,7 @@ import 'geo_shape_container.dart';
 /// `debugOverlay` vertices to see the control points and handles.
 class GeoBezierCurve extends StatelessWidget {
   /// The curve to paint: a [QuadraticBezier] or a [CubicBezier].
-  final Object curve;
+  final Geometry curve;
 
   /// Style override. When `null`, resolves through [ShapeStyleTheme].
   final ShapeStyle? style;

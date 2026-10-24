@@ -119,7 +119,7 @@ class GeoArc extends StatelessWidget {
   // painter and the path cache key on.
   static final Expando<ArcSector> _sectors = Expando<ArcSector>();
 
-  Object get _geometry => sector ? (_sectors[arc] ??= ArcSector(arc)) : arc;
+  Geometry get _geometry => sector ? (_sectors[arc] ??= ArcSector(arc)) : arc;
 
   @override
   Widget build(BuildContext context) {

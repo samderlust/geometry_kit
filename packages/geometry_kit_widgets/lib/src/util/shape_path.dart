@@ -25,8 +25,9 @@ import 'arc_sector.dart';
 /// cross a canvas of [size] when one is given, otherwise 10 000 logical
 /// pixels.
 ///
-/// Throws [UnsupportedError] for any other type.
-Path shapeToPath(Object shape, CoordinateMapper mapper, {Size? size}) {
+/// Throws [UnsupportedError] for any other [geo.Geometry] (e.g. one a
+/// third-party package implements).
+Path shapeToPath(geo.Geometry shape, CoordinateMapper mapper, {Size? size}) {
   return switch (shape) {
     geo.Circle c => _circlePath(c, mapper),
     geo.Ellipse e => _ellipsePath(e, mapper),

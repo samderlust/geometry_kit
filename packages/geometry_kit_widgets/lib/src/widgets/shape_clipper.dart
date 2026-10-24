@@ -24,7 +24,7 @@ import '../util/shape_path.dart';
 /// area and avoid wrapping a `Line` shape with a clipper.
 class ShapeClipper extends CustomClipper<Path> {
   /// The geometric shape whose outline is used as the clip path.
-  final Object shape;
+  final geo.Geometry shape;
 
   /// Mapper from geometry coordinates to canvas coordinates. Defaults to
   /// [CoordinateMapper.identity] — geometry coords match canvas coords 1:1.

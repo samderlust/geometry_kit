@@ -448,7 +448,7 @@ The flagship widget. Renders an arbitrary list of styled shapes onto a single `C
 ```dart
 @immutable
 class StyledShape {
-  final Object shape;       // any geometry shapeToPath supports
+  final Geometry shape;     // any geometry_kit Geometry (or ArcSector)
   final ShapeStyle style;
   final String? id;
   final VoidCallback? onTap;
@@ -460,7 +460,7 @@ class StyledShape {
 }
 ```
 
-*Shipped as:* `shape` is `Object`, not `Shape` (breaking in v0.4.0). Most curve types in `geometry_kit` (`Arc`, `Ring`, `Ray`, Beziers, `Spline`, `Polyline`, and `Line`) do not implement `Shape`, and making them do so would mean inventing `area`/`rotate` for open and infinite curves in the core. `ArcSector` (widgets package) wraps an `Arc` to get the closed slice. Callbacks live on each `StyledShape` instead of canvas-level `onShapeTap(id)`.
+*Shipped as:* `shape` is `Geometry`, not `Shape` (breaking in v0.4.0). Most curve types in `geometry_kit` (`Arc`, `Ring`, `Ray`, Beziers, `Spline`, `Polyline`, and `Line`) do not implement `Shape`, and making them do so would mean inventing `area`/`rotate` for open and infinite curves in the core. Instead `geometry_kit` 1.3.0 adds an empty `Geometry` interface that `Shape` and every curve implement; `Object` was rejected because it accepted anything at compile time. It is deliberately not `sealed`, so other packages can implement it. `ArcSector` (widgets package) wraps an `Arc` to get the closed slice. Callbacks live on each `StyledShape` instead of canvas-level `onShapeTap(id)`.
 
 ### 7.2 `GeometryCanvas`
 
@@ -666,7 +666,7 @@ Shape widgets:
 
 ### Resolved (v0.4.0)
 
-7. **Curve geometry in `StyledShape`** — field typed `Object`; unsupported types assert in debug and are skipped in release.
+7. **Curve geometry in `StyledShape`** — field typed `Geometry` (core 1.3.0 marker interface over `Shape` and the curves). Unknown `Geometry` implementations are skipped with a debug warning.
 8. **Open-curve hit-test** — distance to the flattened curve, `strokeWidth / 2 + 4px`; `GeoLine` gained tap/hover/drag.
 9. **Drag model** — preview-then-commit; deltas and totals in geometry space.
 10. **Pointer routing** — off-shape pointers pass through (render hit-test filter); on-shape drags beat scroll views (early-accepting pan recognizer).
@@ -724,6 +724,6 @@ v0.4.0 (Phases 2–3):
 - [x] `GeoGrid` on `GeometryCanvas`; `GeoDebugOverlay` everywhere.
 - [x] Tests in `test/curves_and_interaction_test.dart`.
 - [x] Example app demo page for curves, drag, grid and overlays (`example/lib/demos/curves_demo.dart`).
-- [ ] Published to pub.dev (with a `geometry_kit_editor` release for its `^0.4.0` constraint).
+- [ ] Published to pub.dev, in order: `geometry_kit` 1.3.0 (`Geometry` interface) → `geometry_kit_widgets` 0.4.0 → `geometry_kit_editor` 0.2.0 (constraint `^0.4.0`).
 
 v0.5.0 (Phase 4): tooltips, `ui.Image` export, dark presets, semantic geometry descriptions.

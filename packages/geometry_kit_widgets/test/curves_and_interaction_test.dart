@@ -6,6 +6,9 @@ import 'package:geometry_kit_widgets/src/util/shape_hit_test.dart';
 
 const _blue = Color(0xFF0000FF);
 
+/// A [Geometry] from "another package" that shapeToPath does not know.
+class _ForeignGeometry implements Geometry {}
+
 Widget _host(Widget child) => Directionality(
   textDirection: TextDirection.ltr,
   child: Align(alignment: Alignment.topLeft, child: child),
@@ -151,8 +154,11 @@ void main() {
       expect(b.right, greaterThanOrEqualTo(200));
     });
 
-    test('unsupported types throw', () {
-      expect(() => shapeToPath('nope', identity), throwsUnsupportedError);
+    test('unknown Geometry implementations throw', () {
+      expect(
+        () => shapeToPath(_ForeignGeometry(), identity),
+        throwsUnsupportedError,
+      );
     });
   });
 
@@ -584,6 +590,33 @@ void main() {
   });
 
   group('GeometryCanvas curves', () {
+    testWidgets('skips an unknown Geometry and paints the rest', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _host(
+          GeometryCanvas(
+            size: const Size(100, 100),
+            shapes: [
+              StyledShape(_ForeignGeometry(), style: const ShapeStyle()),
+              StyledShape(
+                const Circle(center: Point(50, 50), radius: 20),
+                style: const ShapeStyle.filled(_blue),
+              ),
+            ],
+          ),
+        ),
+      );
+      expect(tester.takeException(), isNull);
+      final paint = tester.renderObject(
+        find.descendant(
+          of: find.byType(GeometryCanvas),
+          matching: find.byType(CustomPaint),
+        ),
+      );
+      expect(paint, paintsExactlyCountTimes(#drawPath, 1));
+    });
+
     testWidgets('taps reach curves and ArcSector', (tester) async {
       final taps = <String>[];
       await tester.pumpWidget(
@@ -695,7 +728,7 @@ void main() {
             size: const Size(300, 300),
             debugOverlay: GeoDebugOverlay.all,
             shapes: [
-              for (final shape in <Object>[
+              for (final shape in <Geometry>[
                 const Circle(center: Point(50, 50), radius: 20),
                 const Ellipse(center: Point(50, 50), radiusX: 30, radiusY: 10),
                 const Rectangle(x: 10, y: 10, width: 40, height: 20),

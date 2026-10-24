@@ -5,10 +5,12 @@ Curve widgets, drag, grid and debug overlays (roadmap phases 2 and 3).
 ### Breaking
 
 - `StyledShape.shape`, `ShapeWidget.shape` and `ShapeClipper.shape` are now
-  typed `Object` instead of `Shape`: most curve types in `geometry_kit`
-  (`Arc`, `Ring`, `Ray`, the Beziers, `Spline`, `Polyline`, and `Line`) do
-  not implement `Shape`. Code that read `.shape` as a `Shape` needs a cast.
-- Requires `geometry_kit` 1.2.3.
+  typed `Geometry` (new in `geometry_kit` 1.3.0) instead of `Shape`: the
+  curve types (`Arc`, `Ring`, `Ray`, the Beziers, `Spline`, `Polyline`, and
+  `Line`) are geometry but not shapes. Passing a `Shape` still works; code
+  that read `.shape` as a `Shape` (e.g. `.shape.area`) needs a type check.
+  `shapeToPath` takes a `Geometry` too.
+- Requires `geometry_kit` 1.3.0.
 
 ### Curve widgets
 

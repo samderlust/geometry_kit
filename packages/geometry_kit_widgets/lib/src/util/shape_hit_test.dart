@@ -13,7 +13,7 @@ const double kCurveHitSlop = 4;
 
 /// Whether [shape] is an open curve: it has no interior, so it is stroked
 /// only and hit-tested by distance to the curve rather than by containment.
-bool isOpenGeometry(Object shape) =>
+bool isOpenGeometry(geo.Geometry shape) =>
     shape is geo.Line ||
     shape is geo.Polyline ||
     shape is geo.Arc ||
@@ -67,7 +67,7 @@ class _PathEntry {
 
 final Expando<_PathEntry> _cache = Expando<_PathEntry>('shapePath');
 
-_PathEntry _entry(Object shape, CoordinateMapper mapper, Size? size) {
+_PathEntry _entry(geo.Geometry shape, CoordinateMapper mapper, Size? size) {
   final hit = _cache[shape];
   if (hit != null && hit.mapper == mapper && hit.size == size) return hit;
   final entry = _PathEntry(
@@ -87,20 +87,26 @@ _PathEntry _entry(Object shape, CoordinateMapper mapper, Size? size) {
 /// the last path is kept on the instance (via an [Expando]; nothing is
 /// retained once the geometry is collected). The returned path is shared —
 /// callers must not mutate it.
-Path cachedShapePath(Object shape, CoordinateMapper mapper, {Size? size}) =>
-    _entry(shape, mapper, size).path;
+Path cachedShapePath(
+  geo.Geometry shape,
+  CoordinateMapper mapper, {
+  Size? size,
+}) => _entry(shape, mapper, size).path;
 
 /// Tight canvas-space bounds of [shape]'s outline (within the ~2px sampling
 /// step), memoised like [cachedShapePath].
-Rect cachedShapeBounds(Object shape, CoordinateMapper mapper, {Size? size}) =>
-    _entry(shape, mapper, size).bounds;
+Rect cachedShapeBounds(
+  geo.Geometry shape,
+  CoordinateMapper mapper, {
+  Size? size,
+}) => _entry(shape, mapper, size).bounds;
 
 /// Whether canvas-space [position] hits [shape].
 ///
 /// Closed shapes test containment of their outline. Open curves
 /// ([isOpenGeometry]) test distance to the curve against [tolerance].
 bool hitTestShape(
-  Object shape,
+  geo.Geometry shape,
   CoordinateMapper mapper,
   Offset position, {
   double tolerance = kCurveHitSlop,

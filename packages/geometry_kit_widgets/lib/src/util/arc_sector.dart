@@ -18,7 +18,7 @@ import 'package:geometry_kit/geometry_kit.dart';
 ///
 /// `GeoArc(sector: true)` does the same for a single widget.
 @immutable
-class ArcSector {
+class ArcSector implements Geometry {
   /// The arc forming the curved edge of the sector.
   final Arc arc;
 

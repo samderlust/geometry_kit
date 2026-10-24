@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  geometry_kit: ^1.2.3
+  geometry_kit: ^1.3.0
   geometry_kit_3d: ^0.1.0
 
 dev_dependencies:

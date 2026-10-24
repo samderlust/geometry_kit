@@ -40,7 +40,7 @@ class _CurvesDemoState extends State<CurvesDemo> {
   bool _grid = true;
   bool _major = true;
   String? _selected;
-  late Map<String, Object> _canvasShapes = {
+  late Map<String, Geometry> _canvasShapes = {
     'sector': ArcSector(
       Arc.fromDegrees(
         center: const Point(-90, 40),
@@ -83,7 +83,7 @@ class _CurvesDemoState extends State<CurvesDemo> {
 
   /// Translates any of the demo's geometry types. `Spline` has no
   /// `translate`, so its control points move one by one.
-  static Object _moved(Object shape, Offset d) => switch (shape) {
+  static Geometry _moved(Geometry shape, Offset d) => switch (shape) {
     ArcSector s => ArcSector(s.arc.translate(x: d.dx, y: d.dy)),
     Ring r => r.translate(x: d.dx, y: d.dy),
     Spline s => Spline([
