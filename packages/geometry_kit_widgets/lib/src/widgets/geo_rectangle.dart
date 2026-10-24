@@ -1,13 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:geometry_kit/geometry_kit.dart' as geo;
 
-import '../coord/coordinate_mapper.dart';
-import '../debug/geo_debug_overlay.dart';
 import '../painters/rectangle_painter.dart';
 import '../style/shape_style.dart';
 import '../style/shape_style_theme.dart';
-import '../util/shape_path.dart';
-import 'geo_shape_container.dart';
+import 'geo_shape_widget.dart';
 
 /// A widget that paints a [geo.Rectangle], optionally rounded.
 ///
@@ -19,54 +16,12 @@ import 'geo_shape_container.dart';
 /// [style], the closest [ShapeStyleTheme], or a default 1px black
 /// stroke. [onTap] / [onHoverChanged] respect [cornerRadius]: taps in
 /// the cut-off corners are correctly rejected.
-class GeoRectangle extends StatelessWidget {
+class GeoRectangle extends GeoShapeWidget {
   /// The geometry rectangle to paint.
   final geo.Rectangle rectangle;
 
-  /// Style override. When `null`, resolves through [ShapeStyleTheme].
-  final ShapeStyle? style;
-
-  /// Coordinate mapper. Defaults to [CoordinateMapper.identity].
-  final CoordinateMapper mapper;
-
   /// Corner radius for rounded rectangles. Defaults to [Radius.zero].
   final Radius cornerRadius;
-
-  /// Logical size of the widget.
-  final Size size;
-
-  /// How content extending past [size] is clipped.
-  final Clip clipBehavior;
-
-  /// Optional accessibility label.
-  final String? semanticLabel;
-
-  /// Fires when the pointer is released inside the shape outline.
-  final VoidCallback? onTap;
-
-  /// Fires with `true` on hover entry, `false` on exit.
-  final ValueChanged<bool>? onHoverChanged;
-
-  /// Fires when a drag that starts inside the shape begins.
-  ///
-  /// Setting any drag callback makes the shape draggable. While the drag is
-  /// in flight the widget draws the shape displaced by the pointer; no
-  /// geometry is rebuilt per frame.
-  final VoidCallback? onDragStart;
-
-  /// Fires per drag frame with the pointer delta in geometry space (the
-  /// [mapper]'s Y flip applied). Informational — the widget already draws
-  /// the drag; do not also move the geometry here.
-  final ValueChanged<Offset>? onDragUpdate;
-
-  /// Fires when the drag ends with the total displacement in geometry
-  /// space. The drawn offset then resets, so commit the move here by
-  /// translating the geometry.
-  final ValueChanged<Offset>? onDragEnd;
-
-  /// Optional authoring aids (bounding box, center, vertices, dimensions)
-  /// drawn above the shape.
-  final GeoDebugOverlay? debugOverlay;
 
   /// Creates a rectangle widget with explicit position and size.
   GeoRectangle({
@@ -75,74 +30,58 @@ class GeoRectangle extends StatelessWidget {
     required double y,
     required double width,
     required double height,
-    this.style,
-    this.mapper = CoordinateMapper.identity,
+    super.style,
+    super.mapper,
     this.cornerRadius = Radius.zero,
-    this.size = const Size(200, 200),
-    this.clipBehavior = Clip.hardEdge,
-    this.semanticLabel,
-    this.onTap,
-    this.onHoverChanged,
-    this.onDragStart,
-    this.onDragUpdate,
-    this.onDragEnd,
-    this.debugOverlay,
+    super.size,
+    super.clipBehavior,
+    super.semanticLabel,
+    super.onTap,
+    super.onHoverChanged,
+    super.onDragStart,
+    super.onDragUpdate,
+    super.onDragEnd,
+    super.debugOverlay,
   }) : rectangle = geo.Rectangle(x: x, y: y, width: width, height: height);
 
   /// Creates a rectangle widget from an existing [geo.Rectangle] geometry.
   const GeoRectangle.fromGeometry({
     super.key,
     required this.rectangle,
-    this.style,
-    this.mapper = CoordinateMapper.identity,
+    super.style,
+    super.mapper,
     this.cornerRadius = Radius.zero,
-    this.size = const Size(200, 200),
-    this.clipBehavior = Clip.hardEdge,
-    this.semanticLabel,
-    this.onTap,
-    this.onHoverChanged,
-    this.onDragStart,
-    this.onDragUpdate,
-    this.onDragEnd,
-    this.debugOverlay,
+    super.size,
+    super.clipBehavior,
+    super.semanticLabel,
+    super.onTap,
+    super.onHoverChanged,
+    super.onDragStart,
+    super.onDragUpdate,
+    super.onDragEnd,
+    super.debugOverlay,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final resolved = ShapeStyleTheme.resolve(context, style);
-    return GeoShapeContainer(
-      size: size,
-      clipBehavior: clipBehavior,
-      semanticLabel: semanticLabel,
-      geometry: rectangle,
-      mapper: mapper,
-      debugOverlay: debugOverlay,
-      hitTest: cornerRadius == Radius.zero
-          ? null
-          : (p) => _hitPath().contains(p),
-      onTap: onTap,
-      onHoverChanged: onHoverChanged,
-      onDragStart: onDragStart,
-      onDragUpdate: onDragUpdate,
-      onDragEnd: onDragEnd,
-      painter: RectanglePainter(
-        rectangle: rectangle,
-        style: resolved,
-        mapper: mapper,
-        cornerRadius: cornerRadius,
-      ),
-    );
-  }
+  geo.Geometry get geometry => rectangle;
 
-  /// Hit-test path: matches the painted shape, including [cornerRadius].
-  ///
-  /// Sharp rectangles fall back to [shapeToPath]; rounded ones build an
-  /// `RRect` over the AABB of the mapped corners (same construction as
-  /// [RectanglePainter]).
-  Path _hitPath() {
-    if (cornerRadius == Radius.zero) {
-      return shapeToPath(rectangle, mapper);
-    }
+  @override
+  CustomPainter createPainter(ShapeStyle resolved) => RectanglePainter(
+    rectangle: rectangle,
+    style: resolved,
+    mapper: mapper,
+    cornerRadius: cornerRadius,
+  );
+
+  // Sharp rectangles use the default (cached) test on [geometry]. Rounded
+  // ones build their path once per build, not once per pointer move.
+  @override
+  bool Function(Offset position)? get hitTest =>
+      cornerRadius == Radius.zero ? null : _roundedPath().contains;
+
+  /// The rounded outline as painted: an `RRect` over the AABB of the mapped
+  /// corners (same construction as [RectanglePainter]).
+  Path _roundedPath() {
     final corners = <Offset>[
       mapper.toCanvas(rectangle.x, rectangle.y),
       mapper.toCanvas(rectangle.x + rectangle.width, rectangle.y),

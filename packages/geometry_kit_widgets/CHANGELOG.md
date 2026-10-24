@@ -65,6 +65,17 @@ Curve widgets, drag, grid and debug overlays (roadmap phases 2 and 3).
   hit-testing no longer rebuilds a polygon or spline path on every pointer
   move.
 
+### Internal
+
+- The 2D `Geo*` widgets share one internal base for their common
+  parameters (`style`, `mapper`, `size`, `clipBehavior`, `semanticLabel`,
+  tap / hover / drag callbacks, `debugOverlay`) and their `build`.
+  Constructors, defaults and `const`-ness are the same. The widgets also
+  inherit the base's `@protected` hooks (`geometry`, `createPainter`,
+  `hitTest`); these are for subclasses only, not public API.
+- A rounded `GeoRectangle` builds its hit-test path once per build instead
+  of on every pointer move.
+
 ## 0.3.0
 
 Adds 3D scenes for `geometry_kit_3d` solids on top of 0.2.0.
