@@ -65,6 +65,13 @@ Curve widgets, drag, grid and debug overlays (roadmap phases 2 and 3).
   hit-testing no longer rebuilds a polygon or spline path on every pointer
   move.
 
+### Internal
+
+- The 2D `Geo*` widgets share one internal base for their common
+  parameters (`style`, `mapper`, `size`, `clipBehavior`, `semanticLabel`,
+  tap / hover / drag callbacks, `debugOverlay`) and their `build`. No API
+  change: constructors, defaults and `const`-ness are the same.
+
 ## 0.3.0
 
 Adds 3D scenes for `geometry_kit_3d` solids on top of 0.2.0.
