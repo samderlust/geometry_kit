@@ -1,3 +1,5 @@
+import 'shape.dart';
+
 /// Any 2D geometry in this package: the closed [Shape]s and the open or
 /// unbounded curves.
 ///
@@ -13,9 +15,4 @@
 /// The interface is not `sealed`, so other packages can implement it for
 /// their own geometry (e.g. `ArcSector` in `geometry_kit_widgets`). Code that
 /// switches over geometry types should keep a fallback case.
-library;
-
-import 'shape.dart';
-
-/// Common supertype of every 2D geometry type. See the library docs.
 abstract interface class Geometry {}
