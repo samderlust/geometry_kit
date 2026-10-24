@@ -129,11 +129,7 @@ class Arc implements Geometry {
   }
 
   @override
-  int get hashCode =>
-      center.hashCode ^
-      radius.hashCode ^
-      startAngle.hashCode ^
-      endAngle.hashCode;
+  int get hashCode => Object.hash(center, radius, startAngle, endAngle);
 
   @override
   String toString() =>

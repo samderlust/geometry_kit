@@ -110,7 +110,7 @@ class QuadraticBezier implements Geometry {
   }
 
   @override
-  int get hashCode => start.hashCode ^ control.hashCode ^ end.hashCode;
+  int get hashCode => Object.hash(start, control, end);
 
   @override
   String toString() =>
@@ -223,8 +223,7 @@ class CubicBezier implements Geometry {
   }
 
   @override
-  int get hashCode =>
-      start.hashCode ^ control1.hashCode ^ control2.hashCode ^ end.hashCode;
+  int get hashCode => Object.hash(start, control1, control2, end);
 
   @override
   String toString() =>

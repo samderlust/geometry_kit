@@ -148,7 +148,7 @@ class Spline implements Geometry {
   }
 
   @override
-  int get hashCode => controlPoints.hashCode ^ alpha.hashCode;
+  int get hashCode => Object.hash(Object.hashAll(controlPoints), alpha);
 
   @override
   String toString() =>

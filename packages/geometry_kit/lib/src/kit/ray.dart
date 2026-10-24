@@ -113,7 +113,7 @@ class Ray implements Geometry {
   }
 
   @override
-  int get hashCode => origin.hashCode ^ direction.hashCode;
+  int get hashCode => Object.hash(origin, direction);
 
   @override
   String toString() => 'Ray(origin: $origin, direction: $direction)';

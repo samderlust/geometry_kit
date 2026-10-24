@@ -180,7 +180,7 @@ class Capsule implements Shape {
   }
 
   @override
-  int get hashCode => medialAxis.hashCode ^ radius.hashCode;
+  int get hashCode => Object.hash(medialAxis, radius);
 
   @override
   String toString() => 'Capsule(medialAxis: $medialAxis, radius: $radius)';

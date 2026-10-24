@@ -243,7 +243,7 @@ class Line implements Geometry {
   }
 
   @override
-  int get hashCode => a.hashCode ^ b.hashCode;
+  int get hashCode => Object.hash(a, b);
 
   @override
   String toString() => 'Line(a: $a, b: $b)';

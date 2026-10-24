@@ -79,8 +79,7 @@ class Ring implements Geometry {
   }
 
   @override
-  int get hashCode =>
-      center.hashCode ^ innerRadius.hashCode ^ outerRadius.hashCode;
+  int get hashCode => Object.hash(center, innerRadius, outerRadius);
 
   @override
   String toString() =>

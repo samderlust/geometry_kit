@@ -11,6 +11,12 @@
 - **fix:** `Triangle` and `Polygon` now have value `==` and `hashCode`
   (vertices compared in order), like every other type. They used identity,
   so two triangles with the same vertices compared unequal.
+- **fix:** `Spline.hashCode` hashed the control-point list's identity, so
+  two equal splines had different hashes (broken in `Set` / `Map` keys). It
+  now hashes the points.
+- **perf:** every type hashes with `Object.hash` / `Object.hashAll` instead
+  of XOR, which ignored order and cancelled repeated parts (`Point(1, 2)`
+  and `Point(2, 1)` collided). Hash values change; `==` does not.
 - **test:** first tests for the package (`test/geometry_test.dart`).
 - Non-breaking: `Shape` already required `translate`, and every curve already
   had it except `Spline`.

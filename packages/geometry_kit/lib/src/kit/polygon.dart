@@ -319,5 +319,5 @@ class Polygon implements Shape {
   }
 
   @override
-  int get hashCode => vertices.fold(0, (h, p) => h ^ p.hashCode);
+  int get hashCode => Object.hashAll(vertices);
 }

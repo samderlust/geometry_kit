@@ -54,10 +54,34 @@ void main() {
       }
     });
 
-    test('translate by zero is equal', () {
+    test('translate by zero is equal, with an equal hash', () {
       for (final g in all) {
-        expect(g.translate(), g, reason: '${g.runtimeType}');
+        final copy = g.translate();
+        expect(copy, g, reason: '${g.runtimeType}');
+        expect(copy.hashCode, g.hashCode, reason: '${g.runtimeType}');
       }
+    });
+
+    test('Spline hash follows its points, not the list instance', () {
+      // Used to hash the list's identity, so equal splines hashed apart.
+      final a = Spline([const Point(0, 0), const Point(1, 2)]);
+      final b = Spline([const Point(0, 0), const Point(1, 2)]);
+      expect(a, b);
+      expect({a, b}, hasLength(1));
+    });
+
+    test('hashes are order-sensitive, matching ==', () {
+      // XOR folds made swapped or repeated parts collide.
+      expect(const Point(1, 2).hashCode, isNot(const Point(2, 1).hashCode));
+      expect(
+        const Line(Point(0, 0), Point(1, 1)).hashCode,
+        isNot(const Line(Point(1, 1), Point(0, 0)).hashCode),
+      );
+      expect(
+        Polygon(const [Point(0, 0), Point(1, 0), Point(0, 0), Point(1, 0)])
+            .hashCode,
+        isNot(0),
+      );
     });
 
     test('Triangle and Polygon compare by vertices, in order', () {

@@ -298,5 +298,5 @@ class Triangle implements Shape {
   }
 
   @override
-  int get hashCode => a.hashCode ^ b.hashCode ^ c.hashCode;
+  int get hashCode => Object.hash(a, b, c);
 }

@@ -194,7 +194,7 @@ class Rectangle implements Shape {
   }
 
   @override
-  int get hashCode => x.hashCode ^ y.hashCode ^ width.hashCode ^ height.hashCode;
+  int get hashCode => Object.hash(x, y, width, height);
 
   @override
   String toString() =>

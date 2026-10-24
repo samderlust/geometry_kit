@@ -136,7 +136,7 @@ class Polyline implements Geometry {
   }
 
   @override
-  int get hashCode => points.fold(0, (h, p) => h ^ p.hashCode);
+  int get hashCode => Object.hashAll(points);
 
   @override
   String toString() => 'Polyline(${points.length} points)';
