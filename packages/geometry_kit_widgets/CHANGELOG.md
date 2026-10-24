@@ -69,8 +69,12 @@ Curve widgets, drag, grid and debug overlays (roadmap phases 2 and 3).
 
 - The 2D `Geo*` widgets share one internal base for their common
   parameters (`style`, `mapper`, `size`, `clipBehavior`, `semanticLabel`,
-  tap / hover / drag callbacks, `debugOverlay`) and their `build`. No API
-  change: constructors, defaults and `const`-ness are the same.
+  tap / hover / drag callbacks, `debugOverlay`) and their `build`.
+  Constructors, defaults and `const`-ness are the same. The widgets also
+  inherit the base's `@protected` hooks (`geometry`, `createPainter`,
+  `hitTest`); these are for subclasses only, not public API.
+- A rounded `GeoRectangle` builds its hit-test path once per build instead
+  of on every pointer move.
 
 ## 0.3.0
 

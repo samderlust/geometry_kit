@@ -4,7 +4,6 @@ import 'package:geometry_kit/geometry_kit.dart' as geo;
 import '../painters/rectangle_painter.dart';
 import '../style/shape_style.dart';
 import '../style/shape_style_theme.dart';
-import '../util/shape_path.dart';
 import 'geo_shape_widget.dart';
 
 /// A widget that paints a [geo.Rectangle], optionally rounded.
@@ -74,19 +73,15 @@ class GeoRectangle extends GeoShapeWidget {
     cornerRadius: cornerRadius,
   );
 
+  // Sharp rectangles use the default (cached) test on [geometry]. Rounded
+  // ones build their path once per build, not once per pointer move.
   @override
   bool Function(Offset position)? get hitTest =>
-      cornerRadius == Radius.zero ? null : (p) => _hitPath().contains(p);
+      cornerRadius == Radius.zero ? null : _roundedPath().contains;
 
-  /// Hit-test path: matches the painted shape, including [cornerRadius].
-  ///
-  /// Sharp rectangles fall back to [shapeToPath]; rounded ones build an
-  /// `RRect` over the AABB of the mapped corners (same construction as
-  /// [RectanglePainter]).
-  Path _hitPath() {
-    if (cornerRadius == Radius.zero) {
-      return shapeToPath(rectangle, mapper);
-    }
+  /// The rounded outline as painted: an `RRect` over the AABB of the mapped
+  /// corners (same construction as [RectanglePainter]).
+  Path _roundedPath() {
     final corners = <Offset>[
       mapper.toCanvas(rectangle.x, rectangle.y),
       mapper.toCanvas(rectangle.x + rectangle.width, rectangle.y),

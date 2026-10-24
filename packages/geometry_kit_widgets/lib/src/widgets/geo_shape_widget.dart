@@ -12,10 +12,9 @@ import 'geo_shape_container.dart';
 /// pointer and debug parameters and builds the [GeoShapeContainer].
 ///
 /// Subclasses supply [geometry] and [createPainter], and override
-/// [hitTolerance] / [hitTest] only when the defaults don't match what they
-/// paint.
-///
-/// Not part of the public API.
+/// [hitTest] only when the default test on [geometry] doesn't match what
+/// they paint. These hooks are `@protected`: they are inherited by the
+/// exported widgets but are not part of the public API.
 abstract class GeoShapeWidget extends StatelessWidget {
   /// Style override. When `null`, resolves through [ShapeStyleTheme].
   final ShapeStyle? style;
@@ -77,17 +76,16 @@ abstract class GeoShapeWidget extends StatelessWidget {
   });
 
   /// The geometry painted, hit-tested and shown by [debugOverlay].
+  @protected
   Geometry get geometry;
 
   /// The painter for [geometry] drawn with the [resolved] style.
+  @protected
   CustomPainter createPainter(ShapeStyle resolved);
-
-  /// Hit reach for open curves drawn with [resolved]; closed shapes test
-  /// containment and ignore it.
-  double hitTolerance(ShapeStyle resolved) => curveHitTolerance(resolved);
 
   /// Custom hit test for when the painted outline is not [geometry]'s plain
   /// path. `null` uses the default test on [geometry].
+  @protected
   bool Function(Offset position)? get hitTest => null;
 
   @override
@@ -101,7 +99,8 @@ abstract class GeoShapeWidget extends StatelessWidget {
       mapper: mapper,
       debugOverlay: debugOverlay,
       hitTest: hitTest,
-      hitTolerance: hitTolerance(resolved),
+      // Closed shapes test containment and ignore the tolerance.
+      hitTolerance: curveHitTolerance(resolved),
       onTap: onTap,
       onHoverChanged: onHoverChanged,
       onDragStart: onDragStart,
