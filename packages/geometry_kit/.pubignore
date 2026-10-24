@@ -1,0 +1,13 @@
+# A .pubignore replaces .gitignore for publishing, so repeat its rules.
+.dart_tool/
+.packages
+build/
+pubspec.lock
+docs/
+
+# Not needed by package users. Anchored with a leading `/` so `kit/`
+# doesn't also drop lib/src/kit/.
+/doc/api/
+/flutter_example/
+/kit/
+/*.iml
