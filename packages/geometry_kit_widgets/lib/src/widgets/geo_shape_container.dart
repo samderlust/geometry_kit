@@ -3,6 +3,7 @@ import 'package:geometry_kit/geometry_kit.dart' show Geometry;
 
 import '../coord/coordinate_mapper.dart';
 import '../debug/geo_debug_overlay.dart';
+import '../util/drag_callbacks.dart';
 import '../util/shape_hit_test.dart';
 import 'shape_pointer_region.dart';
 
@@ -54,8 +55,7 @@ class GeoShapeContainer extends StatelessWidget {
     this.onDragEnd,
   });
 
-  bool get _draggable =>
-      onDragStart != null || onDragUpdate != null || onDragEnd != null;
+  bool get _draggable => hasDragCallbacks(onDragStart, onDragUpdate, onDragEnd);
 
   Widget _paint(Offset dragOffset) {
     final overlay = debugOverlay;

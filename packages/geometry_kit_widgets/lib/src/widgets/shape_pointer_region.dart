@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import '../coord/coordinate_mapper.dart';
+import '../util/drag_callbacks.dart';
 
 /// Internal helper that wires shape-precise tap, hover and drag callbacks
 /// onto a child widget.
@@ -64,8 +65,7 @@ class ShapePointerRegion extends StatefulWidget {
   });
 
   /// Whether any drag callback is set.
-  bool get draggable =>
-      onDragStart != null || onDragUpdate != null || onDragEnd != null;
+  bool get draggable => hasDragCallbacks(onDragStart, onDragUpdate, onDragEnd);
 
   @override
   State<ShapePointerRegion> createState() => _ShapePointerRegionState();

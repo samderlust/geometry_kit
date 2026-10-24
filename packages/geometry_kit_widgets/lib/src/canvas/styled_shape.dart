@@ -4,6 +4,7 @@ import 'package:geometry_kit/geometry_kit.dart' show Geometry;
 
 import '../debug/geo_debug_overlay.dart';
 import '../style/shape_style.dart';
+import '../util/drag_callbacks.dart';
 
 /// A pairing of a piece of geometry with the [ShapeStyle] used to draw it.
 ///
@@ -80,7 +81,7 @@ class StyledShape {
 
   /// Whether any drag callback is set.
   bool get isDraggable =>
-      onDragStart != null || onDragUpdate != null || onDragEnd != null;
+      hasDragCallbacks(onDragStart, onDragUpdate, onDragEnd);
 
   @override
   bool operator ==(Object other) =>
