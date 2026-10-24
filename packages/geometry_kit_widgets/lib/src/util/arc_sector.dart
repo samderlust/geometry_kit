@@ -29,6 +29,10 @@ class ArcSector implements Geometry {
   double get area => arc.sectorArea;
 
   @override
+  ArcSector translate({double x = 0, double y = 0}) =>
+      ArcSector(arc.translate(x: x, y: y));
+
+  @override
   bool operator ==(Object other) =>
       identical(this, other) || (other is ArcSector && other.arc == arc);
 

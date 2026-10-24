@@ -53,7 +53,8 @@ class StyledShape {
 
   /// Fires when the drag ends with the total displacement in geometry
   /// space. The drawn offset then resets, so commit the move here by
-  /// replacing [shape] with a translated copy.
+  /// replacing [shape] with `shape.translate(x: d.dx, y: d.dy)` — every
+  /// [Geometry] has `translate`.
   final ValueChanged<Offset>? onDragEnd;
 
   /// Authoring aids for this shape. Overrides

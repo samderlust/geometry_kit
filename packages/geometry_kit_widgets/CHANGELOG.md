@@ -19,7 +19,7 @@ Curve widgets, drag, grid and debug overlays (roadmap phases 2 and 3).
   `.cubic`, `.fromGeometry`), `GeoSpline`, `GeoPolyline`, `GeoRay` (cut at
   the widget edge).
 - `ArcSector` wraps an `Arc` to paint or hit-test the closed slice, e.g. in
-  a `GeometryCanvas`.
+  a `GeometryCanvas`. It is a `Geometry`, with `translate`.
 - `shapeToPath` builds paths for all of them; it takes an optional `size`
   to cut a `Ray`.
 - `GeometryCanvas` paints every supported type, `Line` included (it used to

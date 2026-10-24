@@ -81,19 +81,6 @@ class _CurvesDemoState extends State<CurvesDemo> {
           showDimensions: _layers.contains(_Layer.dimensions),
         );
 
-  /// Translates any of the demo's geometry types. `Spline` has no
-  /// `translate`, so its control points move one by one.
-  static Geometry _moved(Geometry shape, Offset d) => switch (shape) {
-    ArcSector s => ArcSector(s.arc.translate(x: d.dx, y: d.dy)),
-    Ring r => r.translate(x: d.dx, y: d.dy),
-    Spline s => Spline([
-      for (final p in s.controlPoints) p.translate(d.dx, d.dy),
-    ], alpha: s.alpha),
-    QuadraticBezier b => b.translate(x: d.dx, y: d.dy),
-    Ray r => r.translate(x: d.dx, y: d.dy),
-    _ => shape,
-  };
-
   String _fmt(Offset o) =>
       '(${o.dx.toStringAsFixed(0)}, ${o.dy.toStringAsFixed(0)})';
 
@@ -404,7 +391,7 @@ class _CurvesDemoState extends State<CurvesDemo> {
                           onDragEnd: (d) => setState(() {
                             _canvasShapes = {
                               ..._canvasShapes,
-                              id: _moved(shape, d),
+                              id: shape.translate(x: d.dx, y: d.dy),
                             };
                             _selected = id;
                           }),

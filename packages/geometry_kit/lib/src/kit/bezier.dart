@@ -91,6 +91,7 @@ class QuadraticBezier implements Geometry {
   }
 
   /// Translate the curve
+  @override
   QuadraticBezier translate({double x = 0, double y = 0}) {
     return QuadraticBezier(
       start: start.translate(x, y),
@@ -201,6 +202,7 @@ class CubicBezier implements Geometry {
   }
 
   /// Translate the curve
+  @override
   CubicBezier translate({double x = 0, double y = 0}) {
     return CubicBezier(
       start: start.translate(x, y),

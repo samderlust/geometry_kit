@@ -666,7 +666,7 @@ Shape widgets:
 
 ### Resolved (v0.4.0)
 
-7. **Curve geometry in `StyledShape`** — field typed `Geometry` (core 1.3.0 marker interface over `Shape` and the curves). Unknown `Geometry` implementations are skipped with a debug warning.
+7. **Curve geometry in `StyledShape`** — field typed `Geometry` (core 1.3.0 interface over `Shape` and the curves; its only member is `translate`, the one operation every type has, so drags commit without a type switch). Unknown `Geometry` implementations are skipped with a debug warning.
 8. **Open-curve hit-test** — distance to the flattened curve, `strokeWidth / 2 + 4px`; `GeoLine` gained tap/hover/drag.
 9. **Drag model** — preview-then-commit; deltas and totals in geometry space.
 10. **Pointer routing** — off-shape pointers pass through (render hit-test filter); on-shape drags beat scroll views (early-accepting pan recognizer).

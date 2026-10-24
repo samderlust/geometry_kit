@@ -96,6 +96,7 @@ class Ray implements Geometry {
   }
 
   /// Translate the ray origin
+  @override
   Ray translate({double x = 0, double y = 0}) {
     return Ray(origin.translate(x, y), direction);
   }

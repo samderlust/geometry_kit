@@ -378,6 +378,9 @@ GeoCircle.fromGeometry(
 )
 ```
 
+Every `Geometry` has `translate`, so a canvas of mixed shapes commits drags
+without a type switch: `shape.translate(x: d.dx, y: d.dy)`.
+
 `onDragUpdate` gives per-frame deltas for live readouts. It is
 informational: the widget already draws the drag, so moving the geometry
 there too would double it. `GeometryCanvas` drags the topmost draggable

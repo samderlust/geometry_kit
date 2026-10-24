@@ -51,6 +51,7 @@ class Ring implements Geometry {
   }
 
   /// Translate the ring
+  @override
   Ring translate({double x = 0, double y = 0}) {
     return Ring(
       center: Point(center.x + x, center.y + y),

@@ -1,10 +1,16 @@
 ## 1.3.0
 
-- **feat:** `Geometry`, an empty interface implemented by every 2D type.
-  `Shape` now implements it, so every closed shape is a `Geometry`. `Line`,
-  `Polyline`, `Arc`, `Ray`, `Ring`, `QuadraticBezier`, `CubicBezier` and
-  `Spline` implement it directly. This gives dependents one type for
-  "anything drawable" (used by `geometry_kit_widgets` 0.4.0). Non-breaking.
+- **feat:** `Geometry`, an interface implemented by every 2D type, with one
+  member: `translate({x, y})`. `Shape` now implements it, so every closed
+  shape is a `Geometry`. `Line`, `Polyline`, `Arc`, `Ray`, `Ring`,
+  `QuadraticBezier`, `CubicBezier` and `Spline` implement it directly, each
+  returning its own type. This gives dependents one type for "anything
+  drawable" that can also be moved without a type switch (used by
+  `geometry_kit_widgets` 0.4.0).
+- **feat:** `Spline.translate`, the one 2D type that lacked it.
+- **test:** first tests for the package (`test/geometry_test.dart`).
+- Non-breaking: `Shape` already required `translate`, and every curve already
+  had it except `Spline`.
 
 ## 1.2.3
 

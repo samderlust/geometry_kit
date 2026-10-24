@@ -14,6 +14,7 @@ abstract interface class Shape implements Geometry {
   double get perimeter;
 
   /// translate the shape with [x] in horizontally and [y] vertically
+  @override
   Shape translate({double x = 0, double y = 0});
 
   /// scale the shape by [value]

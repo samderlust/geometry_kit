@@ -220,6 +220,7 @@ class Line implements Geometry {
   }
 
   /// Translate the line by [x] horizontally and [y] vertically
+  @override
   Line translate({double x = 0, double y = 0}) {
     return Line(a.translate(x, y), b.translate(x, y));
   }

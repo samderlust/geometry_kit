@@ -109,6 +109,7 @@ class Polyline implements Geometry {
   }
 
   /// Translate the polyline
+  @override
   Polyline translate({double x = 0, double y = 0}) {
     return Polyline(points.map((p) => p.translate(x, y)).toList());
   }

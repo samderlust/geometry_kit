@@ -129,6 +129,13 @@ class Spline implements Geometry {
     return Point(2 * anchor.x - p.x, 2 * anchor.y - p.y);
   }
 
+  /// Returns a copy with every control point moved by [x], [y].
+  @override
+  Spline translate({double x = 0, double y = 0}) => Spline(
+        [for (final p in controlPoints) p.translate(x, y)],
+        alpha: alpha,
+      );
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

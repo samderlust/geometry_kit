@@ -98,6 +98,7 @@ class Arc implements Geometry {
   double get sectorArea => 0.5 * radius * radius * sweepAngle;
 
   /// Translate the arc
+  @override
   Arc translate({double x = 0, double y = 0}) {
     return Arc(
       center: Point(center.x + x, center.y + y),

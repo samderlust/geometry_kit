@@ -7,7 +7,10 @@ import 'package:geometry_kit_widgets/src/util/shape_hit_test.dart';
 const _blue = Color(0xFF0000FF);
 
 /// A [Geometry] from "another package" that shapeToPath does not know.
-class _ForeignGeometry implements Geometry {}
+class _ForeignGeometry implements Geometry {
+  @override
+  _ForeignGeometry translate({double x = 0, double y = 0}) => this;
+}
 
 Widget _host(Widget child) => Directionality(
   textDirection: TextDirection.ltr,
@@ -52,6 +55,15 @@ void main() {
       final path = shapeToPath(ArcSector(quarter), identity);
       expect(path.contains(const Offset(120, 120)), isTrue);
       expect(path.contains(const Offset(80, 80)), isFalse);
+    });
+
+    test('ArcSector.translate moves the arc and stays a sector', () {
+      final moved = ArcSector(quarter).translate(x: 10, y: -5);
+      expect(moved.arc, quarter.translate(x: 10, y: -5));
+      _expectRect(
+        shapeToPath(moved, identity).getBounds(),
+        const Rect.fromLTRB(110, 95, 160, 145),
+      );
     });
 
     test('Ring leaves the hole empty', () {
